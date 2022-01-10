@@ -15,8 +15,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        mainController = new FXMLLoader((getClass().getResource("view/MediaPlayer.fxml")));
-
+        mainController = new FXMLLoader((getClass().getResource("view/MainMenu.fxml")));
         primaryStage.setTitle("Private Movie Collection");
         primaryStage.setScene(new Scene(mainController.load()));
         Image image = new Image("/gui/images/film_icon2.png");

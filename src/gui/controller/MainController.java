@@ -66,10 +66,12 @@ public class MainController implements Initializable {
     private SceneSwapper sceneSwapper;
     private MediaPlayerController mediaPlayerController;
 
+
     public MainController() throws IOException, MovieException {
         movieListModel = new MovieListModel();
         sceneSwapper = new SceneSwapper();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -214,5 +216,6 @@ public class MainController implements Initializable {
         if (tvMovies.getSelectionModel().getSelectedItem() != null)
             return tvMovies.getSelectionModel().getSelectedItem();
         else return null;
+
     }
 }
