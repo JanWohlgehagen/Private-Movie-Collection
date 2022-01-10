@@ -62,9 +62,9 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <CheckBox fx:id="cbTitle" mnemonicParsing="false" prefHeight="16.0" prefWidth="18.0" />
-                        <CheckBox fx:id="cbCategory" mnemonicParsing="false" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="1" />
-                        <CheckBox fx:id="cbRating" mnemonicParsing="false" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="2" />
+                        <CheckBox fx:id="cbTitle" mnemonicParsing="false" onAction="#handleCBTitle" prefHeight="16.0" prefWidth="18.0" />
+                        <CheckBox fx:id="cbCategory" mnemonicParsing="false" onAction="#handleCBCategory" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="1" />
+                        <CheckBox fx:id="cbRating" mnemonicParsing="false" onAction="#handleCBRating" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="2" />
                         <Label text="Title" GridPane.rowIndex="1" />
                         <Label text="Category" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Min. Rating" GridPane.columnIndex="2" GridPane.rowIndex="1" />
@@ -75,7 +75,7 @@
                   <Separator prefHeight="3.0" prefWidth="160.0" />
                   <VBox fx:id="vBoxControllMenu" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#handleEditMovie" prefHeight="40.0" prefWidth="114.0" text="Edit Movie" />
+                        <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#handleEditMovie" prefHeight="40.0" prefWidth="114.0" text="Edit Movie" />
                         <Button fx:id="btnAddMovie" mnemonicParsing="false" onAction="#handleAddMovie" prefHeight="40.0" prefWidth="114.0" text="Add Movie" />
                         <Button fx:id="btnDeleteMovie" mnemonicParsing="false" onAction="#handleDeleteMovie" prefHeight="40.0" prefWidth="114.0" text="Delete Movie" />
                         <Button fx:id="btnEditSave" layoutX="48.0" layoutY="166.0" mnemonicParsing="false" onAction="#handleEditSave" prefHeight="40.0" prefWidth="114.0" text="Save" />
@@ -106,25 +106,25 @@
                         <Insets left="60.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="txtPersonalRating" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets left="90.0" />
-                     </GridPane.margin>
-                  </TextField>
                   <TextField fx:id="txtCategory" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="60.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <TextField fx:id="txtimdbRating" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="90.0" />
                      </GridPane.margin>
                   </TextField>
                   <Label text="IMDB Rating" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Personal Rating" GridPane.columnIndex="1" />
                   <Label text="Title" />
                   <Label text="Category" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtPersonalRating" promptText="Not rated yet..!" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="90.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField fx:id="txtIMDBRating" promptText="Not rated yet..!" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="90.0" />
+                     </GridPane.margin>
+                  </TextField>
                </children>
                <VBox.margin>
                   <Insets />

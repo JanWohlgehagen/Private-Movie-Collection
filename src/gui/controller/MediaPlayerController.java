@@ -1,5 +1,8 @@
 package gui.controller;
 
+import gui.App;
+import gui.model.MovieModel;
+import gui.util.SceneSwapper;
 import javafx.animation.PauseTransition;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -8,7 +11,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.beans.value.WeakChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -87,11 +89,19 @@ public class MediaPlayerController implements Initializable {
     private ImageView ivMute;
     private ImageView ivExitFullscreen;
 
+    private MainController mainController;
+    private String filePath;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        mainController = new App().getController();
+        filePath = mainController.getMovieToPlay().getPathToFileProperty().get();
+
         final int IV_SIZE = 25; // the size of the pictures we set as the labels' background
 
-        mediaVideo = new Media(new File("C:\\Users\\Janwo\\OneDrive\\Desktop\\Grubby.mp4").toURI().toString());
+
+        mediaVideo = new Media(new File(filePath).toURI().toString());
         mpMovie = new MediaPlayer(mediaVideo);
         mvMovie.setMediaPlayer(mpMovie);
 

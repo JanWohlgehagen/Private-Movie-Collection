@@ -51,22 +51,29 @@ public class MovieListModel {
      * @param imdbRating
      * @param personalRating
      */
-    public void updateSong(MovieModel movieModel, String name, double imdbRating, double personalRating) throws MovieException {
-        movieModel.setNameProperty(name);
-        movieModel.setIMDBRatingProperty(imdbRating);
-        movieModel.setPersonalRatingProperty(personalRating);
-        movieManager.updateMovie(movieModel.convertToMovie());
+    public void updateMovie(MovieModel movieModel, String name, double imdbRating, double personalRating) throws MovieException {
+        if(movieManager.checkUpdatedValues(imdbRating, personalRating)){
+            movieModel.setNameProperty(name);
+            movieModel.setIMDBRatingProperty(imdbRating);
+            movieModel.setPersonalRatingProperty(personalRating);
+            movieManager.updateMovie(movieModel.convertToMovie());
+        }
     }
 
     /**
      * Searches through song list, to find a Movie that matches the key word
      * @param query the key word, to search for
      */
-    public void searchSong(String query) throws MovieException {
-        List<MovieModel> searchResults = movieManager.searchMovie(query).stream().map(movie ->
+    public void searchMovie(String query, boolean isTitleOn, boolean isCatOn, boolean isRatingOn) throws MovieException {
+        List<MovieModel> searchResults = movieManager.searchMovie(query, isTitleOn, isCatOn, isRatingOn).stream().map(movie ->
                 new MovieModel(movie)).toList();
 
+
         movieList.clear();
-        movieList.addAll((searchResults));
+        if(query.isBlank()){
+            movieList.addAll(movieManager.getAllMovies().stream().map(movie -> new MovieModel(movie)).toList());
+            return;
+        }
+       movieList.addAll((searchResults));
     }
 }

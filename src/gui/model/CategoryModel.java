@@ -59,4 +59,8 @@ public class CategoryModel {
         return new Category(this.id.get(), this.name.get());
     }
 
+    @Override
+    public String toString() {
+        return name.get();
+    }
 }
