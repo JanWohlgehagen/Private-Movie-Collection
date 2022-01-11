@@ -124,14 +124,8 @@ public class MovieModel {
         return personalRating;
     }
 
-    public StringProperty getAllCategorysAsString(){
-        StringBuilder newList = new StringBuilder();
-        for (CategoryModel catModel: categories) {
-            if(catModel == categories.get(categories.size()-1)){
-                newList.append(catModel);
-            } else newList.append(catModel).append(", ");
-        }
-        catInString.set(newList.toString());
+    public StringProperty getAllCategoriesStringProperty(){
+        updateCategoriesStringProperty();
         return catInString;
     }
 
@@ -159,5 +153,16 @@ public class MovieModel {
 
     public void setCategories(ObservableList<CategoryModel> categories) {
         this.categories = categories;
+        updateCategoriesStringProperty();
+    }
+
+    private void updateCategoriesStringProperty() {
+        StringBuilder newList = new StringBuilder();
+        for (CategoryModel catModel: categories) {
+            if(catModel == categories.get(categories.size()-1)){
+                newList.append(catModel);
+            } else newList.append(catModel).append(", ");
+        }
+        catInString.set(newList.toString());
     }
 }

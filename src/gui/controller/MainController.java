@@ -1,15 +1,10 @@
 package gui.controller;
 
-import be.Category;
-import be.CategoryException;
-import be.DisplayMessage;
 import be.MovieException;
 import gui.model.CategoryModel;
 import gui.model.MovieListModel;
 import gui.model.MovieModel;
 import gui.util.SceneSwapper;
-import javafx.beans.binding.ObjectExpression;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -91,7 +86,7 @@ public class MainController implements Initializable {
 
         tvMovies.setItems(movieListModel.getMovieList());
         tcTitle.setCellValueFactory(addMovie -> addMovie.getValue().getNameProperty());
-        tcCategory.setCellValueFactory(addMovie -> addMovie.getValue().getAllCategorysAsString());
+        tcCategory.setCellValueFactory(addMovie -> addMovie.getValue().getAllCategoriesStringProperty());
         tcRating.setCellValueFactory(addMovie -> addMovie.getValue().getIMDBRatingProperty().asObject());
 
 
