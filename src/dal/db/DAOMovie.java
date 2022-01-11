@@ -44,7 +44,7 @@ public class DAOMovie implements IMovieRepository {
                     String filepath = resultSet.getString("filepath");
                     Date lastview = (Date) resultSet.getObject("lastview");
 
-                    Movie movie = new Movie(movieId, movieTitle, IMDBrating, filepath);
+                    Movie movie = new Movie(movieId, movieTitle, IMDBrating, filepath, null);
                     movie.setPersonalRating(personalrating);
                     movie.setLastView(lastview);
 
@@ -83,7 +83,7 @@ public class DAOMovie implements IMovieRepository {
                 if (resultSet.next()) {
                     int id = resultSet.getInt(1);
 
-                    return new Movie(id, name, IMDBRating, pathToFile);
+                    return new Movie(id, name, IMDBRating, pathToFile, null);
                 }
             }
         } catch (SQLException SQLex) {
@@ -93,7 +93,7 @@ public class DAOMovie implements IMovieRepository {
     }
 
     @Override
-    public void updateMovie(Movie movie, ObservableList<CategoryModel> categories) throws MovieException {
+    public void updateMovie(Movie movie) throws MovieException {
 
         try(Connection connection = databaseConnector.getConnection()) {
             String sql = "UPDATE Movie SET title = ?, filepath=?, IMDBrating=? WHERE Id=?;";

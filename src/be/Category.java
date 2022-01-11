@@ -9,7 +9,6 @@ public class  Category {
      * @param name a String
      */
     public Category(String name){
-
         setName(name);
     }
 

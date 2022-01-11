@@ -1,8 +1,6 @@
 package gui.model;
 
 import be.Category;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -37,5 +35,9 @@ public class CategoryModel {
     @Override
     public String toString() {
         return name.get();
+    }
+
+    public Category convertToCategory(){
+        return new Category(name.get());
     }
 }
