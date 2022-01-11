@@ -13,7 +13,7 @@ public interface ICategoryRepository {
 
     public void createCategory(Category category) throws CategoryException;
 
-    public void updateCategory(Category category) throws CategoryException;
+   // public void updateCategory(Category category) throws CategoryException;
 
     public void deleteCategory(Category category) throws CategoryException;
 

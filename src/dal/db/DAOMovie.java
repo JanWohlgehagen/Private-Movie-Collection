@@ -27,7 +27,7 @@ public class DAOMovie implements IMovieRepository {
         //Create a connection
         try(Connection connection = databaseConnector.getConnection()){
             String sql = "SELECT * FROM Movie;";
-            String sql1 = "SELECT * FROM Category FULL JOIN CatMovie ON Category.id = CatMovie.CatId WHERE CatMovie.movieId = ?;"; //1. sql command
+            String sql1 = "SELECT * FROM Category FULL JOIN CatMovie ON Category.title = CatMovie.catTitle WHERE CatMovie.movieId = ?;"; //1. sql command
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             PreparedStatement preparedStatement1 = connection.prepareStatement(sql1); //Create statement
 
@@ -50,10 +50,9 @@ public class DAOMovie implements IMovieRepository {
                     if(preparedStatement1.execute()){
                         ResultSet resultSet1 = preparedStatement1.getResultSet();
                         while(resultSet1.next()) {
-                            int catId = resultSet1.getInt("id");
                             String catTitle = resultSet1.getString("title");
 
-                            movie.addCategories(new Category(catId, catTitle));
+                            movie.addCategories(new Category(catTitle));
                         }
                     }
                     allMovies.add(movie);
@@ -149,7 +148,7 @@ public class DAOMovie implements IMovieRepository {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO CatMovie VALUES (?,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, category.getId());
+            preparedStatement.setString(1, category.getName());
             preparedStatement.setInt(2, movie.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException SQLex) {
