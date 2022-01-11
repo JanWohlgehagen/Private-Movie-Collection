@@ -1,13 +1,12 @@
 package gui.model;
 
+import be.Category;
 import be.Movie;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.List;
 
 public class MovieModel {
     private IntegerProperty id = new SimpleIntegerProperty();
@@ -16,7 +15,7 @@ public class MovieModel {
     private StringProperty pathToFile = new SimpleStringProperty();
     private ObjectProperty lastView = new SimpleObjectProperty<Date>();
     private DoubleProperty personalRating = new SimpleDoubleProperty();
-    private ObservableList<CategoryModel> categorys;
+    private ObservableList<CategoryModel> categories;
     private StringProperty catInString = new SimpleStringProperty();
 
     public MovieModel(Movie movie){
@@ -26,7 +25,7 @@ public class MovieModel {
         setPathToFileProperty(movie.getPathToFile());
         setLastViewProperty(movie.getLastView());
         setPersonalRatingProperty(movie.getPersonalRating());
-        categorys = FXCollections.observableArrayList(movie.getCategories().stream().map(cat -> new CategoryModel(cat)).toList());
+        categories = FXCollections.observableArrayList(movie.getCategories().stream().map(cat -> new CategoryModel(cat)).toList());
     }
 
     /**
@@ -127,8 +126,8 @@ public class MovieModel {
 
     public StringProperty getAllCategorysAsString(){
         StringBuilder newList = new StringBuilder();
-        for (CategoryModel catModel: categorys) {
-            if(catModel == categorys.get(categorys.size()-1)){
+        for (CategoryModel catModel: categories) {
+            if(catModel == categories.get(categories.size()-1)){
                 newList.append(catModel);
             } else newList.append(catModel).append(", ");
         }
@@ -138,12 +137,12 @@ public class MovieModel {
 
 
     public ObservableList<CategoryModel> getAllCategoryAsList(){
-        return categorys;
+        return categories;
     }
 
 
-    public void addCatrgroyModel(CategoryModel categoryModel){
-        categorys.add(categoryModel);
+    public void addCategoryModel(CategoryModel categoryModel){
+        categories.add(categoryModel);
     }
 
     /**
@@ -151,12 +150,14 @@ public class MovieModel {
      * @return a movie object with the same fields as the movieModel
      */
     public Movie convertToMovie(){
-        return new Movie(id.get(), name.get(), IMDBRating.get(), pathToFile.get());
-
+        ObservableList<Category> tempList = FXCollections.observableArrayList();
+        for (CategoryModel categoryModel: categories) {
+            tempList.add(categoryModel.convertToCategory());
+        }
+        return new Movie(id.get(), name.get(), IMDBRating.get(), pathToFile.get(), tempList);
     }
 
     public void setCategories(ObservableList<CategoryModel> categories) {
-        //this.categorys.clear();
-        this.categorys.setAll(categories);
+        this.categories = categories;
     }
 }

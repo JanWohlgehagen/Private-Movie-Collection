@@ -171,6 +171,7 @@ public class MainController implements Initializable {
             ObservableList<CategoryModel> categories = listViewCategories.getItems();
             MovieModel movie = tvMovies.getSelectionModel().selectedItemProperty().get();
             try {
+
                 double imdbRating = Double.parseDouble(txtIMDBRating.getText());
                 double personalRating;
                 if(txtPersonalRating.getText().isBlank()){
@@ -178,7 +179,6 @@ public class MainController implements Initializable {
                 }else{
                     personalRating = Double.parseDouble(txtPersonalRating.getText());
                 }
-
                 movieListModel.updateMovie(movie, txtTitle.getText(), imdbRating, personalRating, categories);
 
                 vBoxControllMenu.getChildren().remove(btnEditSave);
@@ -186,9 +186,11 @@ public class MainController implements Initializable {
                 vBoxControllMenu.getChildren().add(btnAddMovie);
                 vBoxControllMenu.getChildren().add(btnDeleteMovie);
 
+
                         enable_Disable_TextFields();
             } catch (Exception e){
                 displayMessage("You must provide a number between 0-10");
+                e.printStackTrace();
                 return;
             }
     }

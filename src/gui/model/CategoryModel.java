@@ -33,6 +33,9 @@ public class CategoryModel {
         getNameProperty().set(name);
     }
 
+    public Category convertToCategory(){
+        return new Category(name.get());
+    }
 
     @Override
     public String toString() {

@@ -1,6 +1,8 @@
 package be;
 
-import java.util.ArrayList;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +13,7 @@ public class    Movie {
     private String pathToFile;
     private Date lastView;
     private double personalRating;
-    private List<Category> categories;
+    private ObservableList<Category> categories;
 
 
     /**
@@ -21,15 +23,14 @@ public class    Movie {
      * @param IMDBRating the IMDBRating of the movie.
      * @param pathToFile the local location of the movie.
      */
-    public Movie(int id, String name, double IMDBRating, String pathToFile) {
+    public Movie(int id, String name, double IMDBRating, String pathToFile, ObservableList<Category> categories) {
         this.id = id;
         this.name = name;
         this.IMDBRating = IMDBRating;
         this.pathToFile = pathToFile;
         this.setLastView(null);
         this.setPersonalRating(-1); //if the personal rating is -1 it has not been rated
-        this.categories = new ArrayList<>();
-
+        this.categories = categories;
     }
 
     /**
@@ -108,7 +109,7 @@ public class    Movie {
         return categories;
     }
 
-    public void setCategories(List <Category> categories){
+    public void setCategories(ObservableList <Category> categories){
         this.categories = categories;
     }
 

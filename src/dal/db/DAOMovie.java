@@ -5,6 +5,7 @@ import be.Movie;
 import be.MovieException;
 import dal.interfaces.IMovieRepository;
 import gui.model.CategoryModel;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class DAOMovie implements IMovieRepository {
             if(preparedStatement.execute()){
                 ResultSet resultSet = preparedStatement.getResultSet();
                 while(resultSet.next()){
+                    ObservableList<Category> categories = FXCollections.observableArrayList();
                     int movieId = resultSet.getInt("id");
                     String movieTitle = resultSet.getString("title");
                     double IMDBrating = resultSet.getDouble("IMDBrating");
@@ -44,7 +46,7 @@ public class DAOMovie implements IMovieRepository {
                     String filepath = resultSet.getString("filepath");
                     Date lastview = (Date) resultSet.getObject("lastview");
 
-                    Movie movie = new Movie(movieId, movieTitle, IMDBrating, filepath);
+                    Movie movie = new Movie(movieId, movieTitle, IMDBrating, filepath, categories);
                     movie.setPersonalRating(personalrating);
                     movie.setLastView(lastview);
 
@@ -83,7 +85,7 @@ public class DAOMovie implements IMovieRepository {
                 if (resultSet.next()) {
                     int id = resultSet.getInt(1);
 
-                    return new Movie(id, name, IMDBRating, pathToFile);
+                    return new Movie(id, name, IMDBRating, pathToFile, null);
                 }
             }
         } catch (SQLException SQLex) {
@@ -93,7 +95,7 @@ public class DAOMovie implements IMovieRepository {
     }
 
     @Override
-    public void updateMovie(Movie movie, ObservableList<CategoryModel> categories) throws MovieException {
+    public void updateMovie(Movie movie) throws MovieException {
 
         try(Connection connection = databaseConnector.getConnection()) {
 
@@ -109,8 +111,8 @@ public class DAOMovie implements IMovieRepository {
             preparedStatementForDelete.setInt(1, movie.getId());
             preparedStatementForDelete.executeUpdate();
             int affectedRows = preparedStatement.executeUpdate();
-            for (CategoryModel c: categories) {
-                addCategoryToMovie(new Category(c.getNameProperty().get()), movie);
+            for (Category c: movie.getCategories()) {
+                addCategoryToMovie(c, movie);
 
             }
             if(affectedRows != 1) {

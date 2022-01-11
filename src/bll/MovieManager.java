@@ -50,8 +50,8 @@ public class MovieManager {
         return false;
     }
 
-    public void updateMovie(Movie movie, ObservableList<CategoryModel> categories) throws MovieException {
-        daoMovie.updateMovie(movie, categories);
+    public void updateMovie(Movie movie) throws MovieException {
+        daoMovie.updateMovie(movie);
     }
 
 

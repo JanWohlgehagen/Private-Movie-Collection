@@ -61,7 +61,7 @@ public class MovieListModel {
             movieModel.setIMDBRatingProperty(imdbRating);
             movieModel.setPersonalRatingProperty(personalRating);
             movieModel.setCategories(categories);
-            movieManager.updateMovie(movieModel.convertToMovie(), categories);
+            movieManager.updateMovie(movieModel.convertToMovie());
         }
     }
 
