@@ -2,6 +2,8 @@ package gui.model;
 
 import be.Movie;
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -13,6 +15,8 @@ public class MovieModel {
     private StringProperty pathToFile = new SimpleStringProperty();
     private ObjectProperty lastView = new SimpleObjectProperty<Date>();
     private DoubleProperty personalRating = new SimpleDoubleProperty();
+    private ObservableList<CategoryModel> categorys;
+    private StringProperty catInString = new SimpleStringProperty();
 
     public MovieModel(Movie movie){
         setIdProperty(movie.getId());
@@ -21,6 +25,7 @@ public class MovieModel {
         setPathToFileProperty(movie.getPathToFile());
         setLastViewProperty(movie.getLastView());
         setPersonalRatingProperty(movie.getPersonalRating());
+        categorys = FXCollections.observableArrayList(movie.getCategories().stream().map(cat -> new CategoryModel(cat)).toList());
     }
 
     /**
@@ -67,7 +72,7 @@ public class MovieModel {
      * Used for getting the IMDB rating of the movie.
      * @return the IMDB rating of the movie
      */
-    private DoubleProperty getIMDBRatingProperty() {
+    public DoubleProperty getIMDBRatingProperty() {
         return IMDBRating;
     }
 
@@ -83,7 +88,7 @@ public class MovieModel {
      * Used for getting the path of the movie.
      * @return the file path of the movie
      */
-    private StringProperty getPathToFileProperty() {
+    public StringProperty getPathToFileProperty() {
         return pathToFile;
     }
 
@@ -115,8 +120,27 @@ public class MovieModel {
      * used for getting the personal rating of the movie.
      * @return returns a DoubleProperty of the movie.
      */
-    private DoubleProperty getPersonalRatingProperty() {
+    public DoubleProperty getPersonalRatingProperty() {
         return personalRating;
+    }
+
+    public StringProperty getAllCategorysAsString(){
+        StringBuilder newList = new StringBuilder();
+        for (CategoryModel catModel: categorys) {
+            newList.append(catModel).append(" ");
+        }
+        catInString.set(newList.toString());
+        return catInString;
+    }
+
+
+    public ObservableList<CategoryModel> getAllCategoryAsList(){
+        return categorys;
+    }
+
+
+    public void addCatrgroyModel(CategoryModel categoryModel){
+        categorys.add(categoryModel);
     }
 
     /**

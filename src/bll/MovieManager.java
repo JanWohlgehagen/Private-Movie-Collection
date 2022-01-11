@@ -5,11 +5,14 @@ import be.MovieException;
 import bll.util.ISearcher;
 import bll.util.MovieSearcher;
 import dal.db.DAOMovie;
+import gui.model.MovieModel;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
+
+import static be.DisplayMessage.displayMessage;
 
 public class MovieManager {
     private DAOMovie daoMovie;
@@ -32,19 +35,29 @@ public class MovieManager {
         daoMovie.deleteMovie(movie);
     }
 
+    public boolean checkUpdatedValues(double imdbRating, double personalRating){
+        if (imdbRating <= 10.0 && imdbRating >= 0.0) {
+            if (personalRating <= 10.0 && personalRating >= 0.0 || personalRating == -1.0) {
+                return true;
+            } else displayMessage("Personal rating must be a number between 0-10");
+        } else displayMessage("IMDB rating must be a number between 0-10");
+        return false;
+    }
+
     public void updateMovie(Movie movie) throws MovieException {
         daoMovie.updateMovie(movie);
     }
 
+
     /**
-     * Searches through song list, to find a song that matches the key word
+     * Searches through movie list, to find a song that matches the key word
 
      * @param query the key word, to search for
      * @return a list of songs that fit, the key word
      */
-    public List<Movie> searchMovie(String query) throws MovieException {
+    public List<Movie> searchMovie(String query, boolean isTitleOn, boolean isCatOn, boolean isRatingOn) throws MovieException {
         List<Movie> allMovies = daoMovie.getAllMovies();
-        List<Movie> searchResult = movieSearcher.search(allMovies, query);
+        List<Movie> searchResult = movieSearcher.search(allMovies, query, isTitleOn, isCatOn, isRatingOn);
         return searchResult;
     }
 }

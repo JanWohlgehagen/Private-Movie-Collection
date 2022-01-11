@@ -7,12 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieSearcher implements ISearcher{
+    private boolean isTitleOn;
+    private boolean isCatOn;
+    private boolean isRatingOn;
+
+
     @Override
-    public List<Movie> search(List<Movie> searchBase, String query) {
+    public List<Movie> search(List<Movie> searchBase, String query, boolean isTitleOn, boolean isCatOn, boolean isRatingOn) {
+        this.isTitleOn = isTitleOn;
+        this.isCatOn = isCatOn;
+        this.isRatingOn = isRatingOn;
         List<Movie> searchResult = new ArrayList<>();
 
         for (Movie movie : searchBase) {
-            if(compareToMoveName(movie, query) || compareToMovieCategory(movie, query))
+            if(compareToMovieName(movie, query) || compareToMovieCategory(movie, query) || compareToMovieRating(movie, query))
             {
                 searchResult.add(movie);
             }
@@ -21,13 +29,32 @@ public class MovieSearcher implements ISearcher{
     }
 
     @Override
-    public boolean compareToMoveName(Movie movie, String query) {
-        return movie.getName().toLowerCase().contains(query.toLowerCase());
+    public boolean compareToMovieName(Movie movie, String query) {
+        if(isTitleOn){
+            return movie.getName().toLowerCase().contains(query.toLowerCase());
+        }
+        return false;
     }
 
     @Override
     public boolean compareToMovieCategory(Movie movie, String query) {
-        List<Category> CategoriesToCompare = movie.getCategories();
-        return true; //movie.getCategories().toLowerCase().contains(query.toLowerCase());
+        if(isCatOn){
+            List<Category> CategoriesToCompare = movie.getCategories();
+            for (Category cat: CategoriesToCompare) {
+                if(cat.getName().toLowerCase().contains(query.toLowerCase())){
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean compareToMovieRating(Movie movie, String query) {
+        if(isRatingOn && !query.isEmpty()){
+            return movie.getIMDBRating() >= Double.parseDouble(query);
+        }
+        return false;
     }
 }

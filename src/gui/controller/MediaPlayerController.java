@@ -1,5 +1,6 @@
 package gui.controller;
 
+import gui.App;
 import javafx.animation.PauseTransition;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -8,11 +9,11 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.beans.value.WeakChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -29,10 +30,13 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
@@ -76,7 +80,7 @@ public class MediaPlayerController implements Initializable {
     private boolean isPlaying = true;
     private boolean isMuted = false;
     private BooleanProperty mouseMoving = new SimpleBooleanProperty();
-    private final long MIN_STATIONARY_TIME = 200_000_000 ; // nanoseconds that the cursor have to be stationary to be considered idle
+    private final long MIN_STATIONARY_TIME = 2000 ; // milliseconds that the cursor have to be stationary to be considered idle
 
     /*Images for the different labels in the view*/
     private ImageView ivPlay;
@@ -87,11 +91,16 @@ public class MediaPlayerController implements Initializable {
     private ImageView ivMute;
     private ImageView ivExitFullscreen;
 
+    private String filePath;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        MainController mainController = new App().getController();
+        filePath = mainController.getMovieToPlay().getPathToFileProperty().get();
         final int IV_SIZE = 25; // the size of the pictures we set as the labels' background
 
-        mediaVideo = new Media(new File("C:\\Users\\Janwo\\OneDrive\\Desktop\\Grubby.mp4").toURI().toString());
+
+        mediaVideo = new Media(new File(filePath).toURI().toString());
         mpMovie = new MediaPlayer(mediaVideo);
         mvMovie.setMediaPlayer(mpMovie);
 
@@ -267,6 +276,7 @@ public class MediaPlayerController implements Initializable {
             }
         });
 
+
         //if the mouse stops moving after a
         mouseMoving.addListener((obs, wasMoving, isNowMoving) -> {
             if (! isNowMoving) {
@@ -275,7 +285,7 @@ public class MediaPlayerController implements Initializable {
         });
 
         // a transiotion that plays and when it is finished it sets the mouseMoving to false
-        PauseTransition pause = new PauseTransition(Duration.millis(MIN_STATIONARY_TIME / 100_000));
+        PauseTransition pause = new PauseTransition(Duration.millis(MIN_STATIONARY_TIME));
         pause.setOnFinished(e -> mouseMoving.set(false));
 
         //when the mouse is moved within the window the pausetransition above is reset
@@ -376,6 +386,26 @@ public class MediaPlayerController implements Initializable {
                     labelCurrentTime.textProperty().unbind();
                     labelCurrentTime.setText(getTime(mpMovie.getTotalDuration()) + " / ");
                 }
+            }
+        });
+
+        //Listener on the anchorpane that is the root container for this scene
+        anchorpaneParrent.sceneProperty().addListener(new ChangeListener<Scene>() {
+            // Listener for the scene extracted from the anchorpane
+            @Override
+            public void changed(ObservableValue<? extends Scene> observable, Scene oldValue, Scene newValue) {
+                newValue.windowProperty().addListener(new ChangeListener<Window>() {
+                    // Listener for the window extracted from the scene, listens for the window event WINDOW_CLOSE_REQUEST, meaning the default close button has been pressed.
+                    @Override
+                    public void changed(ObservableValue<? extends Window> observable, Window oldValue, Window newValue) {
+                        newValue.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, new EventHandler<WindowEvent>() {
+                            @Override
+                            public void handle(WindowEvent event) {
+                                mpMovie.stop(); // stop the mediaplayer if the mediaplayer window is closed
+                            }
+                        });
+                    }
+                });
             }
         });
 
