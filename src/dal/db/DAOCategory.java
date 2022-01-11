@@ -31,9 +31,8 @@ public class DAOCategory implements ICategoryRepository {
             if(preparedStatement.execute()){
                 ResultSet resultSet = preparedStatement.getResultSet();
                 while(resultSet.next()){
-                    int id = resultSet.getInt("id");
                     String title = resultSet.getString("title");
-                    allCategorys.add(new Category(id, title));
+                    allCategorys.add(new Category(title));
                 }
             }
         } catch (SQLException SQLex) {
@@ -59,12 +58,12 @@ public class DAOCategory implements ICategoryRepository {
             throw new CategoryException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
-
+/*
     @Override
     public void updateCategory(Category category) throws CategoryException {
 
         try(Connection connection = databaseConnector.getConnection()) {
-            String sql = "UPDATE Category SET title = ? WHERE Id= ?;";
+            String sql = "UPDATE Category SET title = ? WHERE title= ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setObject(1, category.getName());
             preparedStatement.setDouble(2, category.getId());
@@ -79,13 +78,15 @@ public class DAOCategory implements ICategoryRepository {
 
     }
 
+ */
+
     @Override
     public void deleteCategory(Category category) throws CategoryException {
 
         try(Connection connection = databaseConnector.getConnection()) {
-            String sql = "DELETE Category WHERE Id = ?;";
+            String sql = "DELETE Category WHERE title = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setDouble(1, category.getId());
+            preparedStatement.setString(1, category.getName());
 
             int affectedRows = preparedStatement.executeUpdate();
             if(affectedRows != 1) {
