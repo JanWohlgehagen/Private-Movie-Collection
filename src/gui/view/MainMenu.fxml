@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -95,6 +96,7 @@
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -106,12 +108,12 @@
                         <Insets left="60.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="txtCategory" GridPane.rowIndex="1">
+                  <TextField fx:id="txtCategory" GridPane.columnSpan="2" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="60.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Label text="IMDB Rating" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="IMDB Rating" GridPane.columnIndex="2" />
                   <Label text="Personal Rating" GridPane.columnIndex="1" />
                   <Label text="Title" />
                   <Label text="Category" GridPane.rowIndex="1" />
@@ -120,11 +122,12 @@
                         <Insets left="90.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="txtIMDBRating" promptText="Not rated yet..!" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="txtIMDBRating" promptText="Not rated yet..!" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets left="90.0" />
                      </GridPane.margin>
                   </TextField>
+                  <ComboBox fx:id="comboBoxCategory" prefHeight="25.0" prefWidth="215.0" promptText="Choose category" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                </children>
                <VBox.margin>
                   <Insets />

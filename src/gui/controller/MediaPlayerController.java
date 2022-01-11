@@ -408,7 +408,6 @@ public class MediaPlayerController implements Initializable {
                 });
             }
         });
-
     }
 
 
