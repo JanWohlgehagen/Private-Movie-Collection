@@ -156,6 +156,7 @@ public class MovieModel {
     }
 
     public void setCategories(ObservableList<CategoryModel> categories) {
-        this.categorys = categories;
+        //this.categorys.clear();
+        this.categorys.setAll(categories);
     }
 }

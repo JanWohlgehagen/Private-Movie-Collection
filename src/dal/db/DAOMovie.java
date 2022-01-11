@@ -96,14 +96,23 @@ public class DAOMovie implements IMovieRepository {
     public void updateMovie(Movie movie, ObservableList<CategoryModel> categories) throws MovieException {
 
         try(Connection connection = databaseConnector.getConnection()) {
+
             String sql = "UPDATE Movie SET title = ?, filepath=?, IMDBrating=? WHERE Id=?;";
+            String sqlDel = "DELETE FROM CatMovie WHERE movieId = ?";
+            PreparedStatement preparedStatementForDelete = connection.prepareStatement(sqlDel);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, movie.getName());
             preparedStatement.setString(2, movie.getPathToFile());
             preparedStatement.setDouble(3, movie.getIMDBRating());
             preparedStatement.setDouble(4, movie.getId());
 
+            preparedStatementForDelete.setInt(1, movie.getId());
+            preparedStatementForDelete.executeUpdate();
             int affectedRows = preparedStatement.executeUpdate();
+            for (CategoryModel c: categories) {
+                addCategoryToMovie(new Category(c.getNameProperty().get()), movie);
+
+            }
             if(affectedRows != 1) {
                 throw new MovieException("Too many row affected");
             }
