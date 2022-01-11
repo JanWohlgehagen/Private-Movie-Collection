@@ -15,7 +15,6 @@ public class CategoryModel {
      * @param category
      */
     public CategoryModel(Category category){
-        setIdProperty(category.getId());
         setNameProperty(category.getName());
     }
 
@@ -51,13 +50,6 @@ public class CategoryModel {
         getNameProperty().set(name);
     }
 
-    /**
-     * used for converting a categoryModel to a category, mainly for storing it in DB
-     * @return a new Category object with the same fields as this CategoryModel
-     */
-    public Category convertToCategory(){
-        return new Category(this.id.get(), this.name.get());
-    }
 
     @Override
     public String toString() {

@@ -4,6 +4,7 @@ package gui.controller;
 import be.DisplayMessage;
 import be.Movie;
 import be.MovieException;
+import gui.App;
 import gui.model.MovieListModel;
 import gui.model.MovieModel;
 import javafx.event.ActionEvent;
@@ -41,7 +42,8 @@ public class NewMovieController {
     }
 
     public void initialize() throws IOException, MovieException {
-    movieListModel = new MovieListModel();
+        MainController mainController = new App().getController();
+        movieListModel = mainController.getMovieListModel();
     }
 
     public void handleChooseBtn(ActionEvent actionEvent) {

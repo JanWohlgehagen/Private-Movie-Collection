@@ -218,4 +218,8 @@ public class MainController implements Initializable {
         else return null;
 
     }
+
+    public MovieListModel getMovieListModel() {
+        return movieListModel;
+    }
 }
