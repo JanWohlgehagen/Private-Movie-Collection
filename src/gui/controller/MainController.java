@@ -1,25 +1,37 @@
 package gui.controller;
 
+import be.Category;
+import be.CategoryException;
 import be.DisplayMessage;
 import be.MovieException;
+import gui.model.CategoryModel;
 import gui.model.MovieListModel;
 import gui.model.MovieModel;
 import gui.util.SceneSwapper;
+import javafx.beans.binding.ObjectExpression;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.ResourceBundle;
+import java.util.*;
 
+import static be.DisplayMessage.displayError;
 import static be.DisplayMessage.displayMessage;
 
 public class MainController implements Initializable {
+
+    @FXML
+    private ListView <CategoryModel> listViewCategories;
+    @FXML
+    private ComboBox <CategoryModel> comboBoxCategory;
 
     @FXML
     private TableView<MovieModel> tvMovies;
@@ -44,8 +56,6 @@ public class MainController implements Initializable {
     @FXML
     private TextField txtIMDBRating;
     @FXML
-    private TextField txtCategory;
-    @FXML
     private TextField txtPersonalRating;
 
     @FXML
@@ -64,7 +74,6 @@ public class MainController implements Initializable {
 
     private MovieListModel movieListModel;
     private SceneSwapper sceneSwapper;
-    private MediaPlayerController mediaPlayerController;
 
 
     public MainController() throws IOException, MovieException {
@@ -85,15 +94,15 @@ public class MainController implements Initializable {
         tcCategory.setCellValueFactory(addMovie -> addMovie.getValue().getAllCategorysAsString());
         tcRating.setCellValueFactory(addMovie -> addMovie.getValue().getIMDBRatingProperty().asObject());
 
+
         txtTitle.setDisable(true);
         txtIMDBRating.setDisable(true);
-        txtCategory.setDisable(true);
         txtPersonalRating.setDisable(true);
+        comboBoxCategory.setDisable(true);
 
         tvMovies.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if(newValue != null){
                 txtTitle.setText(newValue.getNameProperty().get());
-                txtCategory.setText(newValue.getAllCategorysAsString().get());
                 txtIMDBRating.setText(String.valueOf(newValue.getIMDBRatingProperty().get()));
                 if (newValue.getPersonalRatingProperty().get() == -1) {
                     txtPersonalRating.setText("Not rated yet..!");
@@ -131,6 +140,14 @@ public class MainController implements Initializable {
     }
 
     public void handleEditMovie(ActionEvent actionEvent) {
+        try {
+            comboBoxCategory.getItems().addAll(movieListModel.getCategoryList());
+
+        } catch (Exception e) {
+            displayMessage("Failed to fetch categories from the database.");
+            displayError(e);
+        }
+
         if (tvMovies.getSelectionModel().selectedItemProperty().get() != null) {
             vBoxControllMenu.getChildren().remove(btnAddMovie);
             vBoxControllMenu.getChildren().remove(btnDeleteMovie);
@@ -151,7 +168,7 @@ public class MainController implements Initializable {
     }
 
     public void handleEditSave(ActionEvent actionEvent) throws MovieException {
-
+            ObservableList<CategoryModel> categories = listViewCategories.getItems();
             MovieModel movie = tvMovies.getSelectionModel().selectedItemProperty().get();
             try {
                 double imdbRating = Double.parseDouble(txtIMDBRating.getText());
@@ -162,7 +179,7 @@ public class MainController implements Initializable {
                     personalRating = Double.parseDouble(txtPersonalRating.getText());
                 }
 
-                movieListModel.updateMovie(movie, txtTitle.getText(), imdbRating, personalRating);
+                movieListModel.updateMovie(movie, txtTitle.getText(), imdbRating, personalRating, categories);
 
                 vBoxControllMenu.getChildren().remove(btnEditSave);
                 vBoxControllMenu.getChildren().remove(btnEditCancel);
@@ -190,9 +207,8 @@ public class MainController implements Initializable {
 
         txtTitle.setDisable(!txtTitle.isDisabled());
         txtIMDBRating.setDisable(!txtIMDBRating.isDisabled());
-        txtCategory.setDisable(!txtCategory.isDisabled());
         txtPersonalRating.setDisable(!txtPersonalRating.isDisabled());
-
+        comboBoxCategory.setDisable(!comboBoxCategory.isDisabled());
         btnEdit.setDisable(!btnEdit.isDisabled());
 
     }
@@ -221,5 +237,32 @@ public class MainController implements Initializable {
 
     public MovieListModel getMovieListModel() {
         return movieListModel;
+    }
+
+    public void handleChooseCategory(ActionEvent actionEvent) {
+        CategoryModel categoryModel = comboBoxCategory.getSelectionModel().getSelectedItem();
+        boolean matchFound = false;
+        for (CategoryModel c : listViewCategories.getItems()) {
+            if (c.getNameProperty().get().equals(categoryModel.getNameProperty().get())){
+                matchFound = true;
+                break;
+            }
+        }
+        if (!matchFound) {
+            listViewCategories.getItems().add(categoryModel);
+        }
+    }
+
+    public void handleRemoveCategory(ActionEvent actionEvent) {
+        CategoryModel categoryModel = listViewCategories.getSelectionModel().getSelectedItem();
+        if(categoryModel != null){
+            listViewCategories.getItems().remove(categoryModel);
+        }
+
+    }
+
+    public void handleClickMovieList(MouseEvent mouseEvent) {
+        if (tvMovies.getSelectionModel().getSelectedItem() != null)
+        listViewCategories.setItems(tvMovies.getSelectionModel().getSelectedItem().getAllCategoryAsList());
     }
 }

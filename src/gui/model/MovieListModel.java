@@ -1,11 +1,15 @@
 package gui.model;
 
+import be.Category;
+import be.CategoryException;
+import be.Movie;
 import be.MovieException;
 import bll.MovieManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class MovieListModel {
@@ -15,7 +19,6 @@ public class MovieListModel {
     public MovieListModel() throws IOException, MovieException {
         movieManager = new MovieManager();
         movieList = FXCollections.observableArrayList(movieManager.getAllMovies().stream().map(movie -> new MovieModel(movie)).toList());
-
     }
 
     /**
@@ -52,12 +55,13 @@ public class MovieListModel {
      * @param imdbRating
      * @param personalRating
      */
-    public void updateMovie(MovieModel movieModel, String name, double imdbRating, double personalRating) throws MovieException {
+    public void updateMovie(MovieModel movieModel, String name, double imdbRating, double personalRating, ObservableList<CategoryModel> categories) throws MovieException {
         if(movieManager.checkUpdatedValues(imdbRating, personalRating)){
             movieModel.setNameProperty(name);
             movieModel.setIMDBRatingProperty(imdbRating);
             movieModel.setPersonalRatingProperty(personalRating);
-            movieManager.updateMovie(movieModel.convertToMovie());
+            movieModel.setCategories(categories);
+            movieManager.updateMovie(movieModel.convertToMovie(), categories);
         }
     }
 
@@ -76,5 +80,9 @@ public class MovieListModel {
             return;
         }
        movieList.addAll((searchResults));
+    }
+
+    public ObservableList<CategoryModel> getCategoryList() throws CategoryException {
+        return FXCollections.observableArrayList(movieManager.getAllCategories().stream().map(category -> new CategoryModel(category)).toList());
     }
 }

@@ -11,8 +11,6 @@ public interface ICategoryRepository {
 
     public List<Category> getAllCategorys() throws CategoryException;
 
-    public void createCategory(Category category) throws CategoryException;
-
    // public void updateCategory(Category category) throws CategoryException;
 
     public void deleteCategory(Category category) throws CategoryException;

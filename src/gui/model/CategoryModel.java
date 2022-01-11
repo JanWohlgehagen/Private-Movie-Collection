@@ -7,7 +7,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class CategoryModel {
-    private IntegerProperty id = new SimpleIntegerProperty();
     private StringProperty name = new SimpleStringProperty();
 
     /**
@@ -16,22 +15,6 @@ public class CategoryModel {
      */
     public CategoryModel(Category category){
         setNameProperty(category.getName());
-    }
-
-    /**
-     * used for getting the id of the category
-     * @return id an IntegerProperty
-     */
-    public IntegerProperty getIdProperty() {
-        return id;
-    }
-
-    /**
-     * used for setting the id of the category
-     * @param id an int
-     */
-    public void setIdProperty(int id) {
-        getIdProperty().set(id);
     }
 
     /**

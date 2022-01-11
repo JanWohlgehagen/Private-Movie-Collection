@@ -4,6 +4,8 @@ import be.Category;
 import be.Movie;
 import be.MovieException;
 import dal.interfaces.IMovieRepository;
+import gui.model.CategoryModel;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.sql.*;
@@ -91,7 +93,7 @@ public class DAOMovie implements IMovieRepository {
     }
 
     @Override
-    public void updateMovie(Movie movie) throws MovieException {
+    public void updateMovie(Movie movie, ObservableList<CategoryModel> categories) throws MovieException {
 
         try(Connection connection = databaseConnector.getConnection()) {
             String sql = "UPDATE Movie SET title = ?, filepath=?, IMDBrating=? WHERE Id=?;";

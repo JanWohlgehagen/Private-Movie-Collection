@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 public class MovieModel {
     private IntegerProperty id = new SimpleIntegerProperty();
@@ -127,7 +128,9 @@ public class MovieModel {
     public StringProperty getAllCategorysAsString(){
         StringBuilder newList = new StringBuilder();
         for (CategoryModel catModel: categorys) {
-            newList.append(catModel).append(" ");
+            if(catModel == categorys.get(categorys.size()-1)){
+                newList.append(catModel);
+            } else newList.append(catModel).append(", ");
         }
         catInString.set(newList.toString());
         return catInString;
@@ -149,5 +152,10 @@ public class MovieModel {
      */
     public Movie convertToMovie(){
         return new Movie(id.get(), name.get(), IMDBRating.get(), pathToFile.get());
+
+    }
+
+    public void setCategories(ObservableList<CategoryModel> categories) {
+        this.categorys = categories;
     }
 }

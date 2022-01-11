@@ -1,26 +1,32 @@
 package bll;
 
+import be.Category;
+import be.CategoryException;
 import be.Movie;
 import be.MovieException;
 import bll.util.ISearcher;
 import bll.util.MovieSearcher;
+import dal.db.DAOCategory;
 import dal.db.DAOMovie;
-import gui.model.MovieModel;
+import gui.model.CategoryModel;
+import javafx.collections.ObservableList;
+
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 import static be.DisplayMessage.displayMessage;
 
 public class MovieManager {
     private DAOMovie daoMovie;
+    private DAOCategory daoCategory;
     private ISearcher movieSearcher;
+
 
     public MovieManager() throws IOException {
         movieSearcher = new MovieSearcher();
         daoMovie = new DAOMovie();
+        daoCategory = new DAOCategory();
     }
 
     public List<Movie> getAllMovies() throws MovieException {
@@ -44,8 +50,8 @@ public class MovieManager {
         return false;
     }
 
-    public void updateMovie(Movie movie) throws MovieException {
-        daoMovie.updateMovie(movie);
+    public void updateMovie(Movie movie, ObservableList<CategoryModel> categories) throws MovieException {
+        daoMovie.updateMovie(movie, categories);
     }
 
 
@@ -59,5 +65,15 @@ public class MovieManager {
         List<Movie> allMovies = daoMovie.getAllMovies();
         List<Movie> searchResult = movieSearcher.search(allMovies, query, isTitleOn, isCatOn, isRatingOn);
         return searchResult;
+    }
+
+    public List<Category> getAllCategories() throws CategoryException {
+        return daoCategory.getAllCategorys();
+    }
+
+    public CategoryModel addCategory(Category category, Movie movie) throws MovieException {
+        daoMovie.addCategoryToMovie(category, movie);
+        System.out.println("yoyoyo");
+        return new CategoryModel(category);
     }
 }
