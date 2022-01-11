@@ -80,7 +80,7 @@ public class MediaPlayerController implements Initializable {
     private boolean isPlaying = true;
     private boolean isMuted = false;
     private BooleanProperty mouseMoving = new SimpleBooleanProperty();
-    private final long MIN_STATIONARY_TIME = 200_000_000 ; // nanoseconds that the cursor have to be stationary to be considered idle
+    private final long MIN_STATIONARY_TIME = 2000 ; // milliseconds that the cursor have to be stationary to be considered idle
 
     /*Images for the different labels in the view*/
     private ImageView ivPlay;
@@ -285,7 +285,7 @@ public class MediaPlayerController implements Initializable {
         });
 
         // a transiotion that plays and when it is finished it sets the mouseMoving to false
-        PauseTransition pause = new PauseTransition(Duration.millis(MIN_STATIONARY_TIME / 100_000));
+        PauseTransition pause = new PauseTransition(Duration.millis(MIN_STATIONARY_TIME));
         pause.setOnFinished(e -> mouseMoving.set(false));
 
         //when the mouse is moved within the window the pausetransition above is reset
