@@ -157,7 +157,7 @@ public class DAOMovie implements IMovieRepository {
             throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
-    
+
          */
 
     public void addCategoryToMovie(Category category, Movie movie) throws MovieException {

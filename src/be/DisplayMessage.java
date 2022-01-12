@@ -1,11 +1,13 @@
 package be;
 
+import gui.model.MovieModel;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.util.List;
 import java.util.Optional;
 
 public class DisplayMessage {
@@ -41,12 +43,16 @@ public class DisplayMessage {
         return result.get() == ButtonType.OK;
     }
 
-    public static boolean displayErrorSTOPtest() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    public static boolean displayDeleteOldMoives(List<String> moviesToDelete) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         addIicon(alert);
-        alert.setTitle("Error: Something went wrong");
-        alert.setHeaderText("");
-        //alert.setContentText();
+        alert.setTitle("Warning - Old and bad movies in your Movie Collection");
+        alert.setHeaderText("You have not watched these movies for two years, and you have personally rated them less 6 \n Do you want to delete them..?");
+        StringBuilder tempSB = new StringBuilder();
+        for (String s: moviesToDelete) {
+             tempSB.append(s).append("\n");
+        }
+        alert.setContentText(tempSB.toString());
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
