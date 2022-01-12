@@ -96,7 +96,7 @@ public class MediaPlayerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         MainController mainController = new App().getController();
-        filePath = mainController.getMovieToPlay().getPathToFileProperty().get();
+        filePath = mainController.getSelectedMovie().getPathToFileProperty().get();
         final int IV_SIZE = 25; // the size of the pictures we set as the labels' background
 
 
