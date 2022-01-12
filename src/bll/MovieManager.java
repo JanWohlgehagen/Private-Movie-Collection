@@ -35,20 +35,22 @@ public class MovieManager {
     public List<Movie> getAllMovies() throws MovieException {
         List <Movie> allMovies = daoMovie.getAllMovies();
         List <Movie> oldMovies = new ArrayList<>();
-        LocalDate currentData = LocalDate.now();
-        Date date = Date.from(currentData.minusDays(4).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate currentDate = LocalDate.now();
+        Date date = Date.from(currentDate.minusYears(2).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         for (Movie movie:allMovies) {
             if(movie.getLastView() != null){
-                if(movie.getLastView().before(date)){
+                if(movie.getLastView().before(date) && movie.getPersonalRating() < 6.0){ // check if the date of when the movie was last viewed is before the date object (2 years ago)
                     oldMovies.add(movie);
                 }
             }
         }
-        if(DisplayMessage.displayDeleteOldMoives(oldMovies)){
-            for (Movie movie: oldMovies ) {
-                daoMovie.deleteMovie(movie);
-                allMovies.remove(movie);
+        if(!oldMovies.isEmpty()){
+            if(DisplayMessage.displayDeleteOldMoives(oldMovies)){ // prompt the user to delete the old movies
+                for (Movie movie: oldMovies ) {
+                    daoMovie.deleteMovie(movie);
+                    allMovies.remove(movie);
+                }
             }
         }
         return allMovies;
@@ -101,32 +103,4 @@ public class MovieManager {
     public void updateLastView(Movie movie) throws MovieException {
         daoMovie.updateLastview(movie);
     }
-
-    /*
-    public void OldMovies() throws MovieException {
-        List<Movie> allMovies = daoMovie.getAllMovies();
-        List<String> moviesToDeleteString = new ArrayList<>();
-        List<Movie> moviesToDelete = new ArrayList<>();
-        LocalDate currentData = LocalDate.now();
-        Date date = Date.from(currentData.minusDays(4).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        for (Movie movie:allMovies) {
-
-            if(movie.getLastView() != null){
-                System.out.println(movie);
-                if(movie.getLastView().before(date)){
-                    moviesToDelete.add(movie);
-
-                    moviesToDeleteString.add(movie.getName());
-                }
-            }
-        }
-
-        if(!DisplayMessage.displayDeleteOldMoives(moviesToDeleteString)){
-        for (Movie movie: moviesToDelete ) {
-                daoMovie.deleteMovie(movie);
-            }
-        }
-
-
-    } */
 }
