@@ -1,18 +1,21 @@
 package bll;
 
-import be.Category;
-import be.CategoryException;
-import be.Movie;
-import be.MovieException;
+import be.*;
 import bll.util.ISearcher;
 import bll.util.MovieSearcher;
 import dal.db.DAOCategory;
 import dal.db.DAOMovie;
 import gui.model.CategoryModel;
+import gui.model.MovieModel;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
 
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static be.DisplayMessage.displayMessage;
@@ -30,7 +33,25 @@ public class MovieManager {
     }
 
     public List<Movie> getAllMovies() throws MovieException {
-        return daoMovie.getAllMovies();
+        List <Movie> allMovies = daoMovie.getAllMovies();
+        List <Movie> oldMovies = new ArrayList<>();
+        LocalDate currentData = LocalDate.now();
+        Date date = Date.from(currentData.minusDays(4).atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        for (Movie movie:allMovies) {
+            if(movie.getLastView() != null){
+                if(movie.getLastView().before(date)){
+                    oldMovies.add(movie);
+                }
+            }
+        }
+        if(DisplayMessage.displayDeleteOldMoives(oldMovies)){
+            for (Movie movie: oldMovies ) {
+                daoMovie.deleteMovie(movie);
+                allMovies.remove(movie);
+            }
+        }
+        return allMovies;
     }
 
     public Movie createMovie(String name, double imdbRating, String pathToFile) throws MovieException {
@@ -80,4 +101,32 @@ public class MovieManager {
     public void updateLastView(Movie movie) throws MovieException {
         daoMovie.updateLastview(movie);
     }
+
+    /*
+    public void OldMovies() throws MovieException {
+        List<Movie> allMovies = daoMovie.getAllMovies();
+        List<String> moviesToDeleteString = new ArrayList<>();
+        List<Movie> moviesToDelete = new ArrayList<>();
+        LocalDate currentData = LocalDate.now();
+        Date date = Date.from(currentData.minusDays(4).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        for (Movie movie:allMovies) {
+
+            if(movie.getLastView() != null){
+                System.out.println(movie);
+                if(movie.getLastView().before(date)){
+                    moviesToDelete.add(movie);
+
+                    moviesToDeleteString.add(movie.getName());
+                }
+            }
+        }
+
+        if(!DisplayMessage.displayDeleteOldMoives(moviesToDeleteString)){
+        for (Movie movie: moviesToDelete ) {
+                daoMovie.deleteMovie(movie);
+            }
+        }
+
+
+    } */
 }

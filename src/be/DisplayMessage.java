@@ -43,14 +43,14 @@ public class DisplayMessage {
         return result.get() == ButtonType.OK;
     }
 
-    public static boolean displayDeleteOldMoives(List<String> moviesToDelete) {
+    public static boolean displayDeleteOldMoives(List<Movie> moviesToDelete) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         addIicon(alert);
         alert.setTitle("Warning - Old and bad movies in your Movie Collection");
-        alert.setHeaderText("You have not watched these movies for two years, and you have personally rated them less 6 \n Do you want to delete them..?");
+        alert.setHeaderText("You have not watched these movies for two years, and you have personally rated them less than 6 \nDo you want to delete them..?");
         StringBuilder tempSB = new StringBuilder();
-        for (String s: moviesToDelete) {
-             tempSB.append(s).append("\n");
+        for (Movie movie: moviesToDelete) {
+             tempSB.append(movie.getName()).append("\n");
         }
         alert.setContentText(tempSB.toString());
         Optional<ButtonType> result = alert.showAndWait();

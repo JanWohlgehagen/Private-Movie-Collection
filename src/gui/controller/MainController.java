@@ -15,8 +15,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 import static be.DisplayMessage.displayError;
@@ -75,17 +78,41 @@ public class MainController implements Initializable {
     public MainController() throws IOException, MovieException {
         movieListModel = new MovieListModel();
         sceneSwapper = new SceneSwapper();
+
+        /*
+        try {
+            List<MovieModel> moviesUpForEvaluation = movieListModel.oldMoviess();
+            List<String> movieNamesUpForEvaluation= new ArrayList<>();
+            for (MovieModel movieModel: moviesUpForEvaluation ) {
+                movieNamesUpForEvaluation.add(movieModel.getNameProperty().get());
+            }
+            if(!movieNamesUpForEvaluation.isEmpty()){
+                if(DisplayMessage.displayDeleteOldMoives(movieNamesUpForEvaluation)){
+                    for (MovieModel movieModel: moviesUpForEvaluation) {
+                        movieListModel.deleteMovie(movieModel);
+                    }
+                }
+            }
+
+        } catch (MovieException e) {
+            e.printStackTrace();
+        }
+
+         */
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ObservableList<MovieModel> allMovies = movieListModel.getMovieList();
+
+
         vBoxControllMenu.getChildren().remove(btnEditCancel);
         vBoxControllMenu.getChildren().remove(btnEditSave);
 
         tvMovies.setPlaceholder(new Label("No movies found in Database"));
 
-        tvMovies.setItems(movieListModel.getMovieList());
+        tvMovies.setItems(allMovies);
         tcTitle.setCellValueFactory(addMovie -> addMovie.getValue().getNameProperty());
         tcCategory.setCellValueFactory(addMovie -> addMovie.getValue().getAllCategoriesStringProperty());
         tcRating.setCellValueFactory(addMovie -> addMovie.getValue().getIMDBRatingProperty().asObject());
@@ -128,7 +155,9 @@ public class MainController implements Initializable {
     }
 
     public void handlePlayMovie(ActionEvent actionEvent) throws MovieException {
-        getSelectedMovie().setLastViewProperty(new Date());
+        LocalDate currentData = LocalDate.now();
+        Date date = Date.from(currentData.minusDays(5).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        getSelectedMovie().setLastViewProperty(date);
         movieListModel.updateLastView(getSelectedMovie());
         sceneSwapper.sceneSwitch(new Stage(), "MediaPlayer.fxml");
     }
