@@ -20,6 +20,7 @@ public class App extends Application {
         primaryStage.setScene(new Scene(mainController.load()));
         Image image = new Image("/gui/images/film_icon2.png");
         primaryStage.getIcons().add(image);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

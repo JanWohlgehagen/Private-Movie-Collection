@@ -6,12 +6,16 @@ import gui.model.CategoryModel;
 import gui.model.MovieListModel;
 import gui.model.MovieModel;
 import gui.util.SceneSwapper;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -27,6 +31,7 @@ import static be.DisplayMessage.displayMessage;
 
 public class MainController implements Initializable {
 
+
     @FXML
     private ListView <CategoryModel> listViewCategories;
     @FXML
@@ -41,12 +46,43 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<MovieModel, Double> tcRating;
 
+    // Checkboxes in te main view
     @FXML
     private CheckBox cbTitle;
     @FXML
     private CheckBox cbCategory;
     @FXML
     private CheckBox cbRating;
+
+    //Checkboxes in the category box
+    @FXML
+    private CheckBox CheckBoxAction;
+    @FXML
+    private CheckBox CheckBoxAnimation;
+    @FXML
+    private CheckBox CheckBoxAdventure;
+    @FXML
+    private CheckBox CheckBoxHorror;
+    @FXML
+    private CheckBox CheckBoxCrime;
+    @FXML
+    private CheckBox CheckBoxSci_Fi;
+    @FXML
+    private CheckBox CheckBoxSuperhero;
+    @FXML
+    private CheckBox CheckBoxComedy;
+    @FXML
+    private CheckBox CheckBoxAction_Comedy;
+    @FXML
+    private CheckBox CheckBoxThriller;
+    @FXML
+    private CheckBox CheckBoxDrama;
+    @FXML
+    private CheckBox CheckBoxFantasy;
+    @FXML
+    private CheckBox CheckBoxRomance;
+    @FXML
+    private CheckBox CheckBoxMystery;
 
     @FXML
     private TextField txtSearch;
@@ -58,7 +94,12 @@ public class MainController implements Initializable {
     private TextField txtPersonalRating;
 
     @FXML
+    private HBox hBoxParrent; //parrent container
+
+    @FXML
     private VBox vBoxControllMenu;
+    @FXML
+    private VBox vBoxCategories;
 
     @FXML
     private Button btnEdit;
@@ -83,6 +124,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        hBoxParrent.getChildren().remove(vBoxCategories);
         vBoxControllMenu.getChildren().remove(btnEditCancel);
         vBoxControllMenu.getChildren().remove(btnEditSave);
 
@@ -129,6 +171,7 @@ public class MainController implements Initializable {
             }
         });
     }
+
 
     public void handlePlayMovie(ActionEvent actionEvent) throws MovieException {
         getSelectedMovie().setLastViewProperty(new Date());
@@ -224,6 +267,17 @@ public class MainController implements Initializable {
     public void handleCBCategory(ActionEvent actionEvent) {
         cbTitle.setSelected(false);
         cbRating.setSelected(false);
+        if(cbCategory.isSelected()){
+            txtSearch.setDisable(true);
+            cbRating.setDisable(true);
+            cbTitle.setDisable(true);
+            hBoxParrent.getChildren().add(vBoxCategories);
+        } else {
+            txtSearch.setDisable(false);
+            cbRating.setDisable(false);
+            cbTitle.setDisable(false);
+            hBoxParrent.getChildren().remove(vBoxCategories);
+        }
     }
 
     public void handleCBRating(ActionEvent actionEvent) {
