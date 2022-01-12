@@ -126,7 +126,9 @@ public class MainController implements Initializable {
         });
     }
 
-    public void handlePlayMovie(ActionEvent actionEvent) {
+    public void handlePlayMovie(ActionEvent actionEvent) throws MovieException {
+        getSelectedMovie().setLastViewProperty(new Date());
+        movieListModel.updateLastView(getSelectedMovie());
         sceneSwapper.sceneSwitch(new Stage(), "MediaPlayer.fxml");
     }
 
@@ -149,7 +151,7 @@ public class MainController implements Initializable {
             vBoxControllMenu.getChildren().add(btnEditSave);
             vBoxControllMenu.getChildren().add(btnEditCancel);
 
-            if (tvMovies.getSelectionModel().getSelectedItem().getPersonalRatingProperty().get() == -1) {
+            if (getSelectedMovie().getPersonalRatingProperty().get() == -1) {
                 txtPersonalRating.clear();
             }
             enable_Disable_TextFields();
@@ -225,13 +227,6 @@ public class MainController implements Initializable {
         cbCategory.setSelected(false);
     }
 
-    public MovieModel getMovieToPlay(){
-        if (tvMovies.getSelectionModel().getSelectedItem() != null)
-            return tvMovies.getSelectionModel().getSelectedItem();
-        else return null;
-
-    }
-
     public MovieListModel getMovieListModel() {
         return movieListModel;
     }
@@ -259,7 +254,12 @@ public class MainController implements Initializable {
     }
 
     public void handleClickMovieList(MouseEvent mouseEvent) {
+        listViewCategories.setItems(getSelectedMovie().getAllCategoryAsList());
+    }
+
+    public MovieModel getSelectedMovie(){
         if (tvMovies.getSelectionModel().getSelectedItem() != null)
-        listViewCategories.setItems(tvMovies.getSelectionModel().getSelectedItem().getAllCategoryAsList());
+        return tvMovies.getSelectionModel().getSelectedItem();
+        else return null;
     }
 }

@@ -85,4 +85,8 @@ public class MovieListModel {
     public ObservableList<CategoryModel> getCategoryList() throws CategoryException {
         return FXCollections.observableArrayList(movieManager.getAllCategories().stream().map(category -> new CategoryModel(category)).toList());
     }
+
+    public void updateLastView(MovieModel movieModel) throws MovieException {
+        movieManager.updateLastView(movieModel.convertToMovie());
+    }
 }

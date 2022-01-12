@@ -76,4 +76,8 @@ public class MovieManager {
         System.out.println("yoyoyo");
         return new CategoryModel(category);
     }
+
+    public void updateLastView(Movie movie) throws MovieException {
+        daoMovie.updateLastview(movie);
+    }
 }
