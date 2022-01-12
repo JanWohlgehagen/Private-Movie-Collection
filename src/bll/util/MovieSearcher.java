@@ -2,6 +2,7 @@ package bll.util;
 
 import be.Category;
 import be.Movie;
+import javafx.scene.control.CheckBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,17 +11,17 @@ public class MovieSearcher implements ISearcher{
     private boolean isTitleOn;
     private boolean isCatOn;
     private boolean isRatingOn;
+    private List<Movie> searchResult = new ArrayList<>();
 
 
     @Override
-    public List<Movie> search(List<Movie> searchBase, String query, boolean isTitleOn, boolean isCatOn, boolean isRatingOn) {
+    public List<Movie> search(List<Movie> searchBase, String query, boolean isTitleOn, List<CheckBox> checkBoxes, boolean isRatingOn) {
         this.isTitleOn = isTitleOn;
-        this.isCatOn = isCatOn;
         this.isRatingOn = isRatingOn;
-        List<Movie> searchResult = new ArrayList<>();
+
 
         for (Movie movie : searchBase) {
-            if(compareToMovieName(movie, query) || compareToMovieCategory(movie, query) || compareToMovieRating(movie, query))
+            if(compareToMovieName(movie, query) || compareToMovieCategory(checkBoxes) || compareToMovieRating(movie, query))
             {
                 searchResult.add(movie);
             }
@@ -37,16 +38,11 @@ public class MovieSearcher implements ISearcher{
     }
 
     @Override
-    public boolean compareToMovieCategory(Movie movie, String query) {
-        if(isCatOn){
-            List<Category> CategoriesToCompare = movie.getCategories();
-            for (Category cat: CategoriesToCompare) {
-                if(cat.getName().toLowerCase().contains(query.toLowerCase())){
-                    return true;
-                }
-            }
-            return false;
-        }
+    public boolean compareToMovieCategory(List<CheckBox> checkBoxes) {
+        if(checkBoxes.get(15).isSelected()){
+
+           }
+
         return false;
     }
 

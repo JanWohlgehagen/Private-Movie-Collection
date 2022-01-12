@@ -7,6 +7,7 @@ import be.MovieException;
 import bll.MovieManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.CheckBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,8 +71,8 @@ public class MovieListModel {
      * Searches through song list, to find a Movie that matches the key word
      * @param query the key word, to search for
      */
-    public void searchMovie(String query, boolean isTitleOn, boolean isCatOn, boolean isRatingOn) throws MovieException {
-        List<MovieModel> searchResults = movieManager.searchMovie(query, isTitleOn, isCatOn, isRatingOn).stream().map(movie ->
+    public void searchMovie(String query, boolean isTitleOn, List<CheckBox> checkBoxes, boolean isRatingOn) throws MovieException {
+        List<MovieModel> searchResults = movieManager.searchMovie(query, isTitleOn, checkBoxes, isRatingOn).stream().map(movie ->
                 new MovieModel(movie)).toList();
 
 

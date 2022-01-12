@@ -9,6 +9,7 @@ import gui.model.CategoryModel;
 import gui.model.MovieModel;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.CheckBox;
 
 
 import java.io.IOException;
@@ -84,9 +85,9 @@ public class MovieManager {
      * @param query the key word, to search for
      * @return a list of songs that fit, the key word
      */
-    public List<Movie> searchMovie(String query, boolean isTitleOn, boolean isCatOn, boolean isRatingOn) throws MovieException {
+    public List<Movie> searchMovie(String query, boolean isTitleOn, List<CheckBox> checkBoxes, boolean isRatingOn) throws MovieException {
         List<Movie> allMovies = daoMovie.getAllMovies();
-        List<Movie> searchResult = movieSearcher.search(allMovies, query, isTitleOn, isCatOn, isRatingOn);
+        List<Movie> searchResult = movieSearcher.search(allMovies, query, isTitleOn, checkBoxes, isRatingOn);
         return searchResult;
     }
 

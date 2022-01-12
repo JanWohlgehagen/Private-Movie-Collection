@@ -1,5 +1,6 @@
 package gui.controller;
 
+import be.Category;
 import be.DisplayMessage;
 import be.MovieException;
 import gui.model.CategoryModel;
@@ -114,6 +115,8 @@ public class MainController implements Initializable {
 
     private MovieListModel movieListModel;
     private SceneSwapper sceneSwapper;
+    private final double MAX_WINDOW_SIZE = 950.0;
+
 
 
     public MainController() throws IOException, MovieException {
@@ -157,6 +160,7 @@ public class MainController implements Initializable {
         // Search in all Movies
         txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
             try {
+                List<CheckBox> checkBoxList = new ArrayList<>();
                 boolean isTitleOn = cbTitle.isSelected();
                 boolean isCatOn = cbCategory.isSelected();
                 boolean isRatingOn = cbRating.isSelected();
@@ -164,12 +168,33 @@ public class MainController implements Initializable {
                     cbTitle.setSelected(true);
                     isTitleOn = true;
                 }
-                movieListModel.searchMovie(newValue, isTitleOn, isCatOn, isRatingOn);
+                movieListModel.searchMovie(newValue, isTitleOn, checkBoxs(), isRatingOn);
 
             } catch (MovieException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    public HashMap<CheckBox, String> checkBoxs(){
+        HashMap<CheckBox, String> checkBoxHashMap = new HashMap<>();
+        checkBoxHashMap.put(CheckBoxAction, "Action");
+        checkBoxHashMap.put(CheckBoxAction_Comedy, "Action_Comedy");
+        checkBoxHashMap.put(CheckBoxAnimation, "Animation");
+        checkBoxHashMap.put(CheckBoxCrime, "Crime");
+        checkBoxHashMap.put(CheckBoxHorror, "Horror");
+        checkBoxHashMap.put(CheckBoxComedy, "Comedy");
+        checkBoxHashMap.put(CheckBoxRomance, "Romance");
+        checkBoxHashMap.put(CheckBoxDrama, "Drama");
+        checkBoxHashMap.put(CheckBoxFantasy, "Fantasy");
+        checkBoxHashMap.put(CheckBoxMystery, "Mystery");
+        checkBoxHashMap.put(CheckBoxSci_Fi, "SCI-FI");
+        checkBoxHashMap.put(CheckBoxAdventure, "Adventure");
+        checkBoxHashMap.put(CheckBoxSuperhero, "Superhero");
+        checkBoxHashMap.put(CheckBoxThriller, "Thriller");
+        checkBoxHashMap.put(cbCategory, "Category");
+        return checkBoxHashMap;
+
     }
 
 
@@ -272,11 +297,14 @@ public class MainController implements Initializable {
             cbRating.setDisable(true);
             cbTitle.setDisable(true);
             hBoxParrent.getChildren().add(vBoxCategories);
+            hBoxParrent.getScene().getWindow().setWidth(MAX_WINDOW_SIZE);
+
         } else {
             txtSearch.setDisable(false);
             cbRating.setDisable(false);
             cbTitle.setDisable(false);
             hBoxParrent.getChildren().remove(vBoxCategories);
+            hBoxParrent.getScene().getWindow().setWidth(MAX_WINDOW_SIZE-vBoxCategories.getWidth());
         }
     }
 
