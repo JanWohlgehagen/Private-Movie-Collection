@@ -85,7 +85,7 @@ public class DAOMovie implements IMovieRepository {
                 if (resultSet.next()) {
                     int id = resultSet.getInt(1);
 
-                    return new Movie(id, name, IMDBRating, pathToFile, null);
+                    return new Movie(id, name, IMDBRating, pathToFile, FXCollections.observableArrayList());
                 }
             }
         } catch (SQLException SQLex) {

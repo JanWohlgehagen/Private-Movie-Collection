@@ -13,7 +13,7 @@ public class    Movie {
     private String pathToFile;
     private Date lastView;
     private double personalRating;
-    private ObservableList<Category> categories;
+    private ObservableList<Category> categories = FXCollections.observableArrayList();
 
 
     /**
@@ -30,7 +30,7 @@ public class    Movie {
         this.pathToFile = pathToFile;
         this.setLastView(null);
         this.setPersonalRating(-1); //if the personal rating is -1 it has not been rated
-        this.categories = categories;
+        this.categories.addAll(categories);
     }
 
     /**
