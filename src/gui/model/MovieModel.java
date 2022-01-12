@@ -148,7 +148,9 @@ public class MovieModel {
         for (CategoryModel categoryModel: categories) {
             tempList.add(categoryModel.convertToCategory());
         }
-        return new Movie(id.get(), name.get(), IMDBRating.get(), pathToFile.get(), tempList);
+        Movie movie = new Movie(id.get(), name.get(), IMDBRating.get(), pathToFile.get(), tempList);
+        movie.setLastView((Date) this.lastView.get());
+        return movie;
     }
 
     public void setCategories(ObservableList<CategoryModel> categories) {
