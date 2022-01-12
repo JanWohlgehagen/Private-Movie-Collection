@@ -99,14 +99,15 @@ public class DAOMovie implements IMovieRepository {
 
         try(Connection connection = databaseConnector.getConnection()) {
 
-            String sql = "UPDATE Movie SET title = ?, filepath=?, IMDBrating=? WHERE Id=?;";
+            String sql = "UPDATE Movie SET title = ?, filepath=?, IMDBrating=?, personalrating=? WHERE Id=?;";
             String sqlDel = "DELETE FROM CatMovie WHERE movieId = ?";
             PreparedStatement preparedStatementForDelete = connection.prepareStatement(sqlDel);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, movie.getName());
             preparedStatement.setString(2, movie.getPathToFile());
             preparedStatement.setDouble(3, movie.getIMDBRating());
-            preparedStatement.setDouble(4, movie.getId());
+            preparedStatement.setDouble(4, movie.getPersonalRating());
+            preparedStatement.setDouble(5, movie.getId());
 
             preparedStatementForDelete.setInt(1, movie.getId());
             preparedStatementForDelete.executeUpdate();
@@ -139,7 +140,7 @@ public class DAOMovie implements IMovieRepository {
             throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
-
+        /*
     public void updatePersonalRating(Movie movie) throws MovieException {
 
         try(Connection connection = databaseConnector.getConnection()) {
@@ -156,6 +157,8 @@ public class DAOMovie implements IMovieRepository {
             throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
+    
+         */
 
     public void addCategoryToMovie(Category category, Movie movie) throws MovieException {
         try (Connection connection = databaseConnector.getConnection()) {

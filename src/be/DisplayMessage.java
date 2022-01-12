@@ -41,6 +41,16 @@ public class DisplayMessage {
         return result.get() == ButtonType.OK;
     }
 
+    public static boolean displayErrorSTOPtest() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        addIicon(alert);
+        alert.setTitle("Error: Something went wrong");
+        alert.setHeaderText("");
+        //alert.setContentText();
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
+    }
+
     /**
      *  used for getting confirmation from user thet they want to perform a certain action.
      * @param message the exception message.
