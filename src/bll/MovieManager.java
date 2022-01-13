@@ -85,9 +85,17 @@ public class MovieManager {
      * @param query the key word, to search for
      * @return a list of songs that fit, the key word
      */
-    public List<Movie> searchMovie(String query, boolean isTitleOn, List<CheckBox> checkBoxes, boolean isRatingOn) throws MovieException {
-        List<Movie> allMovies = daoMovie.getAllMovies();
-        List<Movie> searchResult = movieSearcher.search(allMovies, query, isTitleOn, checkBoxes, isRatingOn);
+    public List<Movie> searchMovie(String query, boolean isTitleOn,  List<String> selectedCategoreis, boolean isRatingOn) throws MovieException {
+        List<Movie> moviesToSearch;
+        boolean isCatOn;
+        if(selectedCategoreis.isEmpty()){
+            moviesToSearch = daoMovie.getAllMovies();
+            isCatOn = false;
+        }else{
+            moviesToSearch = daoMovie.getMoviesWithSelectedCategoreis(selectedCategoreis);
+            isCatOn = true;
+        }
+        List<Movie> searchResult = movieSearcher.search(moviesToSearch, query, isTitleOn, isCatOn, isRatingOn);
         return searchResult;
     }
 
@@ -97,7 +105,6 @@ public class MovieManager {
 
     public CategoryModel addCategory(Category category, Movie movie) throws MovieException {
         daoMovie.addCategoryToMovie(category, movie);
-        System.out.println("yoyoyo");
         return new CategoryModel(category);
     }
 

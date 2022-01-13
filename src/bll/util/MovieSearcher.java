@@ -15,13 +15,14 @@ public class MovieSearcher implements ISearcher{
 
 
     @Override
-    public List<Movie> search(List<Movie> searchBase, String query, boolean isTitleOn, List<CheckBox> checkBoxes, boolean isRatingOn) {
+    public List<Movie> search(List<Movie> searchBase, String query, boolean isTitleOn, boolean isCatOn, boolean isRatingOn) {
         this.isTitleOn = isTitleOn;
         this.isRatingOn = isRatingOn;
+        this.isCatOn = isCatOn;
 
-
+        searchResult.clear();
         for (Movie movie : searchBase) {
-            if(compareToMovieName(movie, query) || compareToMovieCategory(checkBoxes) || compareToMovieRating(movie, query))
+            if(compareToMovieName(movie, query) || compareToMovieCategory(movie, query) || compareToMovieRating(movie, query))
             {
                 searchResult.add(movie);
             }
@@ -38,9 +39,9 @@ public class MovieSearcher implements ISearcher{
     }
 
     @Override
-    public boolean compareToMovieCategory(List<CheckBox> checkBoxes) {
-        if(checkBoxes.get(15).isSelected()){
-
+    public boolean compareToMovieCategory(Movie movie, String query) {
+        if(isCatOn){
+            return movie.getName().toLowerCase().contains(query.toLowerCase());
            }
 
         return false;

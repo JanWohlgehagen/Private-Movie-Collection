@@ -8,6 +8,7 @@ import javafx.beans.property.StringProperty;
 
 public class CategoryModel {
     private StringProperty name = new SimpleStringProperty();
+    private IntegerProperty id = new SimpleIntegerProperty();
 
     /**
      * Constructor for a CategoryModel

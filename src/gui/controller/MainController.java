@@ -158,9 +158,12 @@ public class MainController implements Initializable {
         });
 
         // Search in all Movies
+        List<String> selectedCategoreis = new ArrayList<>();
+        selectedCategoreis.add("Action");
+        selectedCategoreis.add("Action-Comedy");
         txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
             try {
-                List<CheckBox> checkBoxList = new ArrayList<>();
+                List<String> checkBoxList = new ArrayList<>();
                 boolean isTitleOn = cbTitle.isSelected();
                 boolean isCatOn = cbCategory.isSelected();
                 boolean isRatingOn = cbRating.isSelected();
@@ -168,33 +171,63 @@ public class MainController implements Initializable {
                     cbTitle.setSelected(true);
                     isTitleOn = true;
                 }
-                movieListModel.searchMovie(newValue, isTitleOn, checkBoxs(), isRatingOn);
-
+                movieListModel.searchMovie(newValue, isTitleOn,  isCheckBoxsON(), isRatingOn);
             } catch (MovieException e) {
                 e.printStackTrace();
             }
         });
+        //CheckBoxAction.selectedProperty().addListener();
     }
 
-    public HashMap<CheckBox, String> checkBoxs(){
-        HashMap<CheckBox, String> checkBoxHashMap = new HashMap<>();
-        checkBoxHashMap.put(CheckBoxAction, "Action");
-        checkBoxHashMap.put(CheckBoxAction_Comedy, "Action_Comedy");
-        checkBoxHashMap.put(CheckBoxAnimation, "Animation");
-        checkBoxHashMap.put(CheckBoxCrime, "Crime");
-        checkBoxHashMap.put(CheckBoxHorror, "Horror");
-        checkBoxHashMap.put(CheckBoxComedy, "Comedy");
-        checkBoxHashMap.put(CheckBoxRomance, "Romance");
-        checkBoxHashMap.put(CheckBoxDrama, "Drama");
-        checkBoxHashMap.put(CheckBoxFantasy, "Fantasy");
-        checkBoxHashMap.put(CheckBoxMystery, "Mystery");
-        checkBoxHashMap.put(CheckBoxSci_Fi, "SCI-FI");
-        checkBoxHashMap.put(CheckBoxAdventure, "Adventure");
-        checkBoxHashMap.put(CheckBoxSuperhero, "Superhero");
-        checkBoxHashMap.put(CheckBoxThriller, "Thriller");
-        checkBoxHashMap.put(cbCategory, "Category");
-        return checkBoxHashMap;
+    public List<String> isCheckBoxsON(){
+        List<String> selectedCheckBox = new ArrayList<>();
+        if(cbCategory.isSelected()){
 
+            if (CheckBoxAction.isSelected()) {
+                selectedCheckBox.add("Action");
+            }
+            if (CheckBoxAction_Comedy.isSelected()) {
+                selectedCheckBox.add("Action-Comedy");
+            }
+            if (CheckBoxAnimation.isSelected()) {
+                selectedCheckBox.add("Animation");
+            }
+            if (CheckBoxCrime.isSelected()) {
+                selectedCheckBox.add("Crime");
+            }
+            if (CheckBoxHorror.isSelected()) {
+                selectedCheckBox.add("Horror");
+            }
+            if (CheckBoxComedy.isSelected()) {
+                selectedCheckBox.add("Comedy");
+            }
+            if (CheckBoxRomance.isSelected()) {
+                selectedCheckBox.add("Romance");
+            }
+            if (CheckBoxDrama.isSelected()) {
+                selectedCheckBox.add("Drama");
+            }
+            if (CheckBoxFantasy.isSelected()) {
+                selectedCheckBox.add("Fantasy");
+            }
+            if (CheckBoxMystery.isSelected()) {
+                selectedCheckBox.add("Mystery");
+            }
+            if (CheckBoxSci_Fi.isSelected()) {
+                selectedCheckBox.add("SCI-FI");
+            }
+            if (CheckBoxAdventure.isSelected()) {
+                selectedCheckBox.add("Adventure");
+            }
+            if (CheckBoxSuperhero.isSelected()) {
+                selectedCheckBox.add("Superhero");
+            }
+            if (CheckBoxThriller.isSelected()) {
+                selectedCheckBox.add("Thriller");
+            }
+            return selectedCheckBox;
+        }
+        return selectedCheckBox;
     }
 
 
@@ -293,14 +326,14 @@ public class MainController implements Initializable {
         cbTitle.setSelected(false);
         cbRating.setSelected(false);
         if(cbCategory.isSelected()){
-            txtSearch.setDisable(true);
+            //txtSearch.setDisable(true);
             cbRating.setDisable(true);
             cbTitle.setDisable(true);
             hBoxParrent.getChildren().add(vBoxCategories);
             hBoxParrent.getScene().getWindow().setWidth(MAX_WINDOW_SIZE);
 
         } else {
-            txtSearch.setDisable(false);
+            //txtSearch.setDisable(false);
             cbRating.setDisable(false);
             cbTitle.setDisable(false);
             hBoxParrent.getChildren().remove(vBoxCategories);

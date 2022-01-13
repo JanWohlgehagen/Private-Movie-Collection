@@ -4,12 +4,12 @@ package be;
 public class  Category {
     private String name;
 
+
     /**
      * A constructor for a category object, used for categorize movies
      * @param name a String
      */
-    public Category(String name){
-
+    public Category( String name){
         setName(name);
     }
 
@@ -28,6 +28,7 @@ public class  Category {
     public void setName(String name) {
         this.name = name;
     }
+
 
     @Override
     public String toString() {

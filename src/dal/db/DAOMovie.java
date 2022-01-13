@@ -16,6 +16,7 @@ import java.util.List;
 
 public class DAOMovie implements IMovieRepository {
 
+
     private MyConnection databaseConnector;
 
     public DAOMovie() throws IOException {
@@ -140,25 +141,52 @@ public class DAOMovie implements IMovieRepository {
             throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
-        /*
-    public void updatePersonalRating(Movie movie) throws MovieException {
+
+    public List<Movie> getMoviesWithSelectedCategoreis(List<String> selectedCategoreis) throws MovieException {
 
         try(Connection connection = databaseConnector.getConnection()) {
-            String sql = "UPDATE Movie SET personalrating = ? WHERE Id= ?;";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setDouble(1, movie.getPersonalRating());
-            preparedStatement.setDouble(2, movie.getId());
+            List<Movie> movies = new ArrayList<>();
+            for (String category: selectedCategoreis) {
+                String sql = "SELECT * FROM Movie FULL JOIN CatMovie ON Movie.id = CatMovie.movieId WHERE CatMovie.catTitle = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                preparedStatement.setString(1, category);
 
-            int affectedRows = preparedStatement.executeUpdate();
-            if(affectedRows != 1) {
-                throw new MovieException("Too many row affected");
+                preparedStatement.execute();
+
+                ResultSet resultSet = preparedStatement.getResultSet();
+                while (resultSet.next()) {
+                    ObservableList<Category> categories = FXCollections.observableArrayList();
+                    int movieId = resultSet.getInt("id");
+                    String movieTitle = resultSet.getString("title");
+                    double IMDBrating = resultSet.getDouble("IMDBrating");
+                    double personalrating = resultSet.getDouble("personalrating");
+                    String filepath = resultSet.getString("filepath");
+                    Date lastview = (Date) resultSet.getObject("lastview");
+
+                    Movie movie = new Movie(movieId, movieTitle, IMDBrating, filepath, categories);
+                    movie.setPersonalRating(personalrating);
+                    movie.setLastView(lastview);
+                    movie.addCategories(new Category(category));
+
+                    boolean isFound = true;
+                    for (Movie m:movies) {
+                        if (m.getName().equals(movie.getName())) {
+                            isFound = false;
+                            break;
+                        }
+                    }
+                    if(isFound){
+                        movies.add(movie);
+                    }
+                }
             }
+            return movies;
         } catch (SQLException SQLex) {
             throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
 
-         */
+
 
     public void addCategoryToMovie(Category category, Movie movie) throws MovieException {
         try (Connection connection = databaseConnector.getConnection()) {
@@ -188,6 +216,18 @@ public class DAOMovie implements IMovieRepository {
 
         } catch (SQLException SQLex) {
             throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
+        }
+    }
+
+    public static void main(String[] args) throws MovieException, IOException {
+        DAOMovie daoMovie = new DAOMovie();
+        List<String> test = new ArrayList<>();
+        test.add("Action");
+        test.add("Action-Comedy");
+        List<Movie> movieList = daoMovie.getMoviesWithSelectedCategoreis(test);
+        System.out.println(movieList.size() + " the size for the list");
+        for (Movie movie: movieList) {
+            System.out.println(movie);
         }
     }
 }

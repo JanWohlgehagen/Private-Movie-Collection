@@ -71,8 +71,8 @@ public class MovieListModel {
      * Searches through song list, to find a Movie that matches the key word
      * @param query the key word, to search for
      */
-    public void searchMovie(String query, boolean isTitleOn, List<CheckBox> checkBoxes, boolean isRatingOn) throws MovieException {
-        List<MovieModel> searchResults = movieManager.searchMovie(query, isTitleOn, checkBoxes, isRatingOn).stream().map(movie ->
+    public void searchMovie(String query, boolean isTitleOn, List<String> selectedCategoreis, boolean isRatingOn) throws MovieException {
+        List<MovieModel> searchResults = movieManager.searchMovie(query, isTitleOn, selectedCategoreis, isRatingOn).stream().map(movie ->
                 new MovieModel(movie)).toList();
 
 
