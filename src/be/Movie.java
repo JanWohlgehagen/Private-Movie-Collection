@@ -6,12 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.Date;
 
-public class    Movie {
+public class Movie {
     private IntegerProperty id = new SimpleIntegerProperty();
     private StringProperty name = new SimpleStringProperty();
     private DoubleProperty IMDBRating = new SimpleDoubleProperty();
     private StringProperty pathToFile = new SimpleStringProperty();
-    private ObjectProperty<Date> lastView = new SimpleObjectProperty<Date>();
+    private ObjectProperty<Date> lastView = new SimpleObjectProperty<>();
     private DoubleProperty personalRating = new SimpleDoubleProperty();
     private ObservableList<Category> categoryList;
     private StringProperty categoiesAsString = new SimpleStringProperty();
@@ -73,13 +73,6 @@ public class    Movie {
         return this.IMDBRating;
     }
 
-    /**
-     * Used for setting the path of the movie locally.
-     * @param pathToFile
-     */
-    public void setPathToFileProperty(String pathToFile){
-        this.pathToFile.set(pathToFile);
-    }
 
     /**
      * Used for getting the path of the movie.
@@ -122,7 +115,7 @@ public class    Movie {
     }
 
     public StringProperty getAllCategoriesAsStringProperty(){
-        updateCategoriesStringProperty();
+        updateCategoriesAsStringProperty();
         return categoiesAsString;
     }
 
@@ -136,30 +129,12 @@ public class    Movie {
         this.categoryList.add(category);
     }
 
-
-    /**
-     * Used for converting a movieModel into a movie object, mainly for storage in DB
-     * @return a movie object with the same fields as the movieModel
-     */
-    /*
-    public Movie convertToMovie(){
-        ObservableList<Category> tempList = FXCollections.observableArrayList();
-        for (CategoryModel categoryModel: categoryList) {
-            tempList.add(categoryModel.convertToCategory());
-        }
-        Movie movie = new Movie(id.get(), name.get(), IMDBRating.get(), pathToFile.get(), tempList);
-        movie.setLastView((Date) this.lastView.get());
-        return movie;
-    }
-
-     */
-
     public void setCategoryList(ObservableList<Category> categoryList) {
         this.categoryList = categoryList;
-        updateCategoriesStringProperty();
+        updateCategoriesAsStringProperty();
     }
 
-    private void updateCategoriesStringProperty() {
+    private void updateCategoriesAsStringProperty() {
         StringBuilder sb = new StringBuilder();
         for (Category cat: categoryList) {
             if(cat == categoryList.get(categoryList.size()-1)){

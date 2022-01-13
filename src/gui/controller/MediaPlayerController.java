@@ -194,39 +194,39 @@ public class MediaPlayerController implements Initializable {
         labelSpeed.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                switch (labelSpeed.getText()){
-                    case "0.25X" :
+                switch (labelSpeed.getText()) {
+                    case "0.25X" -> {
                         labelSpeed.setText("0.50X");
                         mpMovie.setRate(0.5);
-                        break;
-                    case "0.50X" :
+                    }
+                    case "0.50X" -> {
                         labelSpeed.setText("0.75X");
                         mpMovie.setRate(0.75);
-                        break;
-                    case "0.75X" :
+                    }
+                    case "0.75X" -> {
                         labelSpeed.setText("1X");
                         mpMovie.setRate(1.0);
-                        break;
-                    case "1X" :
+                    }
+                    case "1X" -> {
                         labelSpeed.setText("1.25X");
                         mpMovie.setRate(1.25);
-                        break;
-                    case "1.25X" :
+                    }
+                    case "1.25X" -> {
                         labelSpeed.setText("1.50X");
                         mpMovie.setRate(1.5);
-                        break;
-                    case "1.50X" :
+                    }
+                    case "1.50X" -> {
                         labelSpeed.setText("1.75X");
                         mpMovie.setRate(1.75);
-                        break;
-                    case "1.75X" :
+                    }
+                    case "1.75X" -> {
                         labelSpeed.setText("2X");
                         mpMovie.setRate(2.0);
-                        break;
-                    case "2X" :
+                    }
+                    case "2X" -> {
                         labelSpeed.setText("0.25X");
                         mpMovie.setRate(0.25);
-                        break;
+                    }
                 }
             }
         });

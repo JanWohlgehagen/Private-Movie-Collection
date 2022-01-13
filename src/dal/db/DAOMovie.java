@@ -30,7 +30,7 @@ public class DAOMovie implements IMovieRepository {
         //Create a connection
         try(Connection connection = databaseConnector.getConnection()){
             String sql = "SELECT * FROM Movie;";
-            String sql1 = "SELECT * FROM Category FULL JOIN CatMovie ON Category.title = CatMovie.catTitle WHERE CatMovie.movieId = ?;"; //1. sql command
+            String sql1 = "SELECT * FROM Category FULL JOIN CatMovie ON Category.title = CatMovie.catTitle WHERE CatMovie.movieId = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             PreparedStatement preparedStatement1 = connection.prepareStatement(sql1); //Create statement
 
@@ -141,11 +141,11 @@ public class DAOMovie implements IMovieRepository {
         }
     }
 
-    public List<Movie> getMoviesWithSelectedCategoreis(List<String> selectedCategoreis) throws MovieException {
+    public List<Movie> getMoviesWithSelectedCategories(List<String> selectedCategories) throws MovieException {
 
         try(Connection connection = databaseConnector.getConnection()) {
             List<Movie> movieList = new ArrayList<>();
-            for (String category: selectedCategoreis) {
+            for (String category: selectedCategories) {
                 String sql = "SELECT * FROM Movie FULL JOIN CatMovie ON Movie.id = CatMovie.movieId WHERE CatMovie.catTitle = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setString(1, category);
@@ -184,8 +184,6 @@ public class DAOMovie implements IMovieRepository {
         }
     }
 
-
-
     public void addCategoryToMovie(Category category, Movie movie) throws MovieException {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO CatMovie VALUES (?,?);";
@@ -214,18 +212,6 @@ public class DAOMovie implements IMovieRepository {
 
         } catch (SQLException SQLex) {
             throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
-        }
-    }
-
-    public static void main(String[] args) throws MovieException, IOException {
-        DAOMovie daoMovie = new DAOMovie();
-        List<String> test = new ArrayList<>();
-        test.add("Action");
-        test.add("Action-Comedy");
-        List<Movie> movieList = daoMovie.getMoviesWithSelectedCategoreis(test);
-        System.out.println(movieList.size() + " the size for the list");
-        for (Movie movie: movieList) {
-            System.out.println(movie);
         }
     }
 }

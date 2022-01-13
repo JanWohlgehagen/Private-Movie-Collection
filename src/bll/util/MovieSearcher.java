@@ -1,9 +1,7 @@
 package bll.util;
 
-import be.Category;
-import be.Movie;
-import javafx.scene.control.CheckBox;
 
+import be.Movie;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +41,6 @@ public class MovieSearcher implements ISearcher{
         if(isCatOn){
             return movie.getNameProperty().get().toLowerCase().contains(query.toLowerCase());
            }
-
         return false;
     }
 

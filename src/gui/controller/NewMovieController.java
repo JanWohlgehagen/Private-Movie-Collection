@@ -30,7 +30,7 @@ public class NewMovieController {
     @FXML
     private GridPane gridPaneId;
 
-    MovieModel movieModel;
+    private MovieModel movieModel;
 
     public NewMovieController() {
     fileChooser = new FileChooser();
@@ -54,7 +54,7 @@ public class NewMovieController {
         if(!txtTitle.getText().isBlank() && !txtImdb.getText().isBlank() && !txtChooseFile.getText().isBlank()){
             String uploadTitle = txtTitle.getText();
             String pathToFile = txtChooseFile.getText();
-            Double uploadImdb = Double.parseDouble(txtImdb.getText());
+            double uploadImdb = Double.parseDouble(txtImdb.getText());
             movieModel.createMovie(uploadTitle, uploadImdb, pathToFile);
             closeStage();
         } else displayMessage("All fields must be filled.");

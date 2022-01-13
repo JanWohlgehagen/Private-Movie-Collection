@@ -17,9 +17,8 @@ public class DAOCategory implements ICategoryRepository {
         this.databaseConnector = new MyConnection();
     }
 
-
     @Override
-    public List<Category> getAllCategorys() throws CategoryException {
+    public List<Category> getAllCategories() throws CategoryException {
 
         List<Category> allCategorys = new ArrayList<>();
 
@@ -40,28 +39,6 @@ public class DAOCategory implements ICategoryRepository {
         }
         return allCategorys;
     }
-
-/*
-    @Override
-    public void updateCategory(Category category) throws CategoryException {
-
-        try(Connection connection = databaseConnector.getConnection()) {
-            String sql = "UPDATE Category SET title = ? WHERE title= ?;";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setObject(1, category.getName());
-            preparedStatement.setDouble(2, category.getId());
-
-            int affectedRows = preparedStatement.executeUpdate();
-            if(affectedRows != 1) {
-                throw new CategoryException("Too many row affected");
-            }
-        } catch (SQLException SQLex) {
-            throw new CategoryException(ERROR_STRING, SQLex.fillInStackTrace());
-        }
-
-    }
-
- */
 
     @Override
     public void deleteCategory(Category category) throws CategoryException {

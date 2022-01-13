@@ -282,7 +282,6 @@ public class MainController implements Initializable {
             }
     }
 
-
     public void handleEditCancel(ActionEvent actionEvent) {
         vBoxControllMenu.getChildren().remove(btnEditSave);
         vBoxControllMenu.getChildren().remove(btnEditCancel);

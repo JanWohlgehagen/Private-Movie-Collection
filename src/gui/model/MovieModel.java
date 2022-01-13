@@ -71,7 +71,6 @@ public class MovieModel {
     public void searchMovie(String query, boolean isTitleOn, List<String> selectedCategoreis, boolean isRatingOn) throws MovieException {
         List<Movie> searchResults = movieManager.searchMovie(query, isTitleOn, selectedCategoreis, isRatingOn);
 
-
         movieList.clear();
         if(query.isBlank()){
             movieList.addAll(movieManager.getAllMovies());

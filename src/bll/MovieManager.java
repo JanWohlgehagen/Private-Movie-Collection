@@ -21,7 +21,6 @@ public class MovieManager {
     private DAOCategory daoCategory;
     private ISearcher movieSearcher;
 
-
     public MovieManager() throws IOException {
         movieSearcher = new MovieSearcher();
         daoMovie = new DAOMovie();
@@ -80,21 +79,21 @@ public class MovieManager {
      * @param query the key word, to search for
      * @return a list of songs that fit, the key word
      */
-    public List<Movie> searchMovie(String query, boolean isTitleOn,  List<String> selectedCategoreis, boolean isRatingOn) throws MovieException {
+    public List<Movie> searchMovie(String query, boolean isTitleOn,  List<String> selectedCategories, boolean isRatingOn) throws MovieException {
         List<Movie> moviesToSearch;
         boolean isCatOn;
-        if(selectedCategoreis.isEmpty()){
+        if(selectedCategories.isEmpty()){
             moviesToSearch = daoMovie.getAllMovies();
             isCatOn = false;
         }else{
-            moviesToSearch = daoMovie.getMoviesWithSelectedCategoreis(selectedCategoreis);
+            moviesToSearch = daoMovie.getMoviesWithSelectedCategories(selectedCategories);
             isCatOn = true;
         }
         return movieSearcher.search(moviesToSearch, query, isTitleOn, isCatOn, isRatingOn);
     }
 
     public List<Category> getAllCategories() throws CategoryException {
-        return daoCategory.getAllCategorys();
+        return daoCategory.getAllCategories();
     }
 
     public void updateLastView(Movie movie) throws MovieException {
