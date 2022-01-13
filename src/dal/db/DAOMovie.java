@@ -154,7 +154,6 @@ public class DAOMovie implements IMovieRepository {
 
                 ResultSet resultSet = preparedStatement.getResultSet();
                 while (resultSet.next()) {
-                    //ObservableList<Category> categories = FXCollections.observableArrayList();
                     int movieId = resultSet.getInt("id");
                     String movieTitle = resultSet.getString("title");
                     double IMDBrating = resultSet.getDouble("IMDBrating");
