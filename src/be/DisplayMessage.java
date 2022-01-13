@@ -1,6 +1,5 @@
 package be;
 
-import gui.model.MovieModel;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -50,7 +49,7 @@ public class DisplayMessage {
         alert.setHeaderText("You have not watched these movies for two years, and you have personally rated them less than 6 \nDo you want to delete them..?");
         StringBuilder tempSB = new StringBuilder();
         for (Movie movie: moviesToDelete) {
-             tempSB.append(movie.getName()).append("\n");
+             tempSB.append(movie.getNameProperty().get()).append("\n");
         }
         alert.setContentText(tempSB.toString());
         Optional<ButtonType> result = alert.showAndWait();

@@ -1,37 +1,32 @@
 package be;
 
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class  Category {
-    private String name;
 
+    private StringProperty name = new SimpleStringProperty();
 
     /**
-     * A constructor for a category object, used for categorize movies
-     * @param name a String
+     * Constructor for a CategoryModel
+     * @param name
      */
-    public Category( String name){
-        setName(name);
+    public Category(String name){
+        this.name.set(name);
     }
 
     /**
-     * used for getting the id of a movie
-     * @return name a String
+     * used for getting the name of a category
+     * @return name a StringProperty
      */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * used for setting the name of a movie object
-     * @param name a String
-     */
-    public void setName(String name) {
-        this.name = name;
+    public StringProperty getNameProperty() {
+        return this.name;
     }
 
 
     @Override
     public String toString() {
-        return name;
+        return this.name.get();
     }
 }

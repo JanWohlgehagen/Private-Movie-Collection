@@ -5,11 +5,6 @@ import bll.util.ISearcher;
 import bll.util.MovieSearcher;
 import dal.db.DAOCategory;
 import dal.db.DAOMovie;
-import gui.model.CategoryModel;
-import gui.model.MovieModel;
-import javafx.collections.ObservableList;
-import javafx.scene.chart.PieChart;
-import javafx.scene.control.CheckBox;
 
 
 import java.io.IOException;
@@ -40,8 +35,8 @@ public class MovieManager {
         Date date = Date.from(currentDate.minusYears(2).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         for (Movie movie:allMovies) {
-            if(movie.getLastView() != null){
-                if(movie.getLastView().before(date) && movie.getPersonalRating() < 6.0){ // check if the date of when the movie was last viewed is before the date object (2 years ago)
+            if(movie.getLastViewProperty().get() != null){
+                if(movie.getLastViewProperty().get().before(date) && movie.getPersonalRatingProperty().get() < 6.0){ // check if the date of when the movie was last viewed is before the date object (2 years ago)
                     oldMovies.add(movie);
                 }
             }
@@ -95,17 +90,11 @@ public class MovieManager {
             moviesToSearch = daoMovie.getMoviesWithSelectedCategoreis(selectedCategoreis);
             isCatOn = true;
         }
-        List<Movie> searchResult = movieSearcher.search(moviesToSearch, query, isTitleOn, isCatOn, isRatingOn);
-        return searchResult;
+        return movieSearcher.search(moviesToSearch, query, isTitleOn, isCatOn, isRatingOn);
     }
 
     public List<Category> getAllCategories() throws CategoryException {
         return daoCategory.getAllCategorys();
-    }
-
-    public CategoryModel addCategory(Category category, Movie movie) throws MovieException {
-        daoMovie.addCategoryToMovie(category, movie);
-        return new CategoryModel(category);
     }
 
     public void updateLastView(Movie movie) throws MovieException {

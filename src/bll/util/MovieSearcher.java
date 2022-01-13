@@ -33,7 +33,7 @@ public class MovieSearcher implements ISearcher{
     @Override
     public boolean compareToMovieName(Movie movie, String query) {
         if(isTitleOn){
-            return movie.getName().toLowerCase().contains(query.toLowerCase());
+            return movie.getNameProperty().get().toLowerCase().contains(query.toLowerCase());
         }
         return false;
     }
@@ -41,7 +41,7 @@ public class MovieSearcher implements ISearcher{
     @Override
     public boolean compareToMovieCategory(Movie movie, String query) {
         if(isCatOn){
-            return movie.getName().toLowerCase().contains(query.toLowerCase());
+            return movie.getNameProperty().get().toLowerCase().contains(query.toLowerCase());
            }
 
         return false;
@@ -50,7 +50,7 @@ public class MovieSearcher implements ISearcher{
     @Override
     public boolean compareToMovieRating(Movie movie, String query) {
         if(isRatingOn && !query.isEmpty()){
-            return movie.getIMDBRating() >= Double.parseDouble(query);
+            return movie.getIMDBRatingProperty().get() >= Double.parseDouble(query);
         }
         return false;
     }

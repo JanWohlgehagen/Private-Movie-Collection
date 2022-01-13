@@ -1,121 +1,177 @@
 package be;
 
 
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.Date;
-import java.util.List;
 
 public class    Movie {
-    private int id;
-    private String name;
-    private double IMDBRating;
-    private String pathToFile;
-    private Date lastView;
-    private double personalRating;
-    private ObservableList<Category> categories = FXCollections.observableArrayList();
-
+    private IntegerProperty id = new SimpleIntegerProperty();
+    private StringProperty name = new SimpleStringProperty();
+    private DoubleProperty IMDBRating = new SimpleDoubleProperty();
+    private StringProperty pathToFile = new SimpleStringProperty();
+    private ObjectProperty<Date> lastView = new SimpleObjectProperty<Date>();
+    private DoubleProperty personalRating = new SimpleDoubleProperty();
+    private ObservableList<Category> categoryList;
+    private StringProperty categoiesAsString = new SimpleStringProperty();
 
     /**
-     *  constructor for song used for creating an instance of a Movie.
+     *  constructor for Movie used for creating an instance of a Movie.
      * @param id the int id of the movie.
      * @param name the name of the movie.
      * @param IMDBRating the IMDBRating of the movie.
      * @param pathToFile the local location of the movie.
      */
-    public Movie(int id, String name, double IMDBRating, String pathToFile, ObservableList<Category> categories) {
-        this.id = id;
-        this.name = name;
-        this.IMDBRating = IMDBRating;
-        this.pathToFile = pathToFile;
-        this.setLastView(null);
-        this.setPersonalRating(-1); //if the personal rating is -1 it has not been rated
-        this.categories.addAll(categories);
+    public Movie(int id, String name, double IMDBRating, String pathToFile) {
+        this.id.set(id);
+        this.name.set(name);
+        this.IMDBRating.set(IMDBRating);
+        this.pathToFile.set(pathToFile);
+        this.lastView.set(null);
+        this.personalRating.set(-1); //if the personal rating is -1 it has not been rated
+        this.categoryList = FXCollections.observableArrayList();
     }
 
     /**
-     *  used for getting an id of the movie.
-     * @return the id og movie.
+     * Used for getting the id of the movie.
+     * @return
      */
-    public int getId() {
-        return id;
+    public IntegerProperty getIdProperty() {
+        return this.id;
     }
 
     /**
-     * ysed for getting the name of the movie.
-     * @return the name of the movie.
+     * Used for setting the name of the movie.
+     * @param name
      */
-    public String getName() {
-        return name;
+    public void setNameProperty(String name){
+        this.name.set(name);
     }
 
     /**
-     * used for getting IMDB rating of a movie as a double with one decimal.
-     * @return the Artist of a song.
+     * Used for getting the name of the movie.
+     * @return the name of the movie
      */
-    public double getIMDBRating() {
+    public StringProperty getNameProperty(){
+        return this.name;
+    }
+
+    /**
+     * Used for getting the IMDB rating of the movie.
+     * @param IMDBRating
+     */
+    public void setIMDBRatingProperty(double IMDBRating){
+        this.IMDBRating.set(IMDBRating);
+    }
+
+    /**
+     * Used for getting the IMDB rating of the movie.
+     * @return the IMDB rating of the movie
+     */
+    public DoubleProperty getIMDBRatingProperty() {
         return this.IMDBRating;
     }
 
     /**
-     * used for getting the location of the song.
-     * @return the path to file used. as a string.
+     * Used for setting the path of the movie locally.
+     * @param pathToFile
      */
-    public String getPathToFile() {
-        return pathToFile;
+    public void setPathToFileProperty(String pathToFile){
+        this.pathToFile.set(pathToFile);
+    }
+
+    /**
+     * Used for getting the path of the movie.
+     * @return the file path of the movie
+     */
+    public StringProperty getPathToFileProperty() {
+        return this.pathToFile;
     }
 
     /**
      * used for getting the Date of when the song was viewed last.
-     * @return returns a Date object of when the movie was last viewed.
+     * @return returns a ObjectProperty of type Date of when the movie was last viewed.
      */
-    public Date getLastView() {
-        return lastView;
+    public ObjectProperty<Date> getLastViewProperty() {
+        return this.lastView;
     }
 
     /**
      * sets the Date of when the movie was last viewed.
      * @param lastView
      */
-    public void setLastView(Date lastView) {
-        this.lastView = lastView;
+    public void setLastViewProperty(Date lastView) {
+        this.lastView.set(lastView);
     }
 
     /**
-     * used for getting the personal rating of a movie as a double with one decimal.
-     * @return returns a double with one decimal
+     * sets the personal rating of when the movie.
+     * @param personalRating a double
      */
-    public double getPersonalRating() {
+    public void setPersonalRatingProperty(double personalRating) {
+        this.personalRating.set(personalRating);
+    }
+
+    /**
+     * used for getting the personal rating of the movie.
+     * @return returns a DoubleProperty of the movie.
+     */
+    public DoubleProperty getPersonalRatingProperty() {
         return this.personalRating;
     }
 
-    /**
-     * used for setting the personal rating of a movie as a double.
-     * @param personalRating
-     */
-    public void setPersonalRating(double personalRating) {
-        this.personalRating = personalRating;
+    public StringProperty getAllCategoriesAsStringProperty(){
+        updateCategoriesStringProperty();
+        return categoiesAsString;
     }
+
+
+    public ObservableList<Category> getAllCategoryAsList(){
+        return this.categoryList;
+    }
+
+
+    public void addCategory(Category category){
+        this.categoryList.add(category);
+    }
+
 
     /**
-     * used to add a category to the movie
-     * @param category
+     * Used for converting a movieModel into a movie object, mainly for storage in DB
+     * @return a movie object with the same fields as the movieModel
      */
-    public void addCategories(Category category){
-        categories.add(category);
+    /*
+    public Movie convertToMovie(){
+        ObservableList<Category> tempList = FXCollections.observableArrayList();
+        for (CategoryModel categoryModel: categoryList) {
+            tempList.add(categoryModel.convertToCategory());
+        }
+        Movie movie = new Movie(id.get(), name.get(), IMDBRating.get(), pathToFile.get(), tempList);
+        movie.setLastView((Date) this.lastView.get());
+        return movie;
     }
 
-    public List<Category> getCategories(){
-        return categories;
+     */
+
+    public void setCategoryList(ObservableList<Category> categoryList) {
+        this.categoryList = categoryList;
+        updateCategoriesStringProperty();
     }
 
-    public void setCategories(ObservableList <Category> categories){
-        this.categories = categories;
+    private void updateCategoriesStringProperty() {
+        StringBuilder sb = new StringBuilder();
+        for (Category cat: categoryList) {
+            if(cat == categoryList.get(categoryList.size()-1)){
+                sb.append(cat);
+            } else sb.append(cat).append(", ");
+        }
+        categoiesAsString.set(sb.toString());
     }
 
     @Override
     public String toString() {
         return id + " " +  name + " " + IMDBRating + " " +  pathToFile + " " +  lastView + " " +
-                personalRating + " " +  categories;
+                personalRating + " " + categoryList;
     }
 }

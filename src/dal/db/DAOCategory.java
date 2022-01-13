@@ -69,7 +69,7 @@ public class DAOCategory implements ICategoryRepository {
         try(Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE Category WHERE title = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, category.getName());
+            preparedStatement.setString(1, category.getNameProperty().get());
 
             int affectedRows = preparedStatement.executeUpdate();
             if(affectedRows != 1) {
