@@ -79,7 +79,7 @@ public class MovieManager {
      * @param query the key word, to search for
      * @return a list of songs that fit, the key word
      */
-    public List<Movie> searchMovie(String query, boolean isTitleOn,  List<String> selectedCategories, boolean isRatingOn) throws MovieException {
+    public List<Movie> searchMovie(String query, List<Movie>  boolean isTitleOn, boolean isRatingOn) throws MovieException {
         List<Movie> moviesToSearch;
         boolean isCatOn;
         if(selectedCategories.isEmpty()){
