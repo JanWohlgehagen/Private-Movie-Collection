@@ -93,7 +93,7 @@ public class MovieManager {
     }
 
     public List<Movie> filterCategories(List<String> selectedCategoreis) throws MovieException {
-        return daoMovie.getMoviesWithSelectedCategoreis(selectedCategoreis);
+        return daoMovie.getMoviesWithSelectedCategories(selectedCategoreis);
     }
 
     public List<Category> getAllCategories() throws CategoryException {

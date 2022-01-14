@@ -79,6 +79,17 @@ public class MovieModel {
        movieList.addAll((searchResults));
     }
 
+    public void filterCategories(List<String> selectedCategoreis) throws MovieException {
+        List<Movie> searchResults = movieManager.filterCategories(selectedCategoreis);
+
+        movieList.clear();
+        if(selectedCategoreis.isEmpty()){
+            movieList.addAll(movieManager.getAllMovies());
+        }else {
+            movieList.addAll(searchResults);
+        }
+    }
+
     public ObservableList<Category> getCategoryList() throws CategoryException {
         return FXCollections.observableArrayList(movieManager.getAllCategories());
     }
