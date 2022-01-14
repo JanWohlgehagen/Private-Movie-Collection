@@ -1,16 +1,11 @@
 package gui.controller;
 
 
-import be.DisplayMessage;
-import be.Movie;
 import be.MovieException;
 import gui.App;
-import gui.model.MovieListModel;
 import gui.model.MovieModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -35,7 +30,7 @@ public class NewMovieController {
     @FXML
     private GridPane gridPaneId;
 
-    MovieListModel movieListModel;
+    private MovieModel movieModel;
 
     public NewMovieController() {
     fileChooser = new FileChooser();
@@ -43,7 +38,7 @@ public class NewMovieController {
 
     public void initialize() throws IOException, MovieException {
         MainController mainController = new App().getController();
-        movieListModel = mainController.getMovieListModel();
+        movieModel = mainController.getMovieListModel();
     }
 
     public void handleChooseBtn(ActionEvent actionEvent) {
@@ -59,8 +54,8 @@ public class NewMovieController {
         if(!txtTitle.getText().isBlank() && !txtImdb.getText().isBlank() && !txtChooseFile.getText().isBlank()){
             String uploadTitle = txtTitle.getText();
             String pathToFile = txtChooseFile.getText();
-            Double uploadImdb = Double.parseDouble(txtImdb.getText());
-            movieListModel.createMovie(uploadTitle, uploadImdb, pathToFile);
+            double uploadImdb = Double.parseDouble(txtImdb.getText());
+            movieModel.createMovie(uploadTitle, uploadImdb, pathToFile);
             closeStage();
         } else displayMessage("All fields must be filled.");
     }

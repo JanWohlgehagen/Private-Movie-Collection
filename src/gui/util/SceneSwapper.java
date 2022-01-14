@@ -1,5 +1,6 @@
 package gui.util;
 
+import be.DisplayMessage;
 import gui.controller.MediaPlayerController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -33,8 +34,8 @@ public class SceneSwapper {
             stage.setScene(ViewScene);
             stage.show();
         }catch (IOException IOex){
+            DisplayMessage.displayMessage("Something went wrong.\n Contact customer support");
             IOex.printStackTrace();
-            System.out.println("Can't swap scene");
         }
     }
 }

@@ -5,11 +5,6 @@ import bll.util.ISearcher;
 import bll.util.MovieSearcher;
 import dal.db.DAOCategory;
 import dal.db.DAOMovie;
-import gui.model.CategoryModel;
-import gui.model.MovieModel;
-import javafx.collections.ObservableList;
-import javafx.scene.chart.PieChart;
-import javafx.scene.control.CheckBox;
 
 
 import java.io.IOException;
@@ -26,7 +21,6 @@ public class MovieManager {
     private DAOCategory daoCategory;
     private ISearcher movieSearcher;
 
-
     public MovieManager() throws IOException {
         movieSearcher = new MovieSearcher();
         daoMovie = new DAOMovie();
@@ -40,8 +34,8 @@ public class MovieManager {
         Date date = Date.from(currentDate.minusYears(2).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         for (Movie movie:allMovies) {
-            if(movie.getLastView() != null){
-                if(movie.getLastView().before(date) && movie.getPersonalRating() < 6.0){ // check if the date of when the movie was last viewed is before the date object (2 years ago)
+            if(movie.getLastViewProperty().get() != null){
+                if(movie.getLastViewProperty().get().before(date) && movie.getPersonalRatingProperty().get() < 6.0){ // check if the date of when the movie was last viewed is before the date object (2 years ago)
                     oldMovies.add(movie);
                 }
             }
@@ -85,18 +79,17 @@ public class MovieManager {
      * @param query the key word, to search for
      * @return a list of songs that fit, the key word
      */
-    public List<Movie> searchMovie(String query, boolean isTitleOn,  List<String> selectedCategoreis, boolean isRatingOn) throws MovieException {
+    public List<Movie> searchMovie(String query, boolean isTitleOn,  List<String> selectedCategories, boolean isRatingOn) throws MovieException {
         List<Movie> moviesToSearch;
         boolean isCatOn;
-        if(selectedCategoreis.isEmpty()){
+        if(selectedCategories.isEmpty()){
             moviesToSearch = daoMovie.getAllMovies();
             isCatOn = false;
         }else{
-            moviesToSearch = daoMovie.getMoviesWithSelectedCategoreis(selectedCategoreis);
+            moviesToSearch = daoMovie.getMoviesWithSelectedCategories(selectedCategories);
             isCatOn = true;
         }
-        List<Movie> searchResult = movieSearcher.search(moviesToSearch, query, isTitleOn, isCatOn, isRatingOn);
-        return searchResult;
+        return movieSearcher.search(moviesToSearch, query, isTitleOn, isCatOn, isRatingOn);
     }
 
     public List<Movie> filterCategories(List<String> selectedCategoreis) throws MovieException {
@@ -104,12 +97,7 @@ public class MovieManager {
     }
 
     public List<Category> getAllCategories() throws CategoryException {
-        return daoCategory.getAllCategorys();
-    }
-
-    public CategoryModel addCategory(Category category, Movie movie) throws MovieException {
-        daoMovie.addCategoryToMovie(category, movie);
-        return new CategoryModel(category);
+        return daoCategory.getAllCategories();
     }
 
     public void updateLastView(Movie movie) throws MovieException {

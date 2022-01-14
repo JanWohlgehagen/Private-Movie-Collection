@@ -1,170 +1,89 @@
 package gui.model;
 
 import be.Category;
+import be.CategoryException;
 import be.Movie;
-import javafx.beans.property.*;
+import be.MovieException;
+import bll.MovieManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.Date;
+import java.io.IOException;
+import java.util.List;
 
 public class MovieModel {
-    private IntegerProperty id = new SimpleIntegerProperty();
-    private StringProperty name = new SimpleStringProperty();
-    private DoubleProperty IMDBRating = new SimpleDoubleProperty();
-    private StringProperty pathToFile = new SimpleStringProperty();
-    private ObjectProperty lastView = new SimpleObjectProperty<Date>();
-    private DoubleProperty personalRating = new SimpleDoubleProperty();
-    private ObservableList<CategoryModel> categories;
-    private StringProperty catInString = new SimpleStringProperty();
+    private MovieManager movieManager;
+    private ObservableList<Movie> movieList;
 
-    public MovieModel(Movie movie){
-        setIdProperty(movie.getId());
-        setNameProperty(movie.getName());
-        setIMDBRatingProperty(movie.getIMDBRating());
-        setPathToFileProperty(movie.getPathToFile());
-        setLastViewProperty(movie.getLastView());
-        setPersonalRatingProperty(movie.getPersonalRating());
-        categories = FXCollections.observableArrayList(movie.getCategories().stream().map(cat -> new CategoryModel(cat)).toList());
+    public MovieModel() throws IOException, MovieException {
+        movieManager = new MovieManager();
+        movieList = FXCollections.observableArrayList(movieManager.getAllMovies());
     }
 
     /**
-     * Used for setting the id of the Movie, only used when a movie is created.
-     * @param id
+     * Get all the movies that should be display in the view.
+     * @return ObservableList of Songmodel
      */
-    private void setIdProperty(int id){
-        getIdProperty().set(id);
+    public ObservableList<Movie> getMovieList() {
+        return movieList;
     }
 
     /**
-     * Used for getting the id of the movie.
-     * @return
-     */
-    public IntegerProperty getIdProperty() {
-        return id;
-    }
-
-    /**
-     * Used for setting the name of the movie.
+     * Create new song to be display in main view
      * @param name
-     */
-    public void setNameProperty(String name){
-        getNameProperty().set(name);
-    }
-
-    /**
-     * Used for getting the name of the movie.
-     * @return the name of the movie
-     */
-    public StringProperty getNameProperty(){
-        return name;
-    }
-
-    /**
-     * Used for getting the IMDB rating of the movie.
      * @param IMDBRating
-     */
-    public void setIMDBRatingProperty(double IMDBRating){
-        getIMDBRatingProperty().set(IMDBRating);
-    }
-
-    /**
-     * Used for getting the IMDB rating of the movie.
-     * @return the IMDB rating of the movie
-     */
-    public DoubleProperty getIMDBRatingProperty() {
-        return IMDBRating;
-    }
-
-    /**
-     * Used for setting the path of the movie locally.
      * @param pathToFile
      */
-    public void setPathToFileProperty(String pathToFile){
-        getPathToFileProperty().set(pathToFile);
+    public void createMovie(String name, double IMDBRating, String pathToFile) throws MovieException {
+        movieList.add(movieManager.createMovie(name, IMDBRating, pathToFile));
     }
 
     /**
-     * Used for getting the path of the movie.
-     * @return the file path of the movie
+     * Delete the song in mainview and database
+     * @param movie
      */
-    public StringProperty getPathToFileProperty() {
-        return pathToFile;
+    public void deleteMovie(Movie movie) throws MovieException {
+        movieManager.deleteMovie(movie);
+        movieList.remove(movie);
     }
 
     /**
-     * used for getting the Date of when the song was viewed last.
-     * @return returns a ObjectProperty of type Date of when the movie was last viewed.
+     * Update the song in mainview and database
+     * @param movie
+     * @param name
+     * @param imdbRating
+     * @param personalRating
      */
-    public ObjectProperty getLastViewProperty() {
-        return lastView;
-    }
-
-    /**
-     * sets the Date of when the movie was last viewed.
-     * @param lastView
-     */
-    public void setLastViewProperty(Date lastView) {
-        getLastViewProperty().set(lastView);
-    }
-
-    /**
-     * sets the personal rating of when the movie.
-     * @param personalRating a double
-     */
-    public void setPersonalRatingProperty(double personalRating) {
-        getPersonalRatingProperty().set(personalRating);
-    }
-
-    /**
-     * used for getting the personal rating of the movie.
-     * @return returns a DoubleProperty of the movie.
-     */
-    public DoubleProperty getPersonalRatingProperty() {
-        return personalRating;
-    }
-
-    public StringProperty getAllCategoriesStringProperty(){
-        updateCategoriesStringProperty();
-        return catInString;
-    }
-
-
-    public ObservableList<CategoryModel> getAllCategoryAsList(){
-        return categories;
-    }
-
-
-    public void addCategoryModel(CategoryModel categoryModel){
-        categories.add(categoryModel);
-    }
-
-    /**
-     * Used for converting a movieModel into a movie object, mainly for storage in DB
-     * @return a movie object with the same fields as the movieModel
-     */
-    public Movie convertToMovie(){
-        ObservableList<Category> tempList = FXCollections.observableArrayList();
-        for (CategoryModel categoryModel: categories) {
-            tempList.add(categoryModel.convertToCategory());
+    public void updateMovie(Movie movie, String name, double imdbRating, double personalRating, ObservableList<Category> categories) throws MovieException {
+        if(movieManager.checkUpdatedValues(imdbRating, personalRating)){
+            movie.setNameProperty(name);
+            movie.setIMDBRatingProperty(imdbRating);
+            movie.setPersonalRatingProperty(personalRating);
+            movie.setCategoryList(categories);
+            movieManager.updateMovie(movie);
         }
-        Movie movie = new Movie(id.get(), name.get(), IMDBRating.get(), pathToFile.get(), tempList);
-        movie.setLastView((Date) this.lastView.get());
-        return movie;
     }
 
-    public void setCategories(ObservableList<CategoryModel> categories) {
-        this.categories = categories;
-        updateCategoriesStringProperty();
-    }
+    /**
+     * Searches through song list, to find a Movie that matches the key word
+     * @param query the key word, to search for
+     */
+    public void searchMovie(String query, boolean isTitleOn, List<String> selectedCategoreis, boolean isRatingOn) throws MovieException {
+        List<Movie> searchResults = movieManager.searchMovie(query, isTitleOn, selectedCategoreis, isRatingOn);
 
-    private void updateCategoriesStringProperty() {
-        StringBuilder newList = new StringBuilder();
-        for (CategoryModel catModel: categories) {
-            if(catModel == categories.get(categories.size()-1)){
-                newList.append(catModel);
-            } else newList.append(catModel).append(", ");
+        movieList.clear();
+        if(query.isBlank()){
+            movieList.addAll(movieManager.getAllMovies());
+            return;
         }
-        catInString.set(newList.toString());
+       movieList.addAll((searchResults));
+    }
+
+    public ObservableList<Category> getCategoryList() throws CategoryException {
+        return FXCollections.observableArrayList(movieManager.getAllCategories());
+    }
+
+    public void updateLastView(Movie movie) throws MovieException {
+        movieManager.updateLastView(movie);
     }
 }
