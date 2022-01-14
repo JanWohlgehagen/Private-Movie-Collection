@@ -13,22 +13,19 @@ import javafx.collections.ObservableList;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 public class MovieListModel {
     private MovieManager movieManager;
     private ObservableList<Movie> movieList;
-    private List<Movie> movieCache;
-    private List<Movie> searchResults;
+    private List<Movie> movieCache = new ArrayList<>();
+    private List<Movie> filterResults = new ArrayList<>();
     private ISearcher movieSearcher;
+
 
     public MovieListModel() throws IOException, MovieException {
         movieManager = new MovieManager();
         movieList = FXCollections.observableArrayList(movieManager.getAllMovies());
-        movieCache = new ArrayList<>();
         movieCache.addAll(movieList);
-        searchResults = new ArrayList<>();
-        searchResults.addAll(movieCache);
         movieSearcher = new MovieSearcher();
     }
 
@@ -87,27 +84,25 @@ public class MovieListModel {
      * @return a list of songs that fit, the key word
      */
     public void searchMovie(String query, boolean isTitleOn, boolean isRatingOn) throws MovieException {
-        List <Movie> tempList = new ArrayList<>();
-
-
         if(query.isBlank()){
             movieList.clear();
-            movieList.addAll(movieCache);
+            movieList.addAll(filterResults);
         }else{
-            tempList.addAll(movieSearcher.search(searchResults, query, isTitleOn, isRatingOn));
+            List<Movie> tempList = new ArrayList<>(movieSearcher.search(filterResults, query, isTitleOn, isRatingOn));
             movieList.clear();
             movieList.addAll(tempList);
         }
     }
 
     public void filterCategories(List<String> selectedCategoreis) throws MovieException {
-        searchResults = movieManager.filterCategories(selectedCategoreis);
+        filterResults = movieManager.filterCategories(selectedCategoreis);
 
         movieList.clear();
         if(selectedCategoreis.isEmpty()){
             movieList.addAll(movieCache);
+            filterResults.addAll(movieCache);
         }else {
-            movieList.addAll(searchResults);
+            movieList.addAll(filterResults);
         }
     }
 
