@@ -67,11 +67,11 @@
                           </rowConstraints>
                            <children>
                               <CheckBox fx:id="cbTitle" mnemonicParsing="false" onAction="#handleCBTitle" prefHeight="16.0" prefWidth="18.0" />
-                              <CheckBox fx:id="cbCategory" mnemonicParsing="false" onAction="#handleCBCategory" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="1" />
-                              <CheckBox fx:id="cbRating" mnemonicParsing="false" onAction="#handleCBRating" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="2" />
+                              <CheckBox fx:id="cbRating" mnemonicParsing="false" onAction="#handleCBRating" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="1" />
                               <Label text="Title" GridPane.rowIndex="1" />
-                              <Label text="Category" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label text="Min. Rating" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Label text="Category" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Label text="Min. Rating" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <CheckBox fx:id="cbCategory" mnemonicParsing="false" onAction="#handleCBCategory" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="2" />
                            </children>
                         </GridPane>
                         <Separator layoutX="15.0" layoutY="207.0" prefHeight="3.0" prefWidth="160.0" />
