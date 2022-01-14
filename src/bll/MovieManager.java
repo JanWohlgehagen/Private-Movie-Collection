@@ -99,6 +99,10 @@ public class MovieManager {
         return searchResult;
     }
 
+    public List<Movie> filterCategories(List<String> selectedCategoreis) throws MovieException {
+        return daoMovie.getMoviesWithSelectedCategoreis(selectedCategoreis);
+    }
+
     public List<Category> getAllCategories() throws CategoryException {
         return daoCategory.getAllCategorys();
     }

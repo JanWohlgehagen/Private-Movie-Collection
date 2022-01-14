@@ -163,7 +163,6 @@ public class MainController implements Initializable {
         selectedCategoreis.add("Action-Comedy");
         txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
             try {
-                List<String> checkBoxList = new ArrayList<>();
                 boolean isTitleOn = cbTitle.isSelected();
                 boolean isCatOn = cbCategory.isSelected();
                 boolean isRatingOn = cbRating.isSelected();
@@ -177,6 +176,10 @@ public class MainController implements Initializable {
             }
         });
         //CheckBoxAction.selectedProperty().addListener();
+    }
+
+    public void handleCheckBoxesCategories(ActionEvent actionEvent) throws MovieException {
+           movieListModel.filterCategories(isCheckBoxsON());
     }
 
     public List<String> isCheckBoxsON(){
@@ -381,4 +384,6 @@ public class MainController implements Initializable {
         return tvMovies.getSelectionModel().getSelectedItem();
         else return null;
     }
+
+
 }

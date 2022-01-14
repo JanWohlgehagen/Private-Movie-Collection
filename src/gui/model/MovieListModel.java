@@ -81,7 +81,19 @@ public class MovieListModel {
             movieList.addAll(movieManager.getAllMovies().stream().map(movie -> new MovieModel(movie)).toList());
             return;
         }
-       movieList.addAll((searchResults));
+       movieList.addAll(searchResults);
+    }
+
+    public void filterCategories(List<String> selectedCategoreis) throws MovieException {
+        List<MovieModel> searchResults = movieManager.filterCategories(selectedCategoreis).stream().map(movie ->
+                new MovieModel(movie)).toList();
+
+        movieList.clear();
+        if(selectedCategoreis.isEmpty()){
+            movieList.addAll(movieManager.getAllMovies().stream().map(movie -> new MovieModel(movie)).toList());
+        }else {
+            movieList.addAll(searchResults);
+        }
     }
 
     public ObservableList<CategoryModel> getCategoryList() throws CategoryException {

@@ -17,7 +17,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <HBox fx:id="hBoxParrent" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
    <children>
       <VBox prefWidth="750.0">
@@ -191,20 +190,20 @@
                   <Label text="Sci-Fi" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                   <Label text="Mystery" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                   <Label text="Drama" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <CheckBox fx:id="CheckBoxAction" mnemonicParsing="false" />
-                  <CheckBox fx:id="CheckBoxAnimation" layoutX="52.0" layoutY="112.0" mnemonicParsing="false" GridPane.rowIndex="3" />
-                  <CheckBox fx:id="CheckBoxAdventure" layoutX="52.0" layoutY="112.0" mnemonicParsing="false" GridPane.rowIndex="2" />
-                  <CheckBox fx:id="CheckBoxHorror" layoutX="252.0" layoutY="112.0" mnemonicParsing="false" GridPane.rowIndex="8" />
-                  <CheckBox fx:id="CheckBoxCrime" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" GridPane.rowIndex="5" />
-                  <CheckBox fx:id="CheckBoxSci_Fi" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" GridPane.rowIndex="11" />
-                  <CheckBox fx:id="CheckBoxSuperhero" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" GridPane.rowIndex="12" />
-                  <CheckBox fx:id="CheckBoxComedy" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" GridPane.rowIndex="4" />
-                  <CheckBox fx:id="CheckBoxAction_Comedy" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" GridPane.rowIndex="1" />
-                  <CheckBox fx:id="CheckBoxThriller" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" GridPane.rowIndex="13" />
-                  <CheckBox fx:id="CheckBoxDrama" layoutX="152.0" layoutY="404.0" mnemonicParsing="false" GridPane.rowIndex="6" />
-                  <CheckBox fx:id="CheckBoxFantasy" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" GridPane.rowIndex="7" />
-                  <CheckBox fx:id="CheckBoxRomance" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" GridPane.rowIndex="10" />
-                  <CheckBox fx:id="CheckBoxMystery" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" GridPane.rowIndex="9" />
+                  <CheckBox fx:id="CheckBoxAction" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" />
+                  <CheckBox fx:id="CheckBoxAnimation" layoutX="52.0" layoutY="112.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="3" />
+                  <CheckBox fx:id="CheckBoxAdventure" layoutX="52.0" layoutY="112.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="2" />
+                  <CheckBox fx:id="CheckBoxHorror" layoutX="252.0" layoutY="112.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="8" />
+                  <CheckBox fx:id="CheckBoxCrime" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="5" />
+                  <CheckBox fx:id="CheckBoxSci_Fi" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="11" />
+                  <CheckBox fx:id="CheckBoxSuperhero" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="12" />
+                  <CheckBox fx:id="CheckBoxComedy" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="4" />
+                  <CheckBox fx:id="CheckBoxAction_Comedy" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="1" />
+                  <CheckBox fx:id="CheckBoxThriller" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="13" />
+                  <CheckBox fx:id="CheckBoxDrama" layoutX="152.0" layoutY="404.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="6" />
+                  <CheckBox fx:id="CheckBoxFantasy" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="7" />
+                  <CheckBox fx:id="CheckBoxRomance" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="10" />
+                  <CheckBox fx:id="CheckBoxMystery" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="9" />
                </children>
             </GridPane>
             <HBox maxHeight="100.0" minHeight="100.0" prefHeight="100.0" style="-fx-background-color: linear-gradient(to top, #7d7a79, white);" />
