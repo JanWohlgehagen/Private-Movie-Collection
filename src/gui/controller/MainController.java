@@ -282,7 +282,6 @@ public class MainController implements Initializable {
             } catch (Exception e){
                 displayMessage("You must provide a number between 0-10");
                 e.printStackTrace();
-                return; // Skal denne her væk eller ???????
             }
     }
 
