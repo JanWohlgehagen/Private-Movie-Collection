@@ -1,26 +1,23 @@
 package bll.util;
 
-
 import be.Movie;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovieSearcher implements ISearcher{
     private boolean isTitleOn;
-    private boolean isCatOn;
     private boolean isRatingOn;
     private List<Movie> searchResult = new ArrayList<>();
 
 
     @Override
-    public List<Movie> search(List<Movie> searchBase, String query, boolean isTitleOn, boolean isCatOn, boolean isRatingOn) {
+    public List<Movie> search(List<Movie> searchBase, String query, boolean isTitleOn, boolean isRatingOn) {
         this.isTitleOn = isTitleOn;
         this.isRatingOn = isRatingOn;
-        this.isCatOn = isCatOn;
 
         searchResult.clear();
         for (Movie movie : searchBase) {
-            if(compareToMovieName(movie, query) || compareToMovieCategory(movie, query) || compareToMovieRating(movie, query))
+            if(compareToMovieName(movie, query) || compareToMovieRating(movie, query))
             {
                 searchResult.add(movie);
             }
@@ -37,17 +34,13 @@ public class MovieSearcher implements ISearcher{
     }
 
     @Override
-    public boolean compareToMovieCategory(Movie movie, String query) {
-        if(isCatOn){
-            return movie.getNameProperty().get().toLowerCase().contains(query.toLowerCase());
-           }
-        return false;
-    }
-
-    @Override
     public boolean compareToMovieRating(Movie movie, String query) {
-        if(isRatingOn && !query.isEmpty()){
-            return movie.getIMDBRatingProperty().get() >= Double.parseDouble(query);
+        try{
+            if(isRatingOn && !query.isEmpty()){
+                return movie.getIMDBRatingProperty().get() >= Double.parseDouble(query);
+            }
+        } catch (NumberFormatException nfe){
+            nfe.printStackTrace();
         }
         return false;
     }

@@ -24,24 +24,21 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <TextField fx:id="txtChooseFile" editable="false" prefHeight="27.0" prefWidth="272.0" GridPane.rowIndex="5" />
       <TextField fx:id="txtTitle" prefHeight="27.0" prefWidth="253.0" GridPane.rowIndex="1" />
+      <TextField fx:id="txtImdb" GridPane.rowIndex="3" />
       <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#handleChooseBtn" text="Choose File" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="15.0" />
          </GridPane.margin></Button>
+      <TextField fx:id="txtChooseFile" editable="false" maxHeight="-Infinity" prefHeight="27.0" prefWidth="272.0" GridPane.rowIndex="5" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Title" wrappingWidth="37.44140625" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IMDb Score" GridPane.rowIndex="2" />
-      <TextField fx:id="txtImdb" GridPane.rowIndex="3" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Choose File" GridPane.rowIndex="4" />
       <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="15.0" GridPane.columnSpan="2147483647" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="6">
          <children>
-            <Button mnemonicParsing="false" onAction="#handleCancelBtn" prefHeight="26.0" prefWidth="77.0" text="Cancel" />
-            <Button mnemonicParsing="false" onAction="#handleSaveBtn" prefHeight="26.0" prefWidth="77.0" text="Save" />
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleSaveBtn" prefHeight="26.0" prefWidth="77.0" text="Save" textAlignment="CENTER" />
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#handleCancelBtn" prefHeight="26.0" prefWidth="77.0" text="Cancel" textAlignment="CENTER" />
          </children>
-         <padding>
-            <Insets right="10.0" />
-         </padding>
       </HBox>
    </children>
    <padding>

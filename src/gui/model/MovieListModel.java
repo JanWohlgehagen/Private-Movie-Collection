@@ -5,22 +5,31 @@ import be.CategoryException;
 import be.Movie;
 import be.MovieException;
 import bll.MovieManager;
+import bll.util.ISearcher;
+import bll.util.MovieSearcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
-public class MovieModel {
+public class MovieListModel {
     private MovieManager movieManager;
     private ObservableList<Movie> movieList;
     private List<Movie> movieCache;
+    private List<Movie> searchResults;
+    private ISearcher movieSearcher;
 
-    public MovieModel() throws IOException, MovieException {
+    public MovieListModel() throws IOException, MovieException {
         movieManager = new MovieManager();
         movieList = FXCollections.observableArrayList(movieManager.getAllMovies());
+        movieCache = new ArrayList<>();
         movieCache.addAll(movieList);
+        searchResults = new ArrayList<>();
+        searchResults.addAll(movieCache);
+        movieSearcher = new MovieSearcher();
     }
 
     /**
@@ -70,28 +79,6 @@ public class MovieModel {
         }
     }
 
-    /**
-     * Searches through song list, to find a Movie that matches the key word
-     * @param query the key word, to search for
-     */
-    public void searchMovie(String query, boolean isTitleOn, boolean isCatON, boolean isRatingOn) throws MovieException {
-
-        if(query.isBlank() && !isCatON){
-            movieList.addAll(movieCache);
-        }else if(query.isBlank() && isCatON){
-            movieList.addAll(filterCategories();)
-        }
-
-
-        movieSearcher.search(moviesToSearch, query, isTitleOn, isCatOn, isRatingOn);
-
-        movieList.clear();
-        if(query.isBlank() && isCatON){
-            movieList.addAll(movieCache);
-            return;
-        }
-       movieList.addAll((searchResults));
-    }
 
     /**
      * Searches through movie list, to find a song that matches the key word
@@ -99,25 +86,26 @@ public class MovieModel {
      * @param query the key word, to search for
      * @return a list of songs that fit, the key word
      */
-    public List<Movie> searchMovie(String query, List<Movie>  boolean isTitleOn, boolean isRatingOn) throws MovieException {
-        List<Movie> moviesToSearch;
-        boolean isCatOn;
-        if(selectedCategories.isEmpty()){
-            moviesToSearch = daoMovie.getAllMovies();
-            isCatOn = false;
+    public void searchMovie(String query, boolean isTitleOn, boolean isRatingOn) throws MovieException {
+        List <Movie> tempList = new ArrayList<>();
+
+
+        if(query.isBlank()){
+            movieList.clear();
+            movieList.addAll(movieCache);
         }else{
-            moviesToSearch = daoMovie.getMoviesWithSelectedCategories(selectedCategories);
-            isCatOn = true;
+            tempList.addAll(movieSearcher.search(searchResults, query, isTitleOn, isRatingOn));
+            movieList.clear();
+            movieList.addAll(tempList);
         }
-        return movieSearcher.search(moviesToSearch, query, isTitleOn, isCatOn, isRatingOn);
     }
 
     public void filterCategories(List<String> selectedCategoreis) throws MovieException {
-        List<Movie> searchResults = movieManager.filterCategories(selectedCategoreis);
+        searchResults = movieManager.filterCategories(selectedCategoreis);
 
         movieList.clear();
         if(selectedCategoreis.isEmpty()){
-            movieList.addAll(movieManager.getAllMovies());
+            movieList.addAll(movieCache);
         }else {
             movieList.addAll(searchResults);
         }

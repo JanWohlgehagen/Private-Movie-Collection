@@ -72,26 +72,6 @@ public class MovieManager {
         daoMovie.updateMovie(movie);
     }
 
-
-    /**
-     * Searches through movie list, to find a song that matches the key word
-
-     * @param query the key word, to search for
-     * @return a list of songs that fit, the key word
-     */
-    public List<Movie> searchMovie(String query, List<Movie>  boolean isTitleOn, boolean isRatingOn) throws MovieException {
-        List<Movie> moviesToSearch;
-        boolean isCatOn;
-        if(selectedCategories.isEmpty()){
-            moviesToSearch = daoMovie.getAllMovies();
-            isCatOn = false;
-        }else{
-            moviesToSearch = daoMovie.getMoviesWithSelectedCategories(selectedCategories);
-            isCatOn = true;
-        }
-        return movieSearcher.search(moviesToSearch, query, isTitleOn, isCatOn, isRatingOn);
-    }
-
     public List<Movie> filterCategories(List<String> selectedCategoreis) throws MovieException {
         return daoMovie.getMoviesWithSelectedCategories(selectedCategoreis);
     }

@@ -3,7 +3,7 @@ package gui.controller;
 import be.Category;
 import be.Movie;
 import be.MovieException;
-import gui.model.MovieModel;
+import gui.model.MovieListModel;
 import gui.util.SceneSwapper;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -105,14 +105,14 @@ public class MainController implements Initializable {
     @FXML
     private Button btnEditCancel;
 
-    private MovieModel movieModel;
+    private MovieListModel movieListModel;
     private SceneSwapper sceneSwapper;
     private final double MAX_WINDOW_SIZE = 950.0;
 
 
 
     public MainController() throws IOException, MovieException {
-        movieModel = new MovieModel();
+        movieListModel = new MovieListModel();
         sceneSwapper = new SceneSwapper();
     }
 
@@ -125,7 +125,7 @@ public class MainController implements Initializable {
 
         tvMovies.setPlaceholder(new Label("No movies found in Database"));
 
-        tvMovies.setItems(movieModel.getMovieList());
+        tvMovies.setItems(movieListModel.getMovieList());
         tcTitle.setCellValueFactory(addMovie -> addMovie.getValue().getNameProperty());
         tcCategory.setCellValueFactory(addMovie -> addMovie.getValue().getAllCategoriesAsStringProperty());
         tcRating.setCellValueFactory(addMovie -> addMovie.getValue().getIMDBRatingProperty().asObject());
@@ -153,13 +153,12 @@ public class MainController implements Initializable {
         txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
             try {
                 boolean isTitleOn = cbTitle.isSelected();
-                boolean isCatOn = cbCategory.isSelected();
                 boolean isRatingOn = cbRating.isSelected();
-                if (!isTitleOn && !isCatOn && !isRatingOn) {
+                if (!isTitleOn && !isRatingOn) {
                     cbTitle.setSelected(true);
                     isTitleOn = true;
                 }
-                movieModel.searchMovie(newValue, isTitleOn,  isCheckBoxsON(), isRatingOn);
+                movieListModel.searchMovie(newValue, isTitleOn, isRatingOn);
             } catch (MovieException e) {
                 e.printStackTrace();
             }
@@ -167,7 +166,7 @@ public class MainController implements Initializable {
     }
 
     public void handleCheckBoxesCategories(ActionEvent actionEvent) throws MovieException {
-           movieModel.filterCategories(isCheckBoxsON());
+           movieListModel.filterCategories(isCheckBoxsON());
     }
 
     public List<String> isCheckBoxsON(){
@@ -225,7 +224,7 @@ public class MainController implements Initializable {
 
     public void handlePlayMovie(ActionEvent actionEvent) throws MovieException {
         getSelectedMovie().setLastViewProperty(new Date());
-        movieModel.updateLastView(getSelectedMovie());
+        movieListModel.updateLastView(getSelectedMovie());
         sceneSwapper.sceneSwitch(new Stage(), "MediaPlayer.fxml");
     }
 
@@ -235,7 +234,7 @@ public class MainController implements Initializable {
 
     public void handleEditMovie(ActionEvent actionEvent) {
         try {
-            comboBoxCategory.getItems().addAll(movieModel.getCategoryList());
+            comboBoxCategory.getItems().addAll(movieListModel.getCategoryList());
 
         } catch (Exception e) {
             displayMessage("Failed to fetch categories from the database.");
@@ -258,7 +257,7 @@ public class MainController implements Initializable {
     }
 
     public void handleDeleteMovie(ActionEvent actionEvent) throws MovieException {
-        movieModel.deleteMovie(tvMovies.getSelectionModel().selectedItemProperty().get());
+        movieListModel.deleteMovie(tvMovies.getSelectionModel().selectedItemProperty().get());
     }
 
     public void handleEditSave(ActionEvent actionEvent) {
@@ -272,7 +271,7 @@ public class MainController implements Initializable {
                 }else{
                     personalRating = Double.parseDouble(txtPersonalRating.getText());
                 }
-                movieModel.updateMovie(movie, txtTitle.getText(), imdbRating, personalRating, categories);
+                movieListModel.updateMovie(movie, txtTitle.getText(), imdbRating, personalRating, categories);
 
                 vBoxControllMenu.getChildren().remove(btnEditSave);
                 vBoxControllMenu.getChildren().remove(btnEditCancel);
@@ -307,22 +306,14 @@ public class MainController implements Initializable {
     }
 
     public void handleCBTitle(ActionEvent actionEvent) {
-        cbCategory.setSelected(false);
         cbRating.setSelected(false);
     }
 
     public void handleCBCategory(ActionEvent actionEvent) {
-        cbTitle.setSelected(false);
-        cbRating.setSelected(false);
         if(cbCategory.isSelected()){
-            cbRating.setDisable(true);
-            cbTitle.setDisable(true);
             hBoxParrent.getChildren().add(vBoxCategories);
             hBoxParrent.getScene().getWindow().setWidth(MAX_WINDOW_SIZE);
-
         } else {
-            cbRating.setDisable(false);
-            cbTitle.setDisable(false);
             hBoxParrent.getChildren().remove(vBoxCategories);
             hBoxParrent.getScene().getWindow().setWidth(MAX_WINDOW_SIZE-vBoxCategories.getWidth());
         }
@@ -330,7 +321,6 @@ public class MainController implements Initializable {
 
     public void handleCBRating(ActionEvent actionEvent) {
         cbTitle.setSelected(false);
-        cbCategory.setSelected(false);
     }
 
     public void handleChooseCategory(ActionEvent actionEvent) {
@@ -359,8 +349,8 @@ public class MainController implements Initializable {
         listViewCategories.setItems(getSelectedMovie().getAllCategoryAsList());
     }
 
-    public MovieModel getMovieListModel() {
-        return movieModel;
+    public MovieListModel getMovieListModel() {
+        return movieListModel;
     }
 
     public Movie getSelectedMovie(){

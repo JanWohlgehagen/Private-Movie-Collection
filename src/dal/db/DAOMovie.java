@@ -147,7 +147,9 @@ public class DAOMovie implements IMovieRepository {
             List<Movie> movieList = new ArrayList<>();
             for (String category: selectedCategories) {
                 String sql = "SELECT * FROM Movie FULL JOIN CatMovie ON Movie.id = CatMovie.movieId WHERE CatMovie.catTitle = ?";
+                String sql1 = "SELECT * FROM Category FULL JOIN CatMovie ON Category.title = CatMovie.catTitle WHERE CatMovie.movieId = ?;";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement preparedStatement1 = connection.prepareStatement(sql1); //Create statement
                 preparedStatement.setString(1, category);
 
                 preparedStatement.execute();
@@ -164,7 +166,16 @@ public class DAOMovie implements IMovieRepository {
                     Movie movie = new Movie(movieId, movieTitle, IMDBrating, filepath);
                     movie.setPersonalRatingProperty(personalrating);
                     movie.setLastViewProperty(lastview);
-                    movie.addCategory(new Category(category));
+
+                    preparedStatement1.setInt(1, movieId);
+                    if(preparedStatement1.execute()){
+                        ResultSet resultSet1 = preparedStatement1.getResultSet();
+                        while(resultSet1.next()) {
+                            String catTitle = resultSet1.getString("title");
+
+                            movie.addCategory(new Category(catTitle));
+                        }
+                    }
 
                     boolean isFound = true;
                     for (Movie movieFromList: movieList) {

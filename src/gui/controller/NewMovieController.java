@@ -3,7 +3,7 @@ package gui.controller;
 
 import be.MovieException;
 import gui.App;
-import gui.model.MovieModel;
+import gui.model.MovieListModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -30,7 +30,7 @@ public class NewMovieController {
     @FXML
     private GridPane gridPaneId;
 
-    private MovieModel movieModel;
+    private MovieListModel movieListModel;
 
     public NewMovieController() {
     fileChooser = new FileChooser();
@@ -38,7 +38,7 @@ public class NewMovieController {
 
     public void initialize() throws IOException, MovieException {
         MainController mainController = new App().getController();
-        movieModel = mainController.getMovieListModel();
+        movieListModel = mainController.getMovieListModel();
     }
 
     public void handleChooseBtn(ActionEvent actionEvent) {
@@ -55,7 +55,7 @@ public class NewMovieController {
             String uploadTitle = txtTitle.getText();
             String pathToFile = txtChooseFile.getText();
             double uploadImdb = Double.parseDouble(txtImdb.getText());
-            movieModel.createMovie(uploadTitle, uploadImdb, pathToFile);
+            movieListModel.createMovie(uploadTitle, uploadImdb, pathToFile);
             closeStage();
         } else displayMessage("All fields must be filled.");
     }
