@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="hBoxParrent" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
+<HBox fx:id="hBoxParrent" stylesheets="@../css/Root.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
    <children>
       <VBox prefWidth="750.0">
         <children>
@@ -81,9 +81,9 @@
                            <children>
                               <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#handleEditMovie" prefHeight="40.0" prefWidth="114.0" text="Edit Movie" />
                               <Button fx:id="btnAddMovie" mnemonicParsing="false" onAction="#handleAddMovie" prefHeight="40.0" prefWidth="114.0" text="Add Movie" />
-                              <Button fx:id="btnDeleteMovie" mnemonicParsing="false" onAction="#handleDeleteMovie" prefHeight="40.0" prefWidth="114.0" text="Delete Movie" />
                               <Button fx:id="btnEditSave" layoutX="48.0" layoutY="166.0" mnemonicParsing="false" onAction="#handleEditSave" prefHeight="40.0" prefWidth="114.0" text="Save" />
-                              <Button fx:id="btnEditCancel" layoutX="48.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleEditCancel" prefHeight="40.0" prefWidth="114.0" style="-fx-background-color: red;" text="Cancel" />
+                              <Button fx:id="btnDeleteMovie" mnemonicParsing="false" onAction="#handleDeleteMovie" prefHeight="40.0" prefWidth="114.0" text="Delete Movie" />
+                              <Button fx:id="btnEditCancel" layoutX="48.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleEditCancel" prefHeight="40.0" prefWidth="114.0" text="Cancel" />
                            </children>
                         </VBox>
                      </children>

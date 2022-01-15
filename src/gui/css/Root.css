@@ -1,0 +1,115 @@
+.root{
+    -fx-background-color: white;
+    -fx-font-weight: bold;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: linear-gradient(to right, #7d7a79, white);
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-row-cell:selected .text {
+    -fx-fill: black;
+    -fx-font-weight: bold;
+}
+
+.text-field{
+    -fx-background-color: transparent;
+    -fx-text-inner-color: black;
+    -fx-prompt-text-fill: black;
+}
+
+.combo-box{
+    -fx-background-color: transparent;
+    -fx-text-inner-color: black;
+    -fx-prompt-text-fill: black;
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+}
+
+.combo-box:hover{
+    -fx-border-width: 2;
+}
+
+.text-field:disabled{
+    -fx-background-color: transparent;
+    -fx-text-inner-color: black;
+    -fx-prompt-text-fill: black;
+}
+
+.combo-box:disabled{
+    -fx-background-color: transparent;
+    -fx-text-inner-color: black;
+    -fx-prompt-text-fill: black;
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+}
+
+.combo-box .list-cell:hover{
+    -fx-background-color: linear-gradient(to top, #7d7a79, white);
+    -fx-text-fill: black;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.button{
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-radius: 5;
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+}
+
+.button:hover {
+    -fx-border-width: 2;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.text-field {
+    -fx-border-color: #5d5d5d;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.check-box {
+    -fx-border-radius: 10;
+    -fx-border-color: black;
+    -fx-background-color:  linear-gradient(to top, #7d7a79, white);
+    -fx-background-radius: 10;
+}
+
+.check-box:hover {
+    -fx-cursor: hand;
+    -fx-border-width: 2;
+}
+
+.check-box .box {
+    -fx-background-color:  transparent;
+    -fx-background-radius: 10;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #57a857;
+    -fx-background-radius: 10;
+}
+
+.check-box:selected {
+    -fx-background-color: #57a857;
+    -fx-background-radius: 10;
+    -fx-border-width: 2;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: black;
+}
+
+.bannersBottom{
+    -fx-background-color:  linear-gradient(to top, #7d7a79, white);
+}
+
+.bannersTop{
+    -fx-background-color:  linear-gradient(to bottom, #7d7a79, white);
+}

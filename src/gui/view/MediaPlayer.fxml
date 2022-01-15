@@ -13,7 +13,7 @@
 <AnchorPane fx:id="anchorpaneParrent" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MediaPlayerController">
    <children>
       <MediaView fx:id="mvMovie" />
-      <VBox fx:id="hBoxControls" alignment="CENTER" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <VBox fx:id="hBoxControls" alignment="CENTER" styleClass="controlVbox" stylesheets="@../css/MediaPlayer.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <Slider fx:id="sliderTime" style="-fx-cursor: hand;">
             <padding>
                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
