@@ -50,6 +50,9 @@
 .combo-box .list-cell:hover{
     -fx-background-color: linear-gradient(to top, #7d7a79, white);
     -fx-text-fill: black;
+}
+
+.combo-box .list-cell{
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }

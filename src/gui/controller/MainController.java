@@ -291,8 +291,6 @@ public class MainController implements Initializable {
         vBoxControllMenu.getChildren().remove(btnEditCancel);
         vBoxControllMenu.getChildren().add(btnAddMovie);
         vBoxControllMenu.getChildren().add(btnDeleteMovie);
-        listViewCategories.getItems().clear();
-        listViewCategories.setItems(getSelectedMovie().getAllCategoryAsList());
         enable_Disable_TextFields();
     }
 
