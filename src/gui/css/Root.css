@@ -16,9 +16,15 @@
 }
 
 .text-field{
-    -fx-background-color: transparent;
+    -fx-background-color: white;
     -fx-text-inner-color: black;
     -fx-prompt-text-fill: black;
+}
+
+.text-field:disabled {
+    -fx-opacity: 1.0;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
 }
 
 .combo-box{
@@ -33,6 +39,7 @@
     -fx-border-width: 2;
 }
 
+
 .text-field:disabled{
     -fx-background-color: transparent;
     -fx-text-inner-color: black;
@@ -43,8 +50,9 @@
     -fx-background-color: transparent;
     -fx-text-inner-color: black;
     -fx-prompt-text-fill: black;
-    -fx-border-color: black;
+    -fx-border-color: transparent;
     -fx-border-radius: 5;
+    -fx-opacity: 1.0;
 }
 
 .combo-box .list-cell:hover{
@@ -52,17 +60,13 @@
     -fx-text-fill: black;
 }
 
-.combo-box .list-cell{
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-}
-
 .button{
-    -fx-background-color: transparent;
+    -fx-background-color:  linear-gradient(to right, #7d7a79, white);
     -fx-background-repeat: no-repeat;
     -fx-background-radius: 5;
     -fx-border-color: black;
     -fx-border-radius: 5;
+    -fx-background-insets: 1;
 }
 
 .button:hover {
@@ -72,9 +76,14 @@
 }
 
 .text-field {
-    -fx-border-color: #5d5d5d;
+    -fx-border-color: black;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
+    -fx-background-insets: 1.5;
+}
+
+.text-field:hover{
+    -fx-border-width: 2;
 }
 
 .check-box {
@@ -95,18 +104,18 @@
 }
 
 .check-box:selected .box {
-    -fx-background-color: #57a857;
+    -fx-background-color: black;
     -fx-background-radius: 10;
 }
 
 .check-box:selected {
-    -fx-background-color: #57a857;
+    -fx-background-color: black;
     -fx-background-radius: 10;
     -fx-border-width: 2;
 }
 
 .check-box:selected .mark {
-    -fx-background-color: black;
+    -fx-background-color: white;
 }
 
 .bannersBottom{

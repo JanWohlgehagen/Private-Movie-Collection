@@ -21,7 +21,7 @@
    <children>
       <VBox prefWidth="750.0">
         <children>
-            <VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="75.0" style="-fx-background-color: linear-gradient(to bottom, #7d7a79, white);">
+            <VBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="75.0" styleClass="bannersTop">
                <children>
                   <Label maxWidth="-Infinity" prefHeight="125.0" text="Private Movie Collection" textAlignment="CENTER">
                      <font>
@@ -49,29 +49,30 @@
                         <Insets left="5.0" />
                      </padding>
                   </VBox>
-                  <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="400.0" prefWidth="200.0" spacing="20.0" HBox.hgrow="SOMETIMES">
+                  <VBox alignment="CENTER" maxWidth="-Infinity" prefHeight="400.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="SOMETIMES">
                      <padding>
                         <Insets left="5.0" right="5.0" />
                      </padding>
                      <children>
-                        <TextField fx:id="txtSearch" prefHeight="25.0" prefWidth="141.0" promptText="Search" />
-                        <GridPane alignment="CENTER">
+                        <GridPane alignment="CENTER" VBox.vgrow="SOMETIMES">
                           <columnConstraints>
                             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <CheckBox fx:id="cbTitle" mnemonicParsing="false" onAction="#handleCBTitle" prefHeight="16.0" prefWidth="18.0" />
-                              <CheckBox fx:id="cbCategory" mnemonicParsing="false" onAction="#handleCBCategory" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="1" />
-                              <CheckBox fx:id="cbRating" mnemonicParsing="false" onAction="#handleCBRating" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="2" />
-                              <Label text="Title" GridPane.rowIndex="1" />
-                              <Label text="Category" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label text="Min. Rating" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <CheckBox fx:id="cbTitle" mnemonicParsing="false" onAction="#handleCBTitle" prefHeight="16.0" prefWidth="18.0" GridPane.rowIndex="1" />
+                              <CheckBox fx:id="cbCategory" mnemonicParsing="false" onAction="#handleCBCategory" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <CheckBox fx:id="cbRating" mnemonicParsing="false" onAction="#handleCBRating" prefHeight="16.0" prefWidth="18.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Label text="Title" GridPane.rowIndex="2" />
+                              <Label text="Category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Min. Rating" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                              <TextField fx:id="txtSearch" alignment="CENTER" prefWidth="141.0" promptText="Search" GridPane.columnSpan="2147483647" />
                            </children>
                         </GridPane>
                         <Separator layoutX="15.0" layoutY="207.0" prefHeight="3.0" prefWidth="160.0" />
@@ -93,7 +94,7 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </HBox>
-            <VBox alignment="TOP_CENTER" minHeight="-Infinity" prefHeight="100.0" style="-fx-background-color: linear-gradient(to top, #7d7a79, white);">
+            <VBox alignment="TOP_CENTER" minHeight="-Infinity" prefHeight="100.0" styleClass="bannersBottom">
                <children>
                   <GridPane alignment="CENTER" hgap="25.0" minHeight="100.0" prefHeight="358.0" prefWidth="100.0" VBox.vgrow="SOMETIMES">
                     <columnConstraints>
@@ -125,7 +126,7 @@
                               <Insets left="90.0" />
                            </GridPane.margin>
                         </TextField>
-                        <ComboBox fx:id="comboBoxCategory" onAction="#handleChooseCategory" prefHeight="25.0" promptText="Choose category" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="comboBoxCategory" disable="true" onAction="#handleChooseCategory" prefHeight="25.0" promptText="Choose category" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <ListView fx:id="listViewCategories" maxHeight="90.0" prefWidth="200.0" GridPane.rowSpan="2147483647" />
                         <Button mnemonicParsing="false" onAction="#handleRemoveCategory" prefWidth="132.0" text="Remove Category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
@@ -145,7 +146,7 @@
       </VBox>
       <VBox fx:id="vBoxCategories" HBox.hgrow="SOMETIMES">
          <children>
-            <HBox alignment="CENTER" minHeight="75.0" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom, #7d7a79, white);">
+            <HBox alignment="CENTER" minHeight="75.0" prefHeight="75.0" prefWidth="200.0" styleClass="bannersTop">
                <children>
                   <Label alignment="CENTER" maxHeight="75.0" maxWidth="175.0" minWidth="175.0" prefHeight="125.0" prefWidth="175.0" text="Categories" textAlignment="CENTER">
                      <font>
@@ -206,7 +207,7 @@
                   <CheckBox fx:id="CheckBoxMystery" layoutX="52.0" layoutY="67.0" mnemonicParsing="false" onAction="#handleCheckBoxesCategories" GridPane.rowIndex="9" />
                </children>
             </GridPane>
-            <HBox maxHeight="100.0" minHeight="100.0" prefHeight="100.0" style="-fx-background-color: linear-gradient(to top, #7d7a79, white);" />
+            <HBox maxHeight="100.0" minHeight="100.0" prefHeight="100.0" styleClass="bannersBottom" />
          </children>
       </VBox>
    </children>
