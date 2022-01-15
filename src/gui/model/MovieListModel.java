@@ -88,7 +88,10 @@ public class MovieListModel {
             movieList.clear();
             movieList.addAll(filterResults);
         }else{
-            List<Movie> tempList = new ArrayList<>(movieSearcher.search(filterResults, query, isTitleOn, isRatingOn));
+            List<Movie> tempList = new ArrayList<>();
+            if (filterResults.isEmpty()){
+                tempList.addAll(movieSearcher.search(movieCache, query, isTitleOn, isRatingOn));
+            } else tempList.addAll(movieSearcher.search(filterResults, query, isTitleOn, isRatingOn));
             movieList.clear();
             movieList.addAll(tempList);
         }
