@@ -104,7 +104,7 @@ public class DAOMovie implements IMovieRepository {
             PreparedStatement preparedStatementForDelete = connection.prepareStatement(sqlDel);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, movie.getNameProperty().get());
-            preparedStatement.setString(2, movie.getPathToFileProperty().getName());
+            preparedStatement.setString(2, movie.getPathToFileProperty().get());
             preparedStatement.setDouble(3, movie.getIMDBRatingProperty().get());
             preparedStatement.setDouble(4, movie.getPersonalRatingProperty().get());
             preparedStatement.setDouble(5, movie.getIdProperty().get());
