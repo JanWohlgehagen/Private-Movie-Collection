@@ -130,7 +130,7 @@ public class Movie {
     }
 
     public void setCategoryList(ObservableList<Category> categoryList) {
-        this.categoryList = categoryList;
+        this.categoryList.setAll(categoryList);
         updateCategoriesAsStringProperty();
     }
 

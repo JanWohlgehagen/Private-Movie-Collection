@@ -110,6 +110,7 @@ public class MainController implements Initializable {
 
     private MovieListModel movieListModel;
     private SceneSwapper sceneSwapper;
+    private ObservableList categoryCache;
     private final double MAX_WINDOW_SIZE = 950.0;
 
 
@@ -117,6 +118,7 @@ public class MainController implements Initializable {
     public MainController() throws IOException, MovieException {
         movieListModel = new MovieListModel();
         sceneSwapper = new SceneSwapper();
+        categoryCache = FXCollections.observableArrayList();
     }
 
 
@@ -141,7 +143,9 @@ public class MainController implements Initializable {
 
         tvMovies.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if(newValue != null){
-                listViewCategories.setItems(newValue.getAllCategoryAsList());
+                categoryCache.clear();
+                categoryCache.addAll(newValue.getAllCategoryAsList());
+                listViewCategories.setItems(categoryCache);
                 System.out.println(newValue.getAllCategoryAsList().toString());
                 txtTitle.setText(newValue.getNameProperty().get());
                 txtIMDBRating.setText(String.valueOf(newValue.getIMDBRatingProperty().get()));
@@ -276,6 +280,7 @@ public class MainController implements Initializable {
                 }else{
                     personalRating = Double.parseDouble(txtPersonalRating.getText());
                 }
+                movie.setCategoryList(categoryCache);
                 movieListModel.updateMovie(movie, txtTitle.getText(), imdbRating, personalRating, categories);
 
                 btnRemoveCategory.setDisable(true);
