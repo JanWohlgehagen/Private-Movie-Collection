@@ -1,7 +1,6 @@
 package gui.controller;
 
 
-import be.MovieException;
 import gui.App;
 import gui.model.MovieListModel;
 import javafx.event.ActionEvent;
@@ -36,7 +35,7 @@ public class NewMovieController {
     fileChooser = new FileChooser();
     }
 
-    public void initialize() throws IOException, MovieException {
+    public void initialize() {
         MainController mainController = new App().getController();
         movieListModel = mainController.getMovieListModel();
     }
@@ -50,7 +49,7 @@ public class NewMovieController {
         }
     }
 
-    public void handleSaveBtn()throws IOException, MovieException {
+    public void handleSaveBtn() {
         if(!txtTitle.getText().isBlank() && !txtImdb.getText().isBlank() && !txtChooseFile.getText().isBlank()){
             String uploadTitle = txtTitle.getText();
             String pathToFile = txtChooseFile.getText();

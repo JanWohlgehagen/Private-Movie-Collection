@@ -17,12 +17,41 @@ public class DisplayMessage {
      * @param ex The Exception
      */
     public static void displayError(Exception ex) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        addIicon(alert);
+        alert.setTitle("Error: Something went wrong");
+        alert.setHeaderText(ex.getMessage());
+        alert.setContentText(String.valueOf(ex.getCause()));
+        ex.printStackTrace();
+        alert.showAndWait();
+    }
+
+    /**
+     *  displays a error message
+     * @param message the exception message
+     */
+    public static void displayMessage(String message) {
         Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
             addIicon(alert);
-            alert.setTitle("Error: Something went wrong");
-            alert.setHeaderText(ex.getMessage());
-            alert.setContentText(String.valueOf(ex.getCause()));
+            alert.setTitle("Message");
+            alert.setHeaderText(message);
+            alert.showAndWait();
+        });
+    }
+
+    /**
+     *  displays a error message
+     * @param message the exception message
+     */
+    public static void displayErrorMessage(Exception ex, String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            addIicon(alert);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(message);
+            alert.setContentText(ex.getMessage());
+            ex.printStackTrace();
             alert.showAndWait();
         });
     }
@@ -35,13 +64,23 @@ public class DisplayMessage {
     public static boolean displayErrorSTOP(Exception ex) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         addIicon(alert);
+        if(ex.getCause() == null){
+            alert.setHeaderText("The cause is unknown");
+        }else{
+            alert.setHeaderText(String.valueOf(ex.getCause()));
+        }
         alert.setTitle("Error: Something went wrong");
-        alert.setHeaderText(ex.getMessage());
-        alert.setContentText(String.valueOf(ex.getCause()));
+        alert.setContentText(ex.getMessage());
+        ex.printStackTrace();
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
 
+    /**
+     *  Used for getting confirmation from user thet they want to perform a certain action.
+     * @param  moviesToDelete The movies that might need to be deleted.
+     * @return true if user have clicked ok. false if user clicked cansel
+     */
     public static boolean displayDeleteOldMoives(List<Movie> moviesToDelete) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         addIicon(alert);
@@ -69,20 +108,6 @@ public class DisplayMessage {
         alert.setContentText("Press OK to continue.");
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
-    }
-
-    /**
-     *  displays a error message
-     * @param message the exception message
-     */
-    public static void displayMessage(String message) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            addIicon(alert);
-            alert.setTitle("Message");
-            alert.setHeaderText(message);
-            alert.showAndWait();
-        });
     }
 
     /**
