@@ -86,7 +86,11 @@ public class MovieListModel {
     public void searchMovie(String query, boolean isTitleOn, boolean isRatingOn) throws MovieException {
         if(query.isBlank()){
             movieList.clear();
-            movieList.addAll(filterResults);
+            if(filterResults.isEmpty()){
+                movieList.addAll(movieCache);
+            } else {
+                movieList.addAll(filterResults);
+            }
         }else{
             List<Movie> tempList = new ArrayList<>();
             if (filterResults.isEmpty()){

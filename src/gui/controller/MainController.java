@@ -5,6 +5,7 @@ import be.Movie;
 import be.MovieException;
 import gui.model.MovieListModel;
 import gui.util.SceneSwapper;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -104,6 +105,8 @@ public class MainController implements Initializable {
     private Button btnEditSave;
     @FXML
     private Button btnEditCancel;
+    @FXML
+    private Button btnRemoveCategory;
 
     private MovieListModel movieListModel;
     private SceneSwapper sceneSwapper;
@@ -138,6 +141,8 @@ public class MainController implements Initializable {
 
         tvMovies.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if(newValue != null){
+                listViewCategories.setItems(newValue.getAllCategoryAsList());
+                System.out.println(newValue.getAllCategoryAsList().toString());
                 txtTitle.setText(newValue.getNameProperty().get());
                 txtIMDBRating.setText(String.valueOf(newValue.getIMDBRatingProperty().get()));
                 if (newValue.getPersonalRatingProperty().get() == -1) {
@@ -235,13 +240,13 @@ public class MainController implements Initializable {
     public void handleEditMovie(ActionEvent actionEvent) {
         try {
             comboBoxCategory.getItems().addAll(movieListModel.getCategoryList());
-
         } catch (Exception e) {
             displayMessage("Failed to fetch categories from the database.");
             displayError(e);
         }
 
         if (tvMovies.getSelectionModel().selectedItemProperty().get() != null) {
+            btnRemoveCategory.setDisable(false);
             vBoxControllMenu.getChildren().remove(btnAddMovie);
             vBoxControllMenu.getChildren().remove(btnDeleteMovie);
             vBoxControllMenu.getChildren().add(btnEditSave);
@@ -273,6 +278,7 @@ public class MainController implements Initializable {
                 }
                 movieListModel.updateMovie(movie, txtTitle.getText(), imdbRating, personalRating, categories);
 
+                btnRemoveCategory.setDisable(true);
                 vBoxControllMenu.getChildren().remove(btnEditSave);
                 vBoxControllMenu.getChildren().remove(btnEditCancel);
                 vBoxControllMenu.getChildren().add(btnAddMovie);
@@ -291,17 +297,16 @@ public class MainController implements Initializable {
         vBoxControllMenu.getChildren().remove(btnEditCancel);
         vBoxControllMenu.getChildren().add(btnAddMovie);
         vBoxControllMenu.getChildren().add(btnDeleteMovie);
+        btnRemoveCategory.setDisable(true);
         enable_Disable_TextFields();
     }
 
     private void enable_Disable_TextFields() {
-
         txtTitle.setDisable(!txtTitle.isDisabled());
         txtIMDBRating.setDisable(!txtIMDBRating.isDisabled());
         txtPersonalRating.setDisable(!txtPersonalRating.isDisabled());
         comboBoxCategory.setDisable(!comboBoxCategory.isDisabled());
         btnEdit.setDisable(!btnEdit.isDisabled());
-
     }
 
     public void handleCBTitle(ActionEvent actionEvent) {
@@ -341,11 +346,6 @@ public class MainController implements Initializable {
         if(category != null){
             listViewCategories.getItems().remove(category);
         }
-
-    }
-
-    public void handleClickMovieList(MouseEvent mouseEvent) {
-        listViewCategories.setItems(getSelectedMovie().getAllCategoryAsList());
     }
 
     public MovieListModel getMovieListModel() {

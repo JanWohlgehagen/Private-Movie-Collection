@@ -34,7 +34,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" prefHeight="380.0" prefWidth="158.0" HBox.hgrow="SOMETIMES">
                      <children>
-                        <TableView fx:id="tvMovies" onMouseClicked="#handleClickMovieList" prefHeight="380.0" prefWidth="149.0" VBox.vgrow="SOMETIMES">
+                        <TableView fx:id="tvMovies" prefHeight="380.0" prefWidth="149.0" VBox.vgrow="SOMETIMES">
                           <columns>
                             <TableColumn fx:id="tcTitle" prefWidth="75.0" text="Title" />
                               <TableColumn fx:id="tcCategory" prefWidth="75.0" text="Category" />
@@ -128,7 +128,7 @@
                         </TextField>
                         <ComboBox fx:id="comboBoxCategory" disable="true" onAction="#handleChooseCategory" prefHeight="25.0" promptText="Choose category" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <ListView fx:id="listViewCategories" maxHeight="90.0" prefWidth="200.0" GridPane.rowSpan="2147483647" />
-                        <Button mnemonicParsing="false" onAction="#handleRemoveCategory" prefWidth="132.0" text="Remove Category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button fx:id="btnRemoveCategory" disable="true" mnemonicParsing="false" onAction="#handleRemoveCategory" prefWidth="132.0" text="Remove Category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                      <VBox.margin>
                         <Insets />
