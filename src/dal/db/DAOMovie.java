@@ -18,13 +18,20 @@ public class DAOMovie implements IMovieRepository {
 
     private MyConnection databaseConnector;
 
+    /**
+     * Constructer that establishes a connection to the database though MyConnetion.
+     * @throws IOException
+     */
     public DAOMovie() throws IOException {
         databaseConnector = new MyConnection();
     }
 
+    /**
+     * Queries the database for all movies in the Movie table.
+     * @return a List of all Movie objects in the database
+     */
     @Override
     public List<Movie> getAllMovies() {
-
         List<Movie> allMovies = new ArrayList<>();
 
         //Create a connection
@@ -55,7 +62,6 @@ public class DAOMovie implements IMovieRepository {
                         ResultSet resultSet1 = preparedStatement1.getResultSet();
                         while(resultSet1.next()) {
                             String catTitle = resultSet1.getString("title");
-
                             movie.addCategory(new Category(catTitle));
                         }
                     }
@@ -70,6 +76,14 @@ public class DAOMovie implements IMovieRepository {
         return allMovies;
     }
 
+    /**
+     * Creates a movie by getting setting the name, IMDBRating and path file and fetches the ID that the database assigns it to create
+     * a new Movie object to be returned to the BLL layer and then later to the GUI layer.
+     * @param name the title of a movie
+     * @param IMDBRating the IMDB Rating of a movie
+     * @param pathToFile the path of the local file to the movie
+     * @return
+     */
     @Override
     public Movie createMovie(String name, double IMDBRating, String pathToFile) {
         try (Connection connection = databaseConnector.getConnection()) {
@@ -98,9 +112,12 @@ public class DAOMovie implements IMovieRepository {
         return null;
     }
 
+    /**
+     * Overrides all rows in the Movie table referenced by ID with the fields of an 'updated' Movie object
+     * @param movie with updated fields
+     */
     @Override
     public void updateMovie(Movie movie){
-
         try(Connection connection = databaseConnector.getConnection()) {
 
             String sql = "UPDATE Movie SET title = ?, filepath=?, IMDBrating=?, personalrating=? WHERE Id=?;";
@@ -124,8 +141,11 @@ public class DAOMovie implements IMovieRepository {
         }
     }
 
+    /**
+     * Updates the time the movie was last viewed, this happens when you press play on a movie in the view
+     * @param movie
+     */
     public void updateLastview(Movie movie) {
-
         try(Connection connection = databaseConnector.getConnection()) {
             String sql = "UPDATE Movie SET lastview = ? WHERE Id= ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -138,17 +158,29 @@ public class DAOMovie implements IMovieRepository {
         }
     }
 
+    /**
+     * Fetches all movies from a resultset from the Movie table joined with the CatMovie table where the title of the category is in the list of categories provided in the parameters.
+     * Fetches all categories from a resultset from the Category table joined with the CatMovie table where the movieId matches the Movies was fetched with the first preparedstatement.
+     * A loop then loops through the list of movies and deletes duplicates.
+     * A list is then created by comparing every movie object's categories with the list that is passed to this method in its parameters and adding every category to that list.
+     * If the list is empty no matches were found and the Movie is removed from the list that will be returned. If the list with category matches is smaller in size than that passed to this method.
+     * It means the movie matches less categories than what was requested in the view and the movie is filtered out.
+     *
+     * The idea behind this is, that you can search for two categories e.g. horror and action and all movies that have both of those categories will show up, but a movie that does not have
+     * them both would be filtered out.
+     * @param selectedCategories a list of Strings that represents the categories a user has requested to filter.
+     * @return a list of movie objects
+     */
     public List<Movie> getMoviesWithSelectedCategories(List<String> selectedCategories) {
-
         try(Connection connection = databaseConnector.getConnection()) {
             List<Movie> movieList = new ArrayList<>();
             for (String category: selectedCategories) {
                 String sql = "SELECT * FROM Movie FULL JOIN CatMovie ON Movie.id = CatMovie.movieId WHERE CatMovie.catTitle = ?";
                 String sql1 = "SELECT * FROM Category FULL JOIN CatMovie ON Category.title = CatMovie.catTitle WHERE CatMovie.movieId = ?;";
+
                 PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 PreparedStatement preparedStatement1 = connection.prepareStatement(sql1); //Create statement
                 preparedStatement.setString(1, category);
-
                 preparedStatement.execute();
 
                 ResultSet resultSet = preparedStatement.getResultSet();
@@ -169,7 +201,6 @@ public class DAOMovie implements IMovieRepository {
                         ResultSet resultSet1 = preparedStatement1.getResultSet();
                         while(resultSet1.next()) {
                             String catTitle = resultSet1.getString("title");
-
                             movie.addCategory(new Category(catTitle));
                         }
                     }
@@ -204,6 +235,12 @@ public class DAOMovie implements IMovieRepository {
         return null;
     }
 
+
+    /**
+     * Adds a category to the list by providing a movieId and adding a category to it.
+     * @param category a category object
+     * @param movie a movie object
+     */
     public void addCategoryToMovie(Category category, Movie movie){
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO CatMovie VALUES (?,?);";
@@ -216,10 +253,12 @@ public class DAOMovie implements IMovieRepository {
         }
     }
 
-
+    /**
+     * Deletes a movie from the Movie table where the ID is that of the movie provided in the method's parameters.
+     * @param movie
+     */
     @Override
     public void deleteMovie(Movie movie) {
-
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE Movie WHERE id = (?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

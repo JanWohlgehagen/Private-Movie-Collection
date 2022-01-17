@@ -40,6 +40,10 @@ public class NewMovieController {
         movieListModel = mainController.getMovieListModel();
     }
 
+    /**
+     * Opens the filechooser in the default directory and shows mp4 and mpeg4 files and fetches the file path of the chosen file.
+     * @param actionEvent
+     */
     public void handleChooseBtn(ActionEvent actionEvent) {
         Stage stage = (Stage) gridPaneId.getScene().getWindow();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Movie", "*.mp4", "*.mpeg4"));
@@ -49,6 +53,9 @@ public class NewMovieController {
         }
     }
 
+    /**
+     * If the textfields in the view are not blank it calls the movielist to create a new movie and add it to the view.
+     */
     public void handleSaveBtn() {
         if(!txtTitle.getText().isBlank() && !txtImdb.getText().isBlank() && !txtChooseFile.getText().isBlank()){
             String uploadTitle = txtTitle.getText();
@@ -59,6 +66,10 @@ public class NewMovieController {
         } else displayMessage("All fields must be filled.");
     }
 
+    /**
+     * Closes the stage.
+     * @param actionEvent
+     */
     public void handleCancelBtn(ActionEvent actionEvent) {
         closeStage();
     }

@@ -99,6 +99,13 @@ public class MovieListModel {
         }
     }
 
+    /**
+     * Calls the moviemanager to filter the categories represented by the list of Strings the method take as its parameter.
+     * Clears the movielist (the list of movies in the tableview)
+     * If the selectedCategories list is empty, no categories have been chosen in the view and if so it sets the movieList as the movieCache and then sets the filterResault list to the movieCache as well.
+     * else it sets the filterResults as the movieList to be viewed.
+     * @param selectedCategoreis
+     */
     public void filterCategories(List<String> selectedCategoreis) {
         filterResults = movieManager.filterCategories(selectedCategoreis);
 
@@ -111,10 +118,18 @@ public class MovieListModel {
         }
     }
 
+    /**
+     * Returns the list of categories, fetched from the DAL layer by the MovieManager.
+     * @return
+     */
     public ObservableList<Category> getCategoryList() {
         return FXCollections.observableArrayList(movieManager.getAllCategories());
     }
 
+    /**
+     * Calls the movieManager to update the last viewed date of a movie.
+     * @param movie
+     */
     public void updateLastView(Movie movie){
         movieManager.updateLastView(movie);
     }

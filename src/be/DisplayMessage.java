@@ -13,7 +13,6 @@ public class DisplayMessage {
 
     /**
      * Displays errormessage to the user.
-     *
      * @param ex The Exception
      */
     public static void displayError(Exception ex) {

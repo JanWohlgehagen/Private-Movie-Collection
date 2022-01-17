@@ -13,13 +13,20 @@ public class DAOCategory implements ICategoryRepository {
 
     private MyConnection databaseConnector;
 
+    /**
+     * Constructer that establishes a connection to the database though MyConnetion.
+     * @throws IOException
+     */
     public DAOCategory() throws IOException {
         this.databaseConnector = new MyConnection();
     }
 
+    /**
+     * Returns all the tables in the Category Table
+     * @return a List of Category objects
+     */
     @Override
     public List<Category> getAllCategories() {
-
         List<Category> allCategorys = new ArrayList<>();
 
         try(Connection connection = databaseConnector.getConnection()){
@@ -40,9 +47,12 @@ public class DAOCategory implements ICategoryRepository {
         return allCategorys;
     }
 
+    /**
+     * Detes a category from the database by title.
+     * @param category
+     */
     @Override
     public void deleteCategory(Category category) {
-
         try(Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE Category WHERE title = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -52,6 +62,5 @@ public class DAOCategory implements ICategoryRepository {
         } catch (SQLException SQLex) {
             DisplayMessage.displayError(SQLex);
         }
-
     }
 }
