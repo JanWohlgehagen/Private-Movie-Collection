@@ -187,6 +187,8 @@ public class DAOMovie implements IMovieRepository {
                 }
             }
 
+            //Creates a list of categories containing only categories that match the movie's list, if the compared list is empty it did not match any of the categories picked to search for,
+            //and if the compared list is smaller than the selected categories it means that more categories are being requested than the movie contains.
             List<Movie> tempList = new ArrayList<>(movieList);
             for (Movie movie : tempList) {
                 var comparedList = movie.getAllCategoryAsList().stream().filter(category -> selectedCategories.contains(category.getNameProperty().get())).toList();
