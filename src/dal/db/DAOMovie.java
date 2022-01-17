@@ -186,6 +186,15 @@ public class DAOMovie implements IMovieRepository {
                     }
                 }
             }
+
+            List<Movie> tempList = new ArrayList<>(movieList);
+            for (Movie movie : tempList) {
+                var comparedList = movie.getAllCategoryAsList().stream().filter(category -> selectedCategories.contains(category.getNameProperty().get())).toList();
+                if (comparedList.isEmpty() || comparedList.size() < selectedCategories.size()) {
+                    movieList.remove(movie);
+                }
+            }
+            
             return movieList;
         } catch (SQLException SQLex) {
             DisplayMessage.displayError(SQLex);
