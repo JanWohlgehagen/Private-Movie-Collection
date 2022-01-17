@@ -146,7 +146,6 @@ public class MainController implements Initializable {
                 categoryCache.clear();
                 categoryCache.addAll(newValue.getAllCategoryAsList());
                 listViewCategories.setItems(categoryCache);
-                System.out.println(newValue.getAllCategoryAsList().toString());
                 txtTitle.setText(newValue.getNameProperty().get());
                 txtIMDBRating.setText(String.valueOf(newValue.getIMDBRatingProperty().get()));
                 if (newValue.getPersonalRatingProperty().get() == -1) {
