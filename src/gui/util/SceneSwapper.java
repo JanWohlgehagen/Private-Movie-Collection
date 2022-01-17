@@ -31,7 +31,7 @@ public class SceneSwapper {
             stage.setScene(ViewScene);
             stage.show();
         }catch (IOException IOex){
-            DisplayMessage.displayErrorMessage(IOex, "Something went wrong.\n Can not load scene");
+            DisplayMessage.displayErrorMessage(IOex, "Something went wrong.\n Failed to load the stage.");
         }
     }
 }
