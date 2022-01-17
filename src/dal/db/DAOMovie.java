@@ -28,16 +28,16 @@ public class DAOMovie implements IMovieRepository {
         List<Movie> allMovies = new ArrayList<>();
 
         //Create a connection
-        try(Connection connection = databaseConnector.getConnection()){
+        try (Connection connection = databaseConnector.getConnection()) {
             String sql = "SELECT * FROM Movie;";
             String sql1 = "SELECT * FROM Category FULL JOIN CatMovie ON Category.title = CatMovie.catTitle WHERE CatMovie.movieId = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             PreparedStatement preparedStatement1 = connection.prepareStatement(sql1); //Create statement
 
             //Extract data from DB
-            if(preparedStatement.execute()){
+            if (preparedStatement.execute()) {
                 ResultSet resultSet = preparedStatement.getResultSet();
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     ObservableList<Category> categories = FXCollections.observableArrayList();
                     int movieId = resultSet.getInt("id");
                     String movieTitle = resultSet.getString("title");
@@ -50,10 +50,10 @@ public class DAOMovie implements IMovieRepository {
                     movie.setPersonalRatingProperty(personalrating);
                     movie.setLastViewProperty(lastview);
 
-                    preparedStatement1.setInt(1,movieId);
-                    if(preparedStatement1.execute()){
+                    preparedStatement1.setInt(1, movieId);
+                    if (preparedStatement1.execute()) {
                         ResultSet resultSet1 = preparedStatement1.getResultSet();
-                        while(resultSet1.next()) {
+                        while (resultSet1.next()) {
                             String catTitle = resultSet1.getString("title");
 
                             movie.addCategory(new Category(catTitle));
@@ -77,7 +77,7 @@ public class DAOMovie implements IMovieRepository {
             preparedStatement.setDouble(2, IMDBRating);
             preparedStatement.setDouble(3, -1); // Personal Rating -default to -1 when it is created
             preparedStatement.setString(4, pathToFile);
-            preparedStatement.setObject(5,null);
+            preparedStatement.setObject(5, null);
             int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows == 1) {
@@ -97,7 +97,7 @@ public class DAOMovie implements IMovieRepository {
     @Override
     public void updateMovie(Movie movie) throws MovieException {
 
-        try(Connection connection = databaseConnector.getConnection()) {
+        try (Connection connection = databaseConnector.getConnection()) {
 
             String sql = "UPDATE Movie SET title = ?, filepath=?, IMDBrating=?, personalrating=? WHERE Id=?;";
             String sqlDel = "DELETE FROM CatMovie WHERE movieId = ?";
@@ -112,11 +112,11 @@ public class DAOMovie implements IMovieRepository {
             preparedStatementForDelete.setInt(1, movie.getIdProperty().get());
             preparedStatementForDelete.executeUpdate();
             int affectedRows = preparedStatement.executeUpdate();
-            for (Category cat: movie.getAllCategoryAsList()) {
+            for (Category cat : movie.getAllCategoryAsList()) {
                 addCategoryToMovie(cat, movie);
 
             }
-            if(affectedRows != 1) {
+            if (affectedRows != 1) {
                 throw new MovieException("Too many row affected");
             }
         } catch (SQLException SQLex) {
@@ -126,14 +126,14 @@ public class DAOMovie implements IMovieRepository {
 
     public void updateLastview(Movie movie) throws MovieException {
 
-        try(Connection connection = databaseConnector.getConnection()) {
+        try (Connection connection = databaseConnector.getConnection()) {
             String sql = "UPDATE Movie SET lastview = ? WHERE Id= ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setObject(1, movie.getLastViewProperty().get());
             preparedStatement.setDouble(2, movie.getIdProperty().get());
 
             int affectedRows = preparedStatement.executeUpdate();
-            if(affectedRows != 1) {
+            if (affectedRows != 1) {
                 throw new MovieException("Too many row affected");
             }
         } catch (SQLException SQLex) {
@@ -143,9 +143,9 @@ public class DAOMovie implements IMovieRepository {
 
     public List<Movie> getMoviesWithSelectedCategories(List<String> selectedCategories) throws MovieException {
 
-        try(Connection connection = databaseConnector.getConnection()) {
+        try (Connection connection = databaseConnector.getConnection()) {
             List<Movie> movieList = new ArrayList<>();
-            for (String category: selectedCategories) {
+            for (String category : selectedCategories) {
                 String sql = "SELECT * FROM Movie FULL JOIN CatMovie ON Movie.id = CatMovie.movieId WHERE CatMovie.catTitle = ?";
                 String sql1 = "SELECT * FROM Category FULL JOIN CatMovie ON Category.title = CatMovie.catTitle WHERE CatMovie.movieId = ?;";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -168,9 +168,9 @@ public class DAOMovie implements IMovieRepository {
                     movie.setLastViewProperty(lastview);
 
                     preparedStatement1.setInt(1, movieId);
-                    if(preparedStatement1.execute()){
+                    if (preparedStatement1.execute()) {
                         ResultSet resultSet1 = preparedStatement1.getResultSet();
-                        while(resultSet1.next()) {
+                        while (resultSet1.next()) {
                             String catTitle = resultSet1.getString("title");
 
                             movie.addCategory(new Category(catTitle));
@@ -178,17 +178,26 @@ public class DAOMovie implements IMovieRepository {
                     }
 
                     boolean isFound = true;
-                    for (Movie movieFromList: movieList) {
+                    for (Movie movieFromList : movieList) {
                         if (movieFromList.getNameProperty().get().equals(movie.getNameProperty().get())) {
                             isFound = false;
                             break;
                         }
                     }
-                    if(isFound){
+                    if (isFound) {
                         movieList.add(movie);
                     }
                 }
             }
+
+            List<Movie> tempList = new ArrayList<>(movieList);
+            for (Movie movie : tempList) {
+                var comparedList = movie.getAllCategoryAsList().stream().filter(category -> selectedCategories.contains(category.getNameProperty().get())).toList();
+                if (comparedList.isEmpty() || comparedList.size() < selectedCategories.size()) {
+                    movieList.remove(movie);
+                }
+            }
+
             return movieList;
         } catch (SQLException SQLex) {
             throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
@@ -217,7 +226,7 @@ public class DAOMovie implements IMovieRepository {
             preparedStatement.setInt(1, movie.getIdProperty().get());
 
             int affectedRows = preparedStatement.executeUpdate();
-            if(affectedRows != 1){
+            if (affectedRows != 1) {
                 throw new MovieException("Too many row affected");
             }
 
