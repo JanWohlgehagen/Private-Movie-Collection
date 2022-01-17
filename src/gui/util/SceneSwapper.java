@@ -34,8 +34,7 @@ public class SceneSwapper {
             stage.setScene(ViewScene);
             stage.show();
         }catch (IOException IOex){
-            DisplayMessage.displayMessage("Something went wrong.\n Contact customer support");
-            IOex.printStackTrace();
+            DisplayMessage.displayErrorMessage(IOex, "Something went wrong.\n Can not load scene");
         }
     }
 }

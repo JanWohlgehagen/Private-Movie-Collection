@@ -19,15 +19,13 @@ import static be.DisplayMessage.displayMessage;
 public class MovieManager {
     private DAOMovie daoMovie;
     private DAOCategory daoCategory;
-    private ISearcher movieSearcher;
 
     public MovieManager() throws IOException {
-        movieSearcher = new MovieSearcher();
         daoMovie = new DAOMovie();
         daoCategory = new DAOCategory();
     }
 
-    public List<Movie> getAllMovies() throws MovieException {
+    public List<Movie> getAllMovies(){
         List <Movie> allMovies = daoMovie.getAllMovies();
         List <Movie> oldMovies = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
@@ -51,11 +49,11 @@ public class MovieManager {
         return allMovies;
     }
 
-    public Movie createMovie(String name, double imdbRating, String pathToFile) throws MovieException {
+    public Movie createMovie(String name, double imdbRating, String pathToFile) {
         return daoMovie.createMovie(name, imdbRating, pathToFile);
     }
 
-    public void deleteMovie(Movie movie) throws MovieException {
+    public void deleteMovie(Movie movie) {
         daoMovie.deleteMovie(movie);
     }
 
@@ -63,24 +61,24 @@ public class MovieManager {
         if (imdbRating <= 10.0 && imdbRating >= 0.0) {
             if (personalRating <= 10.0 && personalRating >= 0.0 || personalRating == -1.0) {
                 return true;
-            } else displayMessage("Personal rating must be a number between 0-10");
-        } else displayMessage("IMDB rating must be a number between 0-10");
+            } else  DisplayMessage.displayMessage("Personal rating must be a number between 0-10");
+        } else  DisplayMessage.displayMessage("IMDB rating must be a number between 0-10");
         return false;
     }
 
-    public void updateMovie(Movie movie) throws MovieException {
+    public void updateMovie(Movie movie) {
         daoMovie.updateMovie(movie);
     }
 
-    public List<Movie> filterCategories(List<String> selectedCategoreis) throws MovieException {
-        return daoMovie.getMoviesWithSelectedCategories(selectedCategoreis);
+    public List<Movie> filterCategories(List<String> selectedCategories) {
+        return daoMovie.getMoviesWithSelectedCategories(selectedCategories);
     }
 
-    public List<Category> getAllCategories() throws CategoryException {
+    public List<Category> getAllCategories() {
         return daoCategory.getAllCategories();
     }
 
-    public void updateLastView(Movie movie) throws MovieException {
+    public void updateLastView(Movie movie) {
         daoMovie.updateLastview(movie);
     }
 }

@@ -1,8 +1,8 @@
 package gui.controller;
 
 import be.Category;
+import be.DisplayMessage;
 import be.Movie;
-import be.MovieException;
 import gui.model.MovieListModel;
 import gui.util.SceneSwapper;
 import javafx.collections.FXCollections;
@@ -115,7 +115,7 @@ public class MainController implements Initializable {
 
 
 
-    public MainController() throws IOException, MovieException {
+    public MainController() throws IOException {
         movieListModel = new MovieListModel();
         sceneSwapper = new SceneSwapper();
         categoryCache = FXCollections.observableArrayList();
@@ -167,13 +167,13 @@ public class MainController implements Initializable {
                     isTitleOn = true;
                 }
                 movieListModel.searchMovie(newValue, isTitleOn, isRatingOn);
-            } catch (MovieException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                DisplayMessage.displayError(e);
             }
         });
     }
 
-    public void handleCheckBoxesCategories(ActionEvent actionEvent) throws MovieException {
+    public void handleCheckBoxesCategories(ActionEvent actionEvent){
            movieListModel.filterCategories(isCheckBoxsON());
     }
 
@@ -230,7 +230,7 @@ public class MainController implements Initializable {
     }
 
 
-    public void handlePlayMovie(ActionEvent actionEvent) throws MovieException {
+    public void handlePlayMovie(ActionEvent actionEvent) {
         getSelectedMovie().setLastViewProperty(new Date());
         movieListModel.updateLastView(getSelectedMovie());
         sceneSwapper.sceneSwitch(new Stage(), "MediaPlayer.fxml");
@@ -244,8 +244,8 @@ public class MainController implements Initializable {
         try {
             comboBoxCategory.getItems().addAll(movieListModel.getCategoryList());
         } catch (Exception e) {
-            displayMessage("Failed to fetch categories from the database.");
-            displayError(e);
+            DisplayMessage.displayErrorMessage(e, "Failed to fetch categories from the database.");
+            return;
         }
 
         if (tvMovies.getSelectionModel().selectedItemProperty().get() != null) {
@@ -264,7 +264,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void handleDeleteMovie(ActionEvent actionEvent) throws MovieException {
+    public void handleDeleteMovie(ActionEvent actionEvent){
         movieListModel.deleteMovie(tvMovies.getSelectionModel().selectedItemProperty().get());
     }
 
@@ -290,9 +290,7 @@ public class MainController implements Initializable {
 
                 enable_Disable_TextFields();
             } catch (Exception e){
-                displayMessage("You must provide a number between 0-10");
-                e.printStackTrace();
-                return; // Skal denne her væk eller ???????
+                DisplayMessage.displayErrorMessage(e, "You must provide a number between 0-10");
             }
     }
 

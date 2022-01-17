@@ -1,9 +1,7 @@
 package gui.model;
 
 import be.Category;
-import be.CategoryException;
 import be.Movie;
-import be.MovieException;
 import bll.MovieManager;
 import bll.util.ISearcher;
 import bll.util.MovieSearcher;
@@ -22,7 +20,7 @@ public class MovieListModel {
     private ISearcher movieSearcher;
 
 
-    public MovieListModel() throws IOException, MovieException {
+    public MovieListModel() throws IOException {
         movieManager = new MovieManager();
         movieList = FXCollections.observableArrayList(movieManager.getAllMovies());
         movieCache.addAll(movieList);
@@ -43,7 +41,7 @@ public class MovieListModel {
      * @param IMDBRating
      * @param pathToFile
      */
-    public void createMovie(String name, double IMDBRating, String pathToFile) throws MovieException {
+    public void createMovie(String name, double IMDBRating, String pathToFile) {
         Movie movie = movieManager.createMovie(name, IMDBRating, pathToFile);
         movieList.add(movie);
         movieCache.add(movie);
@@ -53,7 +51,7 @@ public class MovieListModel {
      * Delete the song in mainview and database
      * @param movie
      */
-    public void deleteMovie(Movie movie) throws MovieException {
+    public void deleteMovie(Movie movie) {
         movieManager.deleteMovie(movie);
         movieList.remove(movie);
         movieCache.remove(movie);
@@ -66,7 +64,7 @@ public class MovieListModel {
      * @param imdbRating
      * @param personalRating
      */
-    public void updateMovie(Movie movie, String name, double imdbRating, double personalRating, ObservableList<Category> categories) throws MovieException {
+    public void updateMovie(Movie movie, String name, double imdbRating, double personalRating, ObservableList<Category> categories) {
         if(movieManager.checkUpdatedValues(imdbRating, personalRating)){
             movie.setNameProperty(name);
             movie.setIMDBRatingProperty(imdbRating);
@@ -83,7 +81,7 @@ public class MovieListModel {
      * @param query the key word, to search for
      * @return a list of songs that fit, the key word
      */
-    public void searchMovie(String query, boolean isTitleOn, boolean isRatingOn) throws MovieException {
+    public void searchMovie(String query, boolean isTitleOn, boolean isRatingOn) {
         if(query.isBlank()){
             movieList.clear();
             if(filterResults.isEmpty()){
@@ -101,7 +99,7 @@ public class MovieListModel {
         }
     }
 
-    public void filterCategories(List<String> selectedCategoreis) throws MovieException {
+    public void filterCategories(List<String> selectedCategoreis) {
         filterResults = movieManager.filterCategories(selectedCategoreis);
 
         movieList.clear();
@@ -113,11 +111,11 @@ public class MovieListModel {
         }
     }
 
-    public ObservableList<Category> getCategoryList() throws CategoryException {
+    public ObservableList<Category> getCategoryList() {
         return FXCollections.observableArrayList(movieManager.getAllCategories());
     }
 
-    public void updateLastView(Movie movie) throws MovieException {
+    public void updateLastView(Movie movie){
         movieManager.updateLastView(movie);
     }
 }

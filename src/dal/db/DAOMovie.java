@@ -1,8 +1,8 @@
 package dal.db;
 
 import be.Category;
+import be.DisplayMessage;
 import be.Movie;
-import be.MovieException;
 import dal.interfaces.IMovieRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +23,7 @@ public class DAOMovie implements IMovieRepository {
     }
 
     @Override
-    public List<Movie> getAllMovies() throws MovieException {
+    public List<Movie> getAllMovies() {
 
         List<Movie> allMovies = new ArrayList<>();
 
@@ -63,13 +63,15 @@ public class DAOMovie implements IMovieRepository {
                 }
             }
         } catch (SQLException SQLex) {
-            throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
+            if(DisplayMessage.displayErrorSTOP(SQLex)){
+                System.exit(0);
+            }
         }
         return allMovies;
     }
 
     @Override
-    public Movie createMovie(String name, double IMDBRating, String pathToFile) throws MovieException {
+    public Movie createMovie(String name, double IMDBRating, String pathToFile) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO Movie VALUES (?,?,?,?,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -89,13 +91,15 @@ public class DAOMovie implements IMovieRepository {
                 }
             }
         } catch (SQLException SQLex) {
-            throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
+            if (DisplayMessage.displayErrorSTOP(SQLex)) {
+                System.exit(0);
+            }
         }
         return null;
     }
 
     @Override
-    public void updateMovie(Movie movie) throws MovieException {
+    public void updateMovie(Movie movie){
 
         try(Connection connection = databaseConnector.getConnection()) {
 
@@ -108,23 +112,19 @@ public class DAOMovie implements IMovieRepository {
             preparedStatement.setDouble(3, movie.getIMDBRatingProperty().get());
             preparedStatement.setDouble(4, movie.getPersonalRatingProperty().get());
             preparedStatement.setDouble(5, movie.getIdProperty().get());
-
+            Integer.parseInt("d");
             preparedStatementForDelete.setInt(1, movie.getIdProperty().get());
             preparedStatementForDelete.executeUpdate();
-            int affectedRows = preparedStatement.executeUpdate();
             for (Category cat: movie.getAllCategoryAsList()) {
                 addCategoryToMovie(cat, movie);
-
             }
-            if(affectedRows != 1) {
-                throw new MovieException("Too many row affected");
-            }
-        } catch (SQLException SQLex) {
-            throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
+            DisplayMessage.displayMessage("The movie is update");
+        } catch (Exception SQLex) {
+            DisplayMessage.displayError(SQLex);
         }
     }
 
-    public void updateLastview(Movie movie) throws MovieException {
+    public void updateLastview(Movie movie) {
 
         try(Connection connection = databaseConnector.getConnection()) {
             String sql = "UPDATE Movie SET lastview = ? WHERE Id= ?;";
@@ -132,16 +132,13 @@ public class DAOMovie implements IMovieRepository {
             preparedStatement.setObject(1, movie.getLastViewProperty().get());
             preparedStatement.setDouble(2, movie.getIdProperty().get());
 
-            int affectedRows = preparedStatement.executeUpdate();
-            if(affectedRows != 1) {
-                throw new MovieException("Too many row affected");
-            }
+            preparedStatement.executeUpdate();
         } catch (SQLException SQLex) {
-            throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
+            DisplayMessage.displayError(SQLex);
         }
     }
 
-    public List<Movie> getMoviesWithSelectedCategories(List<String> selectedCategories) throws MovieException {
+    public List<Movie> getMoviesWithSelectedCategories(List<String> selectedCategories) {
 
         try(Connection connection = databaseConnector.getConnection()) {
             List<Movie> movieList = new ArrayList<>();
@@ -191,11 +188,12 @@ public class DAOMovie implements IMovieRepository {
             }
             return movieList;
         } catch (SQLException SQLex) {
-            throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
+            DisplayMessage.displayError(SQLex);
         }
+        return null;
     }
 
-    public void addCategoryToMovie(Category category, Movie movie) throws MovieException {
+    public void addCategoryToMovie(Category category, Movie movie){
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO CatMovie VALUES (?,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -203,26 +201,23 @@ public class DAOMovie implements IMovieRepository {
             preparedStatement.setInt(2, movie.getIdProperty().get());
             preparedStatement.executeUpdate();
         } catch (SQLException SQLex) {
-            throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
+            DisplayMessage.displayError(SQLex);
         }
     }
 
 
     @Override
-    public void deleteMovie(Movie movie) throws MovieException {
+    public void deleteMovie(Movie movie) {
 
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE Movie WHERE id = (?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, movie.getIdProperty().get());
 
-            int affectedRows = preparedStatement.executeUpdate();
-            if(affectedRows != 1){
-                throw new MovieException("Too many row affected");
-            }
+            preparedStatement.executeUpdate();
 
         } catch (SQLException SQLex) {
-            throw new MovieException(ERROR_STRING, SQLex.fillInStackTrace());
+            DisplayMessage.displayError(SQLex);
         }
     }
 }
