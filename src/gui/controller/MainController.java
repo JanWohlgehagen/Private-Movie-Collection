@@ -283,11 +283,13 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Deletes the selected movie from the movieListModel.
+     * Deletes the selected movie from the movieListModel. After a Warning comes up
      * @param actionEvent
      */
     public void handleDeleteMovie(ActionEvent actionEvent){
-        movieListModel.deleteMovie(tvMovies.getSelectionModel().selectedItemProperty().get());
+        if(DisplayMessage.displayWarning("Are you sure you want to delete this movie??\n" + getSelectedMovie().getNameProperty().get())){
+            movieListModel.deleteMovie(getSelectedMovie());
+        }
     }
 
     /**
@@ -422,6 +424,4 @@ public class MainController implements Initializable {
         }
         return tvMovies.getSelectionModel().getSelectedItem();
     }
-
-
 }
