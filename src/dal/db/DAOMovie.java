@@ -205,20 +205,18 @@ public class DAOMovie implements IMovieRepository {
                         }
                     }
 
-                    boolean isFound = true;
+                    boolean isFound = false;
                     for (Movie movieFromList: movieList) {
                         if (movieFromList.getNameProperty().get().equals(movie.getNameProperty().get())) {
-                            isFound = false;
+                            isFound = true;
                             break;
                         }
                     }
-                    if(isFound){
+                    if(!isFound){
                         movieList.add(movie);
                     }
                 }
             }
-
-            
             return movieList;
         } catch (SQLException SQLex) {
             DisplayMessage.displayError(SQLex);
