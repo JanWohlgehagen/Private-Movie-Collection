@@ -129,7 +129,6 @@ public class DAOMovie implements IMovieRepository {
             preparedStatement.setDouble(3, movie.getIMDBRatingProperty().get());
             preparedStatement.setDouble(4, movie.getPersonalRatingProperty().get());
             preparedStatement.setDouble(5, movie.getIdProperty().get());
-            Integer.parseInt("d");
             preparedStatementForDelete.setInt(1, movie.getIdProperty().get());
             preparedStatementForDelete.executeUpdate();
             for (Category cat: movie.getAllCategoryAsList()) {
