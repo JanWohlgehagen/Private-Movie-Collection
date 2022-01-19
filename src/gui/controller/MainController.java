@@ -261,6 +261,7 @@ public class MainController implements Initializable {
      */
     public void handleEditMovie(ActionEvent actionEvent) {
         try {
+            if(comboBoxCategory.getItems().isEmpty())
             comboBoxCategory.getItems().addAll(movieListModel.getCategoryList());
         } catch (Exception e) {
             DisplayMessage.displayErrorMessage(e, "Failed to fetch categories from the database.");

@@ -1,6 +1,7 @@
 package gui.model;
 
 import be.Category;
+import be.DisplayMessage;
 import be.Movie;
 import bll.MovieManager;
 import bll.util.ISearcher;
@@ -42,9 +43,11 @@ public class MovieListModel {
      * @param pathToFile
      */
     public void createMovie(String name, double IMDBRating, String pathToFile) {
-        Movie movie = movieManager.createMovie(name, IMDBRating, pathToFile);
-        movieList.add(movie);
-        movieCache.add(movie);
+        if (movieManager.checkUpdatedValues(IMDBRating, -1)){
+            Movie movie = movieManager.createMovie(name, IMDBRating, pathToFile);
+            movieList.add(movie);
+            movieCache.add(movie);
+        }
     }
 
     /**
