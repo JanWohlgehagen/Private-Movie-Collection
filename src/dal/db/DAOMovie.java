@@ -134,7 +134,7 @@ public class DAOMovie implements IMovieRepository {
             for (Category cat: movie.getAllCategoryAsList()) {
                 addCategoryToMovie(cat, movie);
             }
-            DisplayMessage.displayMessage("The movie is update");
+            DisplayMessage.displayMessage("The movie was updated");
         } catch (Exception SQLex) {
             DisplayMessage.displayError(SQLex);
         }
