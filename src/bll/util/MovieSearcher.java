@@ -1,5 +1,6 @@
 package bll.util;
 
+import be.DisplayMessage;
 import be.Movie;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +24,15 @@ public class MovieSearcher implements ISearcher{
         this.isRatingOn = isRatingOn;
 
         searchResult.clear();
-        for (Movie movie : searchBase) {
-            if(compareToMovieName(movie, query) || compareToMovieRating(movie, query))
-            {
-                searchResult.add(movie);
+        try{
+            for (Movie movie : searchBase) {
+                if(compareToMovieName(movie, query) || compareToMovieRating(movie, query))
+                {
+                    searchResult.add(movie);
+                }
             }
+        }catch (NumberFormatException nfe){
+            DisplayMessage.displayErrorMessage(nfe, "A movie rating can only be a numeric value (0-10).");
         }
         return searchResult;
     }
@@ -54,13 +59,9 @@ public class MovieSearcher implements ISearcher{
      */
     @Override
     public boolean compareToMovieRating(Movie movie, String query) {
-        try{
             if(isRatingOn && !query.isEmpty()){
                 return movie.getIMDBRatingProperty().get() >= Double.parseDouble(query);
             }
-        } catch (NumberFormatException nfe){
-            nfe.printStackTrace();
-        }
         return false;
     }
 }
