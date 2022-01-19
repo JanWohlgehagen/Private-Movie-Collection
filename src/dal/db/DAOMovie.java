@@ -205,14 +205,15 @@ public class DAOMovie implements IMovieRepository {
                         }
                     }
 
-                    boolean isFound = true;
+                    //Iterates over the list that is to be returned and only adds the movie to the list if it is not already in the lost (so it does not add duplicates).
+                    boolean isFound = false;
                     for (Movie movieFromList: movieList) {
                         if (movieFromList.getNameProperty().get().equals(movie.getNameProperty().get())) {
-                            isFound = false;
+                            isFound = true;
                             break;
                         }
                     }
-                    if(isFound){
+                    if(!isFound){
                         movieList.add(movie);
                     }
                 }
@@ -222,7 +223,7 @@ public class DAOMovie implements IMovieRepository {
             //and if the compared list is smaller than the selected categories it means that more categories are being requested than the movie contains.
             List<Movie> tempList = new ArrayList<>(movieList);
             for (Movie movie : tempList) {
-                var comparedList = movie.getAllCategoryAsList().stream().filter(category -> selectedCategories.contains(category.getNameProperty().get())).toList();
+                List<Category> comparedList = movie.getAllCategoryAsList().stream().filter(category -> selectedCategories.contains(category.getNameProperty().get())).toList();
                 if (comparedList.isEmpty() || comparedList.size() < selectedCategories.size()) {
                     movieList.remove(movie);
                 }
